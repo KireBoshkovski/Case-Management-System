@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/case-management
+    username: sorsix
+    password: sorsix
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
