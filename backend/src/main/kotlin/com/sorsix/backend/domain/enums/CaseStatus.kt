@@ -1,5 +1,5 @@
 package com.sorsix.backend.domain.enums
 
 enum class CaseStatus {
-    ACTIVE, CLOSED, ON_HOLD, PUBLIC
+    ACTIVE, CLOSED, ON_HOLD
 }
