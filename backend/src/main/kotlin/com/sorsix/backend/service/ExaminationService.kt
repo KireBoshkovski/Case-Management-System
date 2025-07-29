@@ -1,5 +1,6 @@
 package com.sorsix.backend.service
 
+import com.sorsix.backend.domain.Examination
 import com.sorsix.backend.repository.ExaminationRepository
 import org.springframework.stereotype.Service
 
@@ -7,6 +8,5 @@ import org.springframework.stereotype.Service
 class ExaminationService(
     val examinationRepository: ExaminationRepository
 ) {
-    fun getAll() = examinationRepository.findAll()
-    fun getById(id: Long) = examinationRepository.findById(id)
+    fun save(examination: Examination) = examinationRepository.save(examination)
 }
