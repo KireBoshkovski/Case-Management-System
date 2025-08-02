@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 class CaseService(
     val caseRepository: CaseRepository
 ) {
-    fun getAll() = caseRepository.findAll()
+    fun getAll() = caseRepository.findAllWithDetails()
 
     fun getAllPrivate() = caseRepository.findAllByPublicFalse()
 

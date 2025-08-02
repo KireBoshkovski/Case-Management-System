@@ -1,0 +1,8 @@
+@for(col of columns; track col.field) {
+<li class="d-flex" [routerLink]="['/', routePrefix, idField]">
+    <strong class="text-secondary me-2">{{ col.header }}:</strong>
+    <span class="text-dark">{{
+        col.formatter ? col.formatter(item[col.field]) : item[col.field]
+    }}</span>
+</li>
+}

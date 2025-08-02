@@ -15,11 +15,11 @@ VALUES (1, '123 Main St', '1985-04-23', 'patient1@example.com', 'Bob', 'Male', '
 -- Insert cases - FIXED (added is_public column)
 INSERT INTO cases (case_id, doctor_id, patient_id, allergies, blood_type, created_at, description, status,
                    treatment_plan, updated_at, is_public)
-VALUES (1, 1, 1, 'Penicillin', 'A+', NOW(), 'Chest pain and shortness of breath', 'OPEN', 'Beta blockers and rest',
+VALUES (1, 1, 1, 'Penicillin', 'A+', NOW(), 'Chest pain and shortness of breath', 'ACTIVE', 'Beta blockers and rest',
         NOW(), false),
        (2, 2, 2, NULL, 'B-', NOW(), 'Frequent migraines', 'ON_HOLD', 'MRI and neuro consult', NOW(), true),
        (3, 3, 3, 'None', 'O+', NOW(), 'Childhood asthma flare', 'CLOSED', 'Inhaled corticosteroids', NOW(), false),
-       (4, 4, 4, 'Latex', 'AB+', NOW(), 'Abnormal blood test', 'OPEN', 'Biopsy and follow-up', NOW(), true);
+       (4, 4, 4, 'Latex', 'AB+', NOW(), 'Abnormal blood test', 'ACTIVE', 'Biopsy and follow-up', NOW(), true);
 
 -- Insert examinations (unchanged)
 INSERT INTO examinations (examination_id, case_id, examination_date, examination_type, findings, notes, results,

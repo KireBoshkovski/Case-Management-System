@@ -1,0 +1,176 @@
+@if (loading) {
+<!-- Loading State -->
+<div class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading case details...</p>
+</div>
+} @else if (caseData && !loading) {
+<!-- Case Details -->
+<div class="content-grid">
+    <!-- Patient Information -->
+    <div class="card patient-card">
+        <div class="card-header">
+            <h2>Patient Information</h2>
+        </div>
+        <div class="card-content">
+            <div class="info-row">
+                <span class="label">Name:</span>
+                <span class="value">
+                    {{ caseData.patient.firstName }}
+                    {{ caseData.patient.lastName }}
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Age:</span>
+                <span class="value">
+                    {{ calculateAge(caseData.patient.dateOfBirth) }} years old
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Date of Birth:</span>
+                <span class="value">
+                    {{ caseData.patient.dateOfBirth | date : "mediumDate" }}
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Gender:</span>
+                <span class="value">{{ caseData.patient.gender }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Phone:</span>
+                <span class="value">{{ caseData.patient.phoneNumber }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Email:</span>
+                <span class="value">{{ caseData.patient.email }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Address:</span>
+                <span class="value">{{ caseData.patient.address }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Information -->
+    <div class="card doctor-card">
+        <div class="card-header">
+            <h2>Attending Doctor</h2>
+        </div>
+        <div class="card-content">
+            <div class="info-row">
+                <span class="label">Name:</span>
+                <span class="value">
+                    Dr. {{ caseData.doctor.firstName }}
+                    {{ caseData.doctor.lastName }}
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="label">Specialization:</span>
+                <span class="value">{{ caseData.doctor.specialization }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Department:</span>
+                <span class="value">{{ caseData.doctor.department }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Phone:</span>
+                <span class="value">{{ caseData.doctor.phoneNumber }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Email:</span>
+                <span class="value">{{ caseData.doctor.email }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Case Information -->
+    <div class="card case-info-card">
+        <div class="card-header">
+            <h2>Case Details</h2>
+        </div>
+        <div class="card-content">
+            <div class="info-row">
+                <span class="label">Blood Type:</span>
+                <span class="value blood-type">{{ caseData.bloodType }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Allergies:</span>
+                <span class="value allergies">{{ caseData.allergies }}</span>
+            </div>
+            <div class="info-row full-width">
+                <span class="label">Description:</span>
+                <p class="value description">{{ caseData.description }}</p>
+            </div>
+            <div class="info-row full-width">
+                <span class="label">Treatment Plan:</span>
+                <p class="value treatment-plan">{{ caseData.treatmentPlan }}</p>
+            </div>
+            <div class="info-row">
+                <span class="label">Created:</span>
+                <span class="value">{{ formatDate(caseData.createdAt) }}</span>
+            </div>
+            <div class="info-row">
+                <span class="label">Last Updated:</span>
+                <span class="value">{{ formatDate(caseData.updatedAt) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Examinations -->
+    <div class="card examinations-card">
+        <div class="card-header">
+            <h2>Examinations ({{ caseData.examinations.length }})</h2>
+        </div>
+        <div class="card-content">
+            @if (caseData.examinations.length === 0) {
+            <div class="no-examinations">
+                <p>No examinations recorded for this case.</p>
+            </div>
+            } @else { @for (exam of caseData.examinations; track exam.id) {
+            <div class="examination-item">
+                <div class="examination-header">
+                    <h3>{{ exam.examinationType }}</h3>
+                    <span class="examination-date">
+                        {{ formatDate(exam.examinationDate) }}
+                    </span>
+                </div>
+
+                <div class="examination-content">
+                    <div class="info-row">
+                        <span class="label">Findings:</span>
+                        <span class="value">{{ exam.findings }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Results:</span>
+                        <span class="value">{{ exam.results }}</span>
+                    </div>
+                    @if (exam.notes) {
+                    <div class="info-row">
+                        <span class="label">Notes:</span>
+                        <span class="value">{{ exam.notes }}</span>
+                    </div>
+                    } @let vitals = parseVitalSigns(exam.vitalSigns); @if
+                    (vitals) {
+                    <div class="vital-signs">
+                        <span class="label">Vital Signs:</span>
+                        <div class="vitals-grid">
+                            @for (vital of vitals | keyvalue; track vital.key) {
+                            <div class="vital-item">
+                                <span class="vital-label">
+                                    {{ vital.key }}:
+                                </span>
+                                <span class="vital-value">{{
+                                    vital.value
+                                }}</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            } }
+        </div>
+    </div>
+</div>
+}

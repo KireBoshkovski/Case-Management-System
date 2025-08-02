@@ -35,8 +35,8 @@ CREATE TABLE examinations
     notes            TEXT,
     vital_signs      JSON,
     examination_date TIMESTAMP WITHOUT TIME ZONE             NOT NULL,
-    case_id          BIGINT,
     doctor_id        BIGINT,
+    case_id          BIGINT,
     CONSTRAINT pk_examinations PRIMARY KEY (examination_id)
 );
 

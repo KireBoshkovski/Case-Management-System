@@ -1,6 +1,7 @@
 package com.sorsix.backend.domain
 
 import jakarta.persistence.*
+
 @Entity
 @Table(name = "forks")
 data class Fork(

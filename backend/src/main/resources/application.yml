@@ -8,6 +8,7 @@ spring:
     password: sorsix
 
 
+  jpa:
     hibernate:
       ddl-auto: validate
     show-sql: true

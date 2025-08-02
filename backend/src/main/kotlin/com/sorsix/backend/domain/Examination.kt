@@ -29,10 +29,6 @@ data class Examination(
     @Column(name = "examination_date", nullable = false)
     val examinationDate: LocalDateTime,
 
-    @ManyToOne
-    @JoinColumn(name = "case_id")
-    val case: Case,
-
     @OneToOne
     @JoinColumn(name = "doctor_id")
     val doctor: Doctor,

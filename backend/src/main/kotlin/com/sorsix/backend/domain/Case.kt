@@ -45,7 +45,8 @@ data class Case(
     @JoinColumn(name = "doctor_id")
     val doctor: Doctor,
 
-    @OneToMany(mappedBy = "case", fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "case_id")
     val examinations: MutableList<Examination> = mutableListOf(),
 
     )
