@@ -18,4 +18,6 @@ interface CaseRepository : JpaRepository<Case, Long> {
     """
 )
 fun findAllWithDetails(): List<Case>
+
+fun findAllByPatientId(patientId: Long): List<Case>
 }

@@ -50,4 +50,6 @@ class CaseController(
         return ResponseEntity.ok(caseService.update(case))
     }
 
+    @GetMapping("/patient/{id}")
+    fun byPatientId(@PathVariable id: Long): List<Case> = caseService.findAllByPatientId(id)
 }

@@ -41,4 +41,6 @@ class CaseService(
 
         return caseRepository.save(updated)
     }
+
+    fun findAllByPatientId(patientId: Long) = caseRepository.findAllByPatientId(patientId)
 }

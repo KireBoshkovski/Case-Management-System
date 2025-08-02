@@ -1,7 +1,7 @@
 import { CaseStatus } from './case-status.enum';
 import { Doctor } from './doctor.model';
 import { Examination } from './examination.model';
-import { Patient } from './patient.model';
+import { PatientDetailsModel } from './patient-details.model';
 
 export interface Case {
     id: number;
@@ -13,7 +13,7 @@ export interface Case {
     status: CaseStatus;
     createdAt: string; // ISO date string
     updatedAt: string; // ISO date string
-    patient: Patient;
+    patient: PatientDetailsModel;
     doctor: Doctor;
     examinations: Examination[];
 }

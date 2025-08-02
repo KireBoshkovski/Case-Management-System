@@ -9,12 +9,15 @@ import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
 import { ResetPassword } from './features/auth/reset-password/reset-password';
+import { PatientSearch } from './features/patients/components/patient-search/patient-search';
+import { PatientDetails } from './features/patients/components/patient-details/patient-details';
 
 export const routes: Routes = [
     {
         path: '',
         component: MainLayout,
         children: [
+            // Cases
             { path: 'cases', component: CaseSearch },
             {
                 path: 'cases/public',
@@ -22,7 +25,9 @@ export const routes: Routes = [
                 data: { public: true },
             },
             { path: 'cases/:id', component: CaseDetail },
-            {}
+            // Patients
+            { path: 'patients', component: PatientSearch },
+            { path: 'patients/:id', component: PatientDetails },
         ],
     },
     {

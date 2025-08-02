@@ -24,4 +24,8 @@ export class CaseService {
         console.log('Fetching case with ID:', id);
         return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
     }
+
+    getCasesByPatientId(id: number): Observable<Case[]> {
+        return this.http.get<Case[]>(`${this.apiUrl}/cases/patient/${id}`);
+    }
 }

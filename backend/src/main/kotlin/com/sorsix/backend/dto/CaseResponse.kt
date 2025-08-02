@@ -34,3 +34,4 @@ fun Case.toResponseDto() = CaseResponse(
     doctorId = this.doctor.id,
     examinationIds = this.examinations.map { it.id }
 )
+

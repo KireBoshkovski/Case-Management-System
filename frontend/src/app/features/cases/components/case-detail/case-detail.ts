@@ -21,6 +21,8 @@ export class CaseDetail implements OnInit {
     ngOnInit(): void {
         this.caseId = Number(this.route.snapshot.paramMap.get('id'));
 
+        console.log('Loading Case Detail');
+
         if (this.caseId) {
             this.service.getCaseById(this.caseId).subscribe({
                 next: (caseData) => {

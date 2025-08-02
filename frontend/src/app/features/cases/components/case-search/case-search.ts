@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
-import { Patient } from '../../../../models/patient.model';
+import { PatientDetailsModel } from '../../../../models/patient-details.model';
 import { Pagination } from '../../../../shared/components/pagination/pagination';
 
 @Component({
@@ -21,7 +21,7 @@ export class CaseSearch implements OnInit {
         {
             header: 'Patient',
             field: 'patient',
-            formatter: (patient: Patient) =>
+            formatter: (patient: PatientDetailsModel) =>
                 `${patient.firstName} ${patient.lastName}`,
             idField: 'id',
         },
@@ -45,12 +45,12 @@ export class CaseSearch implements OnInit {
     ngOnInit(): void {
         const isPublic: boolean = this.route.snapshot.data['public'] || false;
 
+        console.log('Loading Case Search');
+
         if (isPublic) {
-            console.log('Fetching public cases');
             this.service.getPublicCases().subscribe({
                 next: (caseData) => {
                     this.cases = caseData;
-                    console.log('Fetched public cases:', this.cases);
                 },
                 error: (err) => {
                     console.error('Error fetching public cases:', err);
@@ -60,7 +60,6 @@ export class CaseSearch implements OnInit {
             this.service.getCases().subscribe({
                 next: (caseData) => {
                     this.cases = caseData;
-                    console.log('Fetched cases:', this.cases);
                 },
                 error: (err) => {
                     console.error('Error fetching cases:', err);
