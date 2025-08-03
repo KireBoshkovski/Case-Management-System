@@ -21,7 +21,6 @@ export class CaseService {
     }
 
     getCaseById(id: number): Observable<Case> {
-        console.log('Fetching case with ID:', id);
         return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
     }
 

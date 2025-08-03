@@ -5,7 +5,7 @@ import com.sorsix.backend.domain.Patient
 import com.sorsix.backend.domain.enums.CaseStatus
 import java.time.LocalDateTime
 
-data class CaseResponse(
+data class CaseDto(
     val id: Long,
     val public: Boolean,
     val bloodType: String?,
@@ -20,7 +20,7 @@ data class CaseResponse(
     val examinationIds: List<Long>
 )
 
-fun Case.toResponseDto() = CaseResponse(
+fun Case.toCaseDto() = CaseDto(
     id = this.id,
     public = this.public,
     bloodType = this.bloodType,

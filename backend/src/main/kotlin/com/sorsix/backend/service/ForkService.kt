@@ -40,5 +40,5 @@ class ForkService(
         return forkRepository.save(updatedFork)
     }
 
-
+    fun findAllByOriginId(id: Long) = forkRepository.findAllByOriginId(id)
 }

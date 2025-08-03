@@ -8,11 +8,4 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
     templateUrl: './main-layout.html',
     styleUrl: './main-layout.css',
 })
-export class MainLayout implements OnInit {
-    currentRoute: string = '';
-    route = inject(ActivatedRoute);
-
-    ngOnInit() {
-        
-    }
-}
+export class MainLayout {}

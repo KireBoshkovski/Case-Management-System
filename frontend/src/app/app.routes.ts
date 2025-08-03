@@ -11,6 +11,7 @@ import { ForgotPassword } from './features/auth/forgot-password/forgot-password'
 import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { PatientSearch } from './features/patients/components/patient-search/patient-search';
 import { PatientDetails } from './features/patients/components/patient-details/patient-details';
+import { ForkDetails } from './features/forks/components/fork-details/fork-details';
 
 export const routes: Routes = [
     {
@@ -28,6 +29,8 @@ export const routes: Routes = [
             // Patients
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },
+            // Forks
+            { path: 'forks/:id', component: ForkDetails}
         ],
     },
     {

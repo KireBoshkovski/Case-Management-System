@@ -3,10 +3,11 @@ import { CaseService } from '../../../../core/services/case.service';
 import { ActivatedRoute } from '@angular/router';
 import { Case } from '../../../../models/case.model';
 import { DatePipe, KeyValuePipe } from '@angular/common';
+import { ForkSearch } from "../../../forks/components/fork-search/fork-search";
 
 @Component({
     selector: 'case-detail',
-    imports: [DatePipe, KeyValuePipe],
+    imports: [DatePipe, KeyValuePipe, ForkSearch],
     templateUrl: './case-detail.html',
     styleUrl: './case-detail.css',
 })

@@ -1,0 +1,69 @@
+@if (fork) {
+<div class="fork-details">
+    <h2>Alternate Diagnosis Details</h2>
+    <p><strong>ID:</strong> {{ fork.id }}</p>
+    <p><strong>Title:</strong> {{ fork.title }}</p>
+    <p><strong>Description:</strong> {{ fork.description }}</p>
+    <p>
+        <strong>Alternative Diagnosis:</strong> {{ fork.alternativeDiagnosis }}
+    </p>
+    <p>
+        <strong>Alternative Treatment:</strong> {{ fork.alternativeTreatment }}
+    </p>
+    <p><strong>Analysis Notes:</strong> {{ fork.analysisNotes }}</p>
+    <p><strong>Recommendations:</strong> {{ fork.recommendations }}</p>
+
+    <h3>Editor</h3>
+    <p>
+        <strong>Name:</strong> {{ fork.editor.firstName }}
+        {{ fork.editor.lastName }}
+    </p>
+    <p><strong>Email:</strong> {{ fork.editor.email }}</p>
+    <p><strong>Specialization:</strong> {{ fork.editor.specialization }}</p>
+
+    <h3>Origin Case</h3>
+    <p><strong>Blood Type:</strong> {{ fork.origin.bloodType }}</p>
+    <p><strong>Allergies:</strong> {{ fork.origin.allergies }}</p>
+    <p><strong>Status:</strong> {{ fork.origin.status }}</p>
+    <p><strong>Created At:</strong> {{ fork.origin.createdAt | date }}</p>
+    <p><strong>Updated At:</strong> {{ fork.origin.updatedAt | date }}</p>
+    <p><strong>Description:</strong> {{ fork.origin.description }}</p>
+    <p><strong>Treatment Plan:</strong> {{ fork.origin.treatmentPlan }}</p>
+
+    <h4>Patient Info</h4>
+    <p>
+        <strong>Name:</strong> {{ fork.origin.patient.firstName }}
+        {{ fork.origin.patient.lastName }}
+    </p>
+    <p><strong>DOB:</strong> {{ fork.origin.patient.dateOfBirth | date }}</p>
+    <p><strong>Gender:</strong> {{ fork.origin.patient.gender }}</p>
+    <p><strong>Phone:</strong> {{ fork.origin.patient.phoneNumber }}</p>
+    <p><strong>Email:</strong> {{ fork.origin.patient.email }}</p>
+    <p><strong>Address:</strong> {{ fork.origin.patient.address }}</p>
+
+    <h4>Doctor Info</h4>
+    <p>
+        <strong>Name:</strong> {{ fork.origin.doctor.firstName }}
+        {{ fork.origin.doctor.lastName }}
+    </p>
+    <p>
+        <strong>Specialization:</strong> {{ fork.origin.doctor.specialization }}
+    </p>
+    <p><strong>Phone:</strong> {{ fork.origin.doctor.phoneNumber }}</p>
+    <p><strong>Email:</strong> {{ fork.origin.doctor.email }}</p>
+    <p><strong>Department:</strong> {{ fork.origin.doctor.department }}</p>
+
+    <h4>Examinations</h4>
+    @for (exam of fork.origin.examinations; track $index) {
+    <div class="exam-entry">
+        <p><strong>Type:</strong> {{ exam.examinationType }}</p>
+        <p><strong>Findings:</strong> {{ exam.findings }}</p>
+        <p><strong>Results:</strong> {{ exam.results }}</p>
+        <p><strong>Notes:</strong> {{ exam.notes }}</p>
+        <p><strong>Vitals:</strong> {{ exam.vitalSigns }}</p>
+        <p><strong>Date:</strong> {{ exam.examinationDate | date }}</p>
+    </div>
+    <hr />
+    }
+</div>
+}

@@ -1,8 +1,8 @@
 package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.Case
-import com.sorsix.backend.dto.CaseResponse
-import com.sorsix.backend.dto.toResponseDto
+import com.sorsix.backend.dto.CaseDto
+import com.sorsix.backend.dto.toCaseDto
 import com.sorsix.backend.service.CaseService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -15,8 +15,8 @@ class CaseController(
 ) {
 
     @GetMapping
-    fun getAllCases(): List<CaseResponse> {
-        return caseService.getAll().map { it.toResponseDto() }
+    fun getAllCases(): List<CaseDto> {
+        return caseService.getAll().map { it.toCaseDto() }
     }
 
     @GetMapping("/private")

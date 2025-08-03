@@ -1,79 +1,72 @@
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
+### General OS/Editor ###
+# OS metadata
+.DS_Store
+Thumbs.db
 
-# Node
-/frontend/node_modules
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
+# IDE specific files
 *.idea/
-*.project
-*.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# Visual Studio Code
-/frontend/.vscode/*
+*.iml
+*.ipr
+*.iws
+.vscode/*
+*.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
-/frontend/.angular/cache
-.sass-cache/
-/connect.lock
-/coverage
-/libpeerconnection.log
-testem.log
-/typings
+### Compiled Output ###
+# Frontend
+/dist
+/tmp
+/out-tsc
+/bazel-out
 
-# System files
-.DS_Store
-Thumbs.db
-
-backend/.gradle
-/backend/gradle/*
-HELP.md
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
+# Backend
+/build/
+/out/
+/bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-*.idea
-*.iws
-*.iml
-*.ipr
-out/
+### Frontend Specific ###
+/frontend/node_modules/
+/frontend/.angular/cache
+npm-debug.log
+yarn-error.log
+.sass-cache/
+/connect.lock
+/libpeerconnection.log
+/coverage
+/typings
+
+### Backend Specific ###
+/backend/build
+/backend/.gradle/
+/backend/gradle/
+!gradle/wrapper/gradle-wrapper.jar
+HELP.md
+.gradle
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache
+
+### Testing ###
+testem.log
+/coverage
+
+### Logs ###
+*.log
+
+### Exceptions ###
+# Allow specific build directories for source code
+!**/src/main/**/build/
+!**/src/test/**/build/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
 ### Kotlin ###
 .kotlin
+.kotlin_module
