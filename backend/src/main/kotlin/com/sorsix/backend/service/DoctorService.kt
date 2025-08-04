@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 class DoctorService(
     val doctorRepository: DoctorRepository
 ) {
-    fun getAll() = doctorRepository.findAll()
-    fun getById(id: Long) = doctorRepository.findById(id)
+    fun findAll() = doctorRepository.findAll()
+    fun findById(id: Long) = doctorRepository.findById(id).orElseThrow { IllegalArgumentException("Doctor with id $id not found") }//TODO
     fun save(doctor: Doctor) = doctorRepository.save(doctor)
     fun deleteById(id: Long) = doctorRepository.deleteById(id)
 }
