@@ -1,6 +1,6 @@
 package com.sorsix.backend.web
 
-import com.sorsix.backend.domain.Patient
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.PatientDto
 import com.sorsix.backend.exceptions.PatientNotFoundException
 import com.sorsix.backend.service.PatientService
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/patients")
-@CrossOrigin(origins = ["http://localhost:4200"])
 data class PatientController(
     val patientService: PatientService,
 ) {

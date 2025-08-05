@@ -1,6 +1,6 @@
 package com.sorsix.backend.dto
 
-import com.sorsix.backend.domain.Patient
+import com.sorsix.backend.domain.users.Patient
 
 data class PatientDto(
     val id: Long,

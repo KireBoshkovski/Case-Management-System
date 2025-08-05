@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/cases")
-@CrossOrigin(origins = ["http://localhost:4200"])
 class CaseController(
     val caseService: CaseService
 ) {
@@ -38,7 +37,7 @@ class CaseController(
     @PostMapping
     fun saveCase(case: Case): ResponseEntity<Case> {
         return ResponseEntity.ok(caseService.save(case))
-    }   
+    }
 
     @GetMapping("/{id}")
     fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> {

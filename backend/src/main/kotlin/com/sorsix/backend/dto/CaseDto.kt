@@ -1,7 +1,7 @@
 package com.sorsix.backend.dto
 
 import com.sorsix.backend.domain.Case
-import com.sorsix.backend.domain.Patient
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.domain.enums.CaseStatus
 import java.time.LocalDateTime
 

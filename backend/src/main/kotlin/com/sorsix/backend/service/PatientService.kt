@@ -1,6 +1,6 @@
 package com.sorsix.backend.service
 
-import com.sorsix.backend.domain.Patient
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.PatientDto
 import com.sorsix.backend.dto.toPatientDto
 import com.sorsix.backend.repository.PatientRepository
