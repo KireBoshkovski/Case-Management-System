@@ -2,7 +2,9 @@ package com.sorsix.backend.service
 
 import com.sorsix.backend.domain.MedicalThread
 import com.sorsix.backend.domain.enums.ThreadStatus
+import com.sorsix.backend.exceptions.MedicalThreadNotFoundException
 import com.sorsix.backend.repository.MedicalThreadRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -10,16 +12,26 @@ import java.time.LocalDateTime
 class MedicalThreadService(
     private val threadRepository: MedicalThreadRepository,
     private val caseService: CaseService,
-    private val doctorService: DoctorService
+    private val doctorService: DoctorService,
+    private val anonymizationService: AnonymizationService,
 
-) {
-    fun findAll() = threadRepository.findAll()
-    fun findById(id: Long) = threadRepository.findById(id).orElseThrow(
-        { IllegalArgumentException("Thread with id $id not found") }//TODO
-    )
-    fun save(thread: MedicalThread) = threadRepository.save(thread)
-    fun deleteById(id: Long) = threadRepository.deleteById(id)
+    ) {
+    fun findAll(): List<MedicalThread> =
+        threadRepository.findAll()
 
+    fun findById(id: Long): MedicalThread =
+        threadRepository.findById(id).orElseThrow { MedicalThreadNotFoundException(id) }
+
+    fun findActiveThreads(): List<MedicalThread> =
+        threadRepository.findByStatus(ThreadStatus.ACTIVE)
+
+    fun save(thread: MedicalThread) =
+        threadRepository.save(thread)
+
+    fun deleteById(id: Long) =
+        threadRepository.deleteById(id)
+
+    @Transactional
     fun createThreadFromCase(
         caseId: Long,
         creatingDoctorId: Long,
@@ -29,10 +41,10 @@ class MedicalThreadService(
         val creatingDoctor = doctorService.findById(creatingDoctorId)
         val thread = MedicalThread(
             title = title,
-            anonymizedSymptoms = TODO(),
-            anonymizedPatientInfo = TODO(),
+            anonymizedSymptoms = anonymizationService.anonymizeText(case.description.toString()),//TODO
+            anonymizedPatientInfo = anonymizationService.anonymizeText(case.patient.toString()),//TODO
             originalCase = case,
-            creatingDoctor = case.doctor,
+            creatingDoctor = creatingDoctor,
         )
         return threadRepository.save(thread)
     }
@@ -40,7 +52,6 @@ class MedicalThreadService(
     fun forkThread(
         originalThreadId: Long,
         forkingDoctorId: Long,
-        forkingHospitalId: Long
     ): MedicalThread {
         val originalThread = findById(originalThreadId)
 
@@ -59,9 +70,5 @@ class MedicalThreadService(
 
 
         return threadRepository.save(forkedThread)
-    }
-
-    fun findActiveThreads(): List<MedicalThread> {
-        return threadRepository.findByStatus(ThreadStatus.ACTIVE)
     }
 }

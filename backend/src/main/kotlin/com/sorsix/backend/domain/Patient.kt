@@ -24,12 +24,12 @@ data class Patient(
     val gender: String,
 
     @Column(name = "phone_number", length = 20)
-    val phoneNumber: String?,
+    val phoneNumber: String,
 
     @Column(name = "email", length = 50)
-    val email: String?,
+    val email: String,
 
     @Column(name = "address", columnDefinition = "TEXT")
-    val address: String?,
+    val address: String,
 
     )

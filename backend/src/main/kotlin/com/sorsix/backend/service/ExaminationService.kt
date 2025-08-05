@@ -8,5 +8,8 @@ import org.springframework.stereotype.Service
 class ExaminationService(
     val examinationRepository: ExaminationRepository
 ) {
-    fun save(examination: Examination) = examinationRepository.save(examination)
+
+    fun findAll(): List<Examination> =
+        examinationRepository.findAll()
+    //TODO
 }

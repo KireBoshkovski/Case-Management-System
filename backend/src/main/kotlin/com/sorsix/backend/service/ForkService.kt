@@ -10,15 +10,22 @@ class ForkService(
     val forkRepository: ForkRepository,
     val caseService: CaseService
 ) {
-    fun getAll() = forkRepository.findAll()
-    fun getById(id: Long) = forkRepository.findById(id)
-    fun save(fork: Fork) = forkRepository.save(fork)
-    fun deleteById(id: Long) = forkRepository.deleteById(id)
+    fun findAll(): List<Fork> =
+        forkRepository.findAll()
+
+    fun findById(id: Long) =
+        forkRepository.findById(id)
+
+    fun save(fork: Fork) =
+        forkRepository.save(fork)
+
+    fun deleteById(id: Long) =
+        forkRepository.deleteById(id)
 
     fun createFork(title: String, description: String, caseId: Long): Fork {
-
         val case = caseService.findById(caseId)
         val doctor = case.doctor
+
         return forkRepository.save(Fork(title = title, description = description, origin = case, editor = doctor))
     }
 
@@ -40,5 +47,6 @@ class ForkService(
         return forkRepository.save(updatedFork)
     }
 
-    fun findAllByOriginId(id: Long) = forkRepository.findAllByOriginId(id)
+    fun findAllByOriginId(id: Long): List<Fork> =
+        forkRepository.findAllByOriginId(id)
 }
