@@ -15,41 +15,43 @@ class CaseController(
 ) {
 
     @GetMapping
-    fun getAllCases(): List<CaseDto> {
-        return caseService.getAll().map { it.toCaseDto() }
-    }
+    fun getAllCases(): ResponseEntity<List<CaseDto>> =
+        ResponseEntity.ok(caseService.findAll().map { it.toCaseDto() })
 
-    @GetMapping("/private")
-    fun getAllPrivateCases(): List<Case> {
-        return caseService.getAllPrivate()
-    }
 
     @GetMapping("/public")
-    fun getAllPublicCases(): List<Case> {
-        return caseService.getAllPublic()
-    }
+    fun getAllPublicCases(): ResponseEntity<List<CaseDto>> =
+        ResponseEntity.ok(caseService.findAllPublic().map { it.toCaseDto() })
 
-    @DeleteMapping("/delete/{id}")
+
+    @GetMapping("/private")
+    fun getAllPrivateCases(): ResponseEntity<List<CaseDto>> =
+        ResponseEntity.ok(caseService.findAllPrivate().map { it.toCaseDto() })
+
+
+    @GetMapping("/patient/{id}")
+    fun findAllCasesByPatientId(@PathVariable id: Long): ResponseEntity<List<CaseDto>> =
+        ResponseEntity.ok(caseService.findAllByPatientId(id).map { it.toCaseDto() })
+
+
+    @DeleteMapping("/{id}")
     fun deleteCaseById(@PathVariable id: Long): ResponseEntity<Unit> {
         caseService.deleteById(id)
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping
-    fun saveCase(case: Case): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.save(case))
-    }   
-
     @GetMapping("/{id}")
-    fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.findById(id))
-    }
+    fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.findById(id))
 
-    @PutMapping
-    fun updateCase(case: Case): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.update(case))
-    }
 
-    @GetMapping("/patient/{id}")
-    fun byPatientId(@PathVariable id: Long): List<Case> = caseService.findAllByPatientId(id)
+    @PostMapping
+    fun createCase(@RequestBody case: Case): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.save(case))
+
+
+    @PutMapping("/{id}")
+    fun updateCase(@PathVariable id: Long, @RequestBody case: Case): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.update(case))
+
 }

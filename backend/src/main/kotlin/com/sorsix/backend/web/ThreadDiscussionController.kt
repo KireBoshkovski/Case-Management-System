@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class ThreadDiscussionController(
     private val discussionService: ThreadDiscussionService
 ) {
-
+    //TODO
     //addDiscussion
 
     //getDiscussionsByThread
