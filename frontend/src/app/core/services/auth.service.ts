@@ -25,10 +25,6 @@ export class AuthService {
                     this._isLoggedIn$.next(true);
 
                     localStorage.setItem('access_token', response.accessToken);
-                    localStorage.setItem(
-                        'refresh_token',
-                        response.refreshToken
-                    );
                 })
             );
     }
@@ -43,6 +39,7 @@ export class AuthService {
     logout(): void {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        this._isLoggedIn$.next(false);
     }
 
     getToken(): string | null {

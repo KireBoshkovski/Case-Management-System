@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
@@ -22,8 +27,7 @@ export class Login {
 
     onSubmit() {
         if (this.loginForm.valid) {
-            const LoginRequest = this.loginForm.value;
-            this.authService.signIn(LoginRequest).subscribe({
+            this.authService.signIn(this.loginForm.value).subscribe({
                 next: () => {
                     this.router.navigate(['/cases']);
                 },

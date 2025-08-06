@@ -13,6 +13,7 @@ import { PatientSearch } from './features/patients/components/patient-search/pat
 import { PatientDetails } from './features/patients/components/patient-details/patient-details';
 import { ForkDetails } from './features/forks/components/fork-details/fork-details';
 import { authGuard } from './core/guards/auth-guard';
+import { Logout } from './features/auth/logout/logout';
 
 export const routes: Routes = [
     {
@@ -44,6 +45,7 @@ export const routes: Routes = [
             { path: 'register', component: Register },
             { path: 'forgot-password', component: ForgotPassword },
             { path: 'reset-password', component: ResetPassword },
+            { path: 'logout', component: Logout },
         ],
     },
 ];

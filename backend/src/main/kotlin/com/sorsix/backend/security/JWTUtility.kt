@@ -17,9 +17,6 @@ class JWTUtility {
     @Value("\${app.jwt.expiration}")
     private var jwtExpirationMs: Long = 0
 
-    @Value("\${app.jwt.refresh-expiration}")
-    private var jwtRefreshExpirationMs: Long = 0
-
     private val key: SecretKey by lazy {
         Keys.hmacShaKeyFor(jwtSecret.toByteArray())
     }
@@ -34,18 +31,6 @@ class JWTUtility {
             .claim("role", role.name)
             .setIssuedAt(Date())
             .setExpiration(Date(Date().time + expiration))
-            .signWith(key, SignatureAlgorithm.HS512)
-            .compact()
-    }
-
-    fun generateRefreshToken(userDetails: CustomUserDetails): String {
-        return Jwts.builder()
-            .setSubject(userDetails.username)
-            .claim("userId", userDetails.getId())
-            .claim("role", userDetails.getRole().name)
-            .claim("type", "refresh")
-            .setIssuedAt(Date())
-            .setExpiration(Date(Date().time + jwtRefreshExpirationMs))
             .signWith(key, SignatureAlgorithm.HS512)
             .compact()
     }

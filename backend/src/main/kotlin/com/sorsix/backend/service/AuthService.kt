@@ -1,8 +1,8 @@
 package com.sorsix.backend.service
 
 import com.sorsix.backend.domain.enums.UserRole
-import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.domain.users.Doctor
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.JwtResponse
 import com.sorsix.backend.dto.LoginRequest
 import com.sorsix.backend.dto.SignUpRequest
@@ -11,7 +11,6 @@ import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.security.JWTUtility
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -27,14 +26,11 @@ class AuthService(
             UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password)
         )
 
-        SecurityContextHolder.getContext().authentication = authentication
         val userDetails = authentication.principal as CustomUserDetails
         val jwt = jwtUtility.generateJwtToken(userDetails)
-        val refreshToken = jwtUtility.generateRefreshToken(userDetails)
 
         return JwtResponse(
             accessToken = jwt,
-            refreshToken = refreshToken,
             id = userDetails.getId(),
             email = userDetails.username,
             firstName = userDetails.getFirstName(),

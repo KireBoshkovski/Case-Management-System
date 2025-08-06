@@ -21,4 +21,3 @@ app:
   jwt:
     secret: vG2rIzHz5FeXtwgxwK6r9IhXq98k3yQh6rriIS8V0bwHOiQAebgo6PEqelrWypjh
     expiration: 86400000 # 24 hours in milliseconds
-    refresh-expiration: 604800000 # 7 days in milliseconds
