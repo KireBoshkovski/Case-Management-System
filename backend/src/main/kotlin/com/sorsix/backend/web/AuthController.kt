@@ -2,7 +2,7 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.dto.JwtResponse
 import com.sorsix.backend.dto.LoginRequest
-import com.sorsix.backend.dto.SignupRequest
+import com.sorsix.backend.dto.SignUpRequest
 import com.sorsix.backend.service.AuthService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
@@ -23,7 +23,7 @@ class AuthController(
         ResponseEntity.ok(authService.signIn(loginRequest))
 
     @PostMapping("/signup")
-    fun registerUser(@Valid @RequestBody signUpRequest: SignupRequest): ResponseEntity<String> {
+    fun registerUser(@Valid @RequestBody signUpRequest: SignUpRequest): ResponseEntity<String> {
         authService.signUp(signUpRequest)
         return ResponseEntity.ok("User registered successfully!")
     }

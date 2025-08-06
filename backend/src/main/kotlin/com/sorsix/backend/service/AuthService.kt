@@ -5,7 +5,7 @@ import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.domain.users.Doctor
 import com.sorsix.backend.dto.JwtResponse
 import com.sorsix.backend.dto.LoginRequest
-import com.sorsix.backend.dto.SignupRequest
+import com.sorsix.backend.dto.SignUpRequest
 import com.sorsix.backend.repository.UserRepository
 import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.security.JWTUtility
@@ -43,7 +43,7 @@ class AuthService(
         )
     }
 
-    fun signUp(signUpRequest: SignupRequest) {
+    fun signUp(signUpRequest: SignUpRequest) {
 
         if (userRepository.existsByEmail(signUpRequest.email)) {
             throw IllegalArgumentException("Email is already in use!")

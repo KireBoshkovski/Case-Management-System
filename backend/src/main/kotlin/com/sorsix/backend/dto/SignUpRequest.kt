@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 import java.time.LocalDate
 
-data class SignupRequest(
+data class SignUpRequest(
     @field:NotBlank
     @field:Size(max = 50)
     @field:Email
