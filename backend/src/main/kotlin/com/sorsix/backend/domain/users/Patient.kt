@@ -10,12 +10,12 @@ import java.time.LocalDate
 @Entity
 @Table(name = "patients")
 @PrimaryKeyJoinColumn(name = "patient_id")
-class Patient(
-    email: String,
-    password: String,
-    firstName: String,
-    lastName: String,
-    phoneNumber: String? = null,
+data class Patient(
+    override val email: String,
+    override val password: String,
+    override val firstName: String,
+    override val lastName: String,
+    override val phoneNumber: String? = null,
 
     @Column(name = "date_of_birth", nullable = false)
     val dateOfBirth: LocalDate,

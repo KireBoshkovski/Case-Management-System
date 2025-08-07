@@ -15,17 +15,17 @@ class CaseController(
 
     @GetMapping
     fun getAllCases(): List<CaseDto> {
-        return caseService.getAll().map { it.toCaseDto() }
+        return caseService.findAll().map { it.toCaseDto() }
     }
 
     @GetMapping("/private")
     fun getAllPrivateCases(): List<Case> {
-        return caseService.getAllPrivate()
+        return caseService.findAllPrivate()
     }
 
     @GetMapping("/public")
     fun getAllPublicCases(): List<Case> {
-        return caseService.getAllPublic()
+        return caseService.findAllPublic()
     }
 
     @DeleteMapping("/delete/{id}")
@@ -34,21 +34,18 @@ class CaseController(
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping
-    fun saveCase(case: Case): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.save(case))
-    }
-
     @GetMapping("/{id}")
-    fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.findById(id))
-    }
+    fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.findById(id))
 
-    @PutMapping
-    fun updateCase(case: Case): ResponseEntity<Case> {
-        return ResponseEntity.ok(caseService.update(case))
-    }
 
-    @GetMapping("/patient/{id}")
-    fun byPatientId(@PathVariable id: Long): List<Case> = caseService.findAllByPatientId(id)
+    @PostMapping
+    fun createCase(@RequestBody case: Case): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.save(case))
+
+
+    @PutMapping("/{id}")
+    fun updateCase(@PathVariable id: Long, @RequestBody case: Case): ResponseEntity<Case> =
+        ResponseEntity.ok(caseService.update(case))
+
 }

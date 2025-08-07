@@ -2,7 +2,6 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.PatientDto
-import com.sorsix.backend.exceptions.PatientNotFoundException
 import com.sorsix.backend.service.PatientService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -20,7 +19,5 @@ data class PatientController(
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): ResponseEntity<Patient> =
-        ResponseEntity.ok(patientService.findById(id).orElseThrow {
-            PatientNotFoundException(id)
-        })
+        ResponseEntity.ok(patientService.findById(id))
 }
