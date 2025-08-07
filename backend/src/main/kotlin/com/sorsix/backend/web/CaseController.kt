@@ -9,32 +9,26 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/cases")
-@CrossOrigin(origins = ["http://localhost:4200"])
 class CaseController(
     val caseService: CaseService
 ) {
 
     @GetMapping
-    fun getAllCases(): ResponseEntity<List<CaseDto>> =
-        ResponseEntity.ok(caseService.findAll().map { it.toCaseDto() })
-
-
-    @GetMapping("/public")
-    fun getAllPublicCases(): ResponseEntity<List<CaseDto>> =
-        ResponseEntity.ok(caseService.findAllPublic().map { it.toCaseDto() })
-
+    fun getAllCases(): List<CaseDto> {
+        return caseService.findAll().map { it.toCaseDto() }
+    }
 
     @GetMapping("/private")
-    fun getAllPrivateCases(): ResponseEntity<List<CaseDto>> =
-        ResponseEntity.ok(caseService.findAllPrivate().map { it.toCaseDto() })
+    fun getAllPrivateCases(): List<Case> {
+        return caseService.findAllPrivate()
+    }
 
+    @GetMapping("/public")
+    fun getAllPublicCases(): List<Case> {
+        return caseService.findAllPublic()
+    }
 
-    @GetMapping("/patient/{id}")
-    fun findAllCasesByPatientId(@PathVariable id: Long): ResponseEntity<List<CaseDto>> =
-        ResponseEntity.ok(caseService.findAllByPatientId(id).map { it.toCaseDto() })
-
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     fun deleteCaseById(@PathVariable id: Long): ResponseEntity<Unit> {
         caseService.deleteById(id)
         return ResponseEntity.ok().build()

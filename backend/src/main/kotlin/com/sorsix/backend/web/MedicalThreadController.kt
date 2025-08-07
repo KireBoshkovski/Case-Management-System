@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/threads")
-@CrossOrigin(origins = ["http://localhost:4200"])
 class MedicalThreadController(
     val medicalThreadService: MedicalThreadService
 ) {

@@ -1,6 +1,6 @@
 package com.sorsix.backend.service
 
-import com.sorsix.backend.domain.Patient
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.PatientDto
 import com.sorsix.backend.dto.toPatientDto
 import com.sorsix.backend.exceptions.PatientNotFoundException
@@ -16,8 +16,8 @@ class PatientService(
     fun findAll(): List<PatientDto> =
         patientRepository.findAll().map { it.toPatientDto() }
 
-    fun findById(id: Long): PatientDto? =
-        patientRepository.findByIdOrNull(id)?.toPatientDto() ?: throw PatientNotFoundException(id)
+    fun findById(id: Long): Patient =
+        patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
 
     @Transactional
     fun save(patient: Patient) = patientRepository.save(patient)
@@ -30,14 +30,15 @@ class PatientService(
 
     @Transactional
     fun update(id: Long, patientUpdate: Patient): Patient {
-        val existing = patientRepository.findByIdOrNull(id)?: throw PatientNotFoundException(id)
+        val existing = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
         val updated = existing.copy(
             firstName = patientUpdate.firstName,
             lastName = patientUpdate.lastName,
             email = patientUpdate.email,
             phoneNumber = patientUpdate.phoneNumber,
-            address = patientUpdate.address,
             dateOfBirth = patientUpdate.dateOfBirth,
+            gender = patientUpdate.gender,
+            address = patientUpdate.address,
         )
         return patientRepository.save(updated)
     }

@@ -1,6 +1,7 @@
 package com.sorsix.backend.domain
 
 import com.sorsix.backend.domain.enums.ThreadStatus
+import com.sorsix.backend.domain.users.Doctor
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

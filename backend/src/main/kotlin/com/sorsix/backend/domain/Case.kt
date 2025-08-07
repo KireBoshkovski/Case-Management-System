@@ -1,6 +1,8 @@
 package com.sorsix.backend.domain
 
 import com.sorsix.backend.domain.enums.CaseStatus
+import com.sorsix.backend.domain.users.Doctor
+import com.sorsix.backend.domain.users.Patient
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

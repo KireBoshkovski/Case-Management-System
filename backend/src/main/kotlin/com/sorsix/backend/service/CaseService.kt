@@ -28,10 +28,6 @@ class CaseService(
     fun findById(id: Long): Case =
         caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
 
-    fun findByIdWithDetails(id: Long): Case =
-        caseRepository.findByIdWithDetails(id) ?: throw CaseNotFoundException(id)
-
-
     @Transactional
     fun save(case: Case): Case =
         caseRepository.save(case)

@@ -2,7 +2,7 @@ package com.sorsix.backend.dto
 
 import com.sorsix.backend.domain.Fork
 
-data class ForkDto (
+data class ForkDto(
     val id: Long,
     val title: String,
 )

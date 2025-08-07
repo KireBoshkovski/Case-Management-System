@@ -1,27 +1,23 @@
 package com.sorsix.backend.web
 
+import com.sorsix.backend.domain.users.Patient
 import com.sorsix.backend.dto.PatientDto
 import com.sorsix.backend.service.PatientService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/patients")
-@CrossOrigin(origins = ["http://localhost:4200"])
-class PatientController(
+data class PatientController(
     val patientService: PatientService,
 ) {
     @GetMapping
-    fun findAll(): ResponseEntity<List<PatientDto>> =
-        ResponseEntity.ok(patientService.findAll())
+    fun findAll(): List<PatientDto> = patientService.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: Long): ResponseEntity<PatientDto> =
+    fun findById(@PathVariable id: Long): ResponseEntity<Patient> =
         ResponseEntity.ok(patientService.findById(id))
-
-    @DeleteMapping("/{id}")
-    fun deleteById(@PathVariable id: Long): ResponseEntity<Unit> {
-        patientService.deleteById(id)
-        return ResponseEntity.ok().build()
-    }
 }

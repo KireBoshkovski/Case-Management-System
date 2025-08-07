@@ -1,5 +1,6 @@
 package com.sorsix.backend.domain
 
+import com.sorsix.backend.domain.users.Doctor
 import jakarta.persistence.*
 
 @Entity
