@@ -5,32 +5,36 @@ import com.sorsix.backend.domain.enums.CaseStatus
 import com.sorsix.backend.exceptions.CaseNotFoundException
 import com.sorsix.backend.repository.CaseRepository
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+
+enum class Visibility { ALL, PUBLIC, PRIVATE }
 
 @Service
 class CaseService(
     val caseRepository: CaseRepository
 ) {
-    fun findAll(): List<Case> =
-        caseRepository.findAllWithDetails()
+    fun getCases(
+        visibility: Visibility,
+        patientId: Long?,
+        pageable: Pageable
+    ): Page<Case> {
+        if (patientId != null) {
+            return caseRepository.findAllByPatientId(patientId, pageable)
+        }
+        return when (visibility) {
+            Visibility.PUBLIC -> caseRepository.findAllByPublicTrue(pageable)
+            Visibility.PRIVATE -> caseRepository.findAllByPublicFalse(pageable)
+            Visibility.ALL -> caseRepository.findAll(pageable)
+        }
+    }
 
-    fun findAllByPatientId(patientId: Long) =
-        caseRepository.findAllByPatientId(patientId)
-
-    fun findAllPrivate(): List<Case> =
-        caseRepository.findAllByPublicFalse()
-
-    fun findAllPublic(): List<Case> =
-        caseRepository.findAllByPublicTrue()
 
     fun findById(id: Long): Case =
         caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
-
-    fun findByIdWithDetails(id: Long): Case =
-        caseRepository.findByIdWithDetails(id) ?: throw CaseNotFoundException(id)
-
 
     @Transactional
     fun save(case: Case): Case =

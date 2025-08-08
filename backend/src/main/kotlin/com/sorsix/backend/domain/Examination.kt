@@ -23,13 +23,14 @@ data class Examination(
     @Column(name = "notes", columnDefinition = "TEXT")
     val notes: String?,
 
-    @Column(name = "vital_signs", columnDefinition = "JSON")
+    @Column(name = "vital_signs", columnDefinition = "TEXT")//JSON
     val vitalSigns: String?,
 
     @Column(name = "examination_date", nullable = false)
     val examinationDate: LocalDateTime,
 
-    @OneToOne
+//    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "doctor_id")
     val doctor: Doctor,
 )

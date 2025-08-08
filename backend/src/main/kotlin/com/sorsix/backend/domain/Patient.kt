@@ -31,5 +31,5 @@ data class Patient(
 
     @Column(name = "address", columnDefinition = "TEXT")
     val address: String,
-
+    //TODO Patient alergies/info from case goes here
     )
