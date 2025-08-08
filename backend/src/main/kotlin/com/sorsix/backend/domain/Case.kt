@@ -14,7 +14,7 @@ data class Case(
     @Column(name = "case_id")
     val id: Long,
 
-    @Column(name = "is_public", nullable = false)
+    @Column(name = "is_public", nullable = false, updatable = false)
     val public: Boolean,
 
     @Column(name = "blood_type", length = 5)

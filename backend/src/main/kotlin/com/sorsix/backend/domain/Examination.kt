@@ -12,6 +12,9 @@ data class Examination(
     @Column(name = "examination_id")
     val id: Long,
 
+    @Column(name = "is_public", nullable = false, updatable = false)
+    val public: Boolean,
+
     @Column(name = "examination_type", nullable = false, length = 100)
     val examinationType: String,
 
@@ -30,7 +33,7 @@ data class Examination(
     @Column(name = "examination_date", nullable = false)
     val examinationDate: LocalDateTime,
 
-    @OneToOne
-    @JoinColumn(name = "doctor_id")
+    @ManyToOne
+    @JoinColumn(name = "doctor_id", unique = false)
     val doctor: Doctor,
 )

@@ -54,14 +54,14 @@ class CaseService(
         caseRepository.deleteById(id)
     }
 
+    /*
+    * Function should take a case object after the doctor approved changes from the frontend page.
+    * Meaning this function should persist the new case.
+    * The way it's persisting
+    * */
     @Transactional
-    fun updateStatus(id: Long, status: CaseStatus): Case {
-        val case = findById(id)
-        val updated = case.copy(
-            status = status,
-            updatedAt = LocalDateTime.now()
-        )
-        return caseRepository.save(updated)
+    fun publishCase(case: Case) {
+
     }
 
 }

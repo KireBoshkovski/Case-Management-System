@@ -4,13 +4,15 @@ import com.sorsix.backend.domain.Case
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.dto.toCaseDto
 import com.sorsix.backend.service.CaseService
+import com.sorsix.backend.service.OpenAIService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/cases")
 class CaseController(
-    val caseService: CaseService
+    val caseService: CaseService,
+    val openAIService: OpenAIService
 ) {
 
     @GetMapping
@@ -48,4 +50,12 @@ class CaseController(
     fun updateCase(@PathVariable id: Long, @RequestBody case: Case): ResponseEntity<Case> =
         ResponseEntity.ok(caseService.update(case))
 
-}
+    @GetMapping("/censor/{id}")
+    fun censor(@PathVariable id: Long): ResponseEntity<Case> = ResponseEntity.ok(openAIService.censor(id))
+
+    @PostMapping("/publish")
+    fun publishCase(@RequestBody case: Case): ResponseEntity<String> {
+        this.caseService.publishCase(case)
+        return ResponseEntity.ok().build()
+    }
+}   
