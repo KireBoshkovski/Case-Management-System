@@ -1,10 +1,11 @@
-import { Component, Input } from '@angular/core';
-import { ColumnDef } from '../../../models/columnDef';
-import { RouterLink } from '@angular/router';
+import {Component, Input} from '@angular/core';
+import {ColumnDef} from '../../../models/columnDef';
+import {RouterLink} from '@angular/router';
 
 @Component({
     selector: 'list-item',
     imports: [RouterLink],
+    standalone: true,
     templateUrl: './list-item.html',
     styleUrl: './list-item.css',
 })

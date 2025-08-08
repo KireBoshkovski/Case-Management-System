@@ -25,6 +25,7 @@ export const routes: Routes = [
                 component: CaseSearch,
                 data: { public: true },
             },
+
             { path: 'cases/:id', component: CaseDetail },
             // Patients
             { path: 'patients', component: PatientSearch },
