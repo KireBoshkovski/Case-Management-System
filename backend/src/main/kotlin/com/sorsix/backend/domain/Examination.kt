@@ -12,8 +12,8 @@ data class Examination(
     @Column(name = "examination_id")
     val id: Long,
 
-    @Column(name = "is_public", nullable = false, updatable = false)
-    val public: Boolean,
+//    @Column(name = "is_public", nullable = false, updatable = false)
+//    val public: Boolean,
 
     @Column(name = "examination_type", nullable = false, length = 100)
     val examinationType: String,

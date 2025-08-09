@@ -59,7 +59,6 @@ class OpenAIService(
             allergies = censoredResponse.allergies,
             description = censoredResponse.description,
             treatmentPlan = censoredResponse.treatmentPlan,
-            public = true,
             examinations = originalCase.examinations.mapIndexed { index, examination ->
                 val censoredExam = censoredResponse.examinations.getOrNull(index)
                 examination.copy(

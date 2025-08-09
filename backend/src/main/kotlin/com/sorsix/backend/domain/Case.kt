@@ -14,9 +14,6 @@ data class Case(
     @Column(name = "case_id")
     val id: Long,
 
-    @Column(name = "is_public", nullable = false, updatable = false)
-    val public: Boolean,
-
     @Column(name = "blood_type", length = 5)
     val bloodType: String?,
 
@@ -51,4 +48,7 @@ data class Case(
     @JoinColumn(name = "case_id")
     val examinations: MutableList<Examination> = mutableListOf(),
 
-    )
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "published_case_id")
+    val publishedCase: PublicCase?,
+)

@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 interface CaseRepository : JpaRepository<Case, Long> {
-    fun findAllByPublicTrue(): List<Case>
-    fun findAllByPublicFalse(): List<Case>
+//    fun findAllByPublicTrue(): List<Case>
+//    fun findAllByPublicFalse(): List<Case>
 
     @Query(
         """

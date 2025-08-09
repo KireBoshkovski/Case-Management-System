@@ -8,7 +8,6 @@ import java.time.LocalDateTime
 
 data class CaseDto(
     val id: Long,
-    val public: Boolean,
     val bloodType: String?,
     val allergies: String?,
     val description: String?,
@@ -23,7 +22,6 @@ data class CaseDto(
 
 fun Case.toCaseDto() = CaseDto(
     id = this.id,
-    public = this.public,
     bloodType = this.bloodType,
     allergies = this.allergies,
     description = this.description,

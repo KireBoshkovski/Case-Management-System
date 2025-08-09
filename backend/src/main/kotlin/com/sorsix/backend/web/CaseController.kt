@@ -1,6 +1,7 @@
 package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.Case
+import com.sorsix.backend.domain.PublicCase
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.dto.toCaseDto
 import com.sorsix.backend.service.CaseService
@@ -20,13 +21,13 @@ class CaseController(
         return caseService.findAll().map { it.toCaseDto() }
     }
 
-    @GetMapping("/private")
-    fun getAllPrivateCases(): List<Case> {
-        return caseService.findAllPrivate()
-    }
+//    @GetMapping("/private")
+//    fun getAllPrivateCases(): List<Case> {
+//        return caseService.findAllPrivate()
+//    }
 
     @GetMapping("/public")
-    fun getAllPublicCases(): List<Case> {
+    fun getAllPublicCases(): List<PublicCase> {
         return caseService.findAllPublic()
     }
 
@@ -46,15 +47,15 @@ class CaseController(
         ResponseEntity.ok(caseService.save(case))
 
 
-    @PutMapping("/{id}")
-    fun updateCase(@PathVariable id: Long, @RequestBody case: Case): ResponseEntity<Case> =
-        ResponseEntity.ok(caseService.update(case))
+//    @PutMapping("/{id}")
+//    fun updateCase(@PathVariable id: Long, @RequestBody case: Case): ResponseEntity<Case> =
+//        ResponseEntity.ok(caseService.update(case))
 
     @GetMapping("/censor/{id}")
     fun censor(@PathVariable id: Long): ResponseEntity<Case> = ResponseEntity.ok(openAIService.censor(id))
 
-    @PostMapping("/publish")
-    fun publishCase(@RequestBody case: Case): ResponseEntity<String> {
+    @PostMapping("/publish/{id}")
+    fun publishCase(@PathVariable id: Long, @RequestBody case: PublicCase): ResponseEntity<String> {
         this.caseService.publishCase(case)
         return ResponseEntity.ok().build()
     }

@@ -14,12 +14,13 @@ import { PatientDetails } from './features/patients/components/patient-details/p
 import { ForkDetails } from './features/forks/components/fork-details/fork-details';
 import { authGuard } from './core/guards/auth-guard';
 import { Logout } from './features/auth/logout/logout';
+import { EditCase } from './features/cases/components/edit-case/edit-case';
 
 export const routes: Routes = [
     {
         path: '',
         component: MainLayout,
-        canActivate: [authGuard],
+        //        canActivate: [authGuard],
         children: [
             // Cases
             { path: 'cases', component: CaseSearch },
@@ -29,6 +30,7 @@ export const routes: Routes = [
                 data: { public: true },
             },
             { path: 'cases/:id', component: CaseDetail },
+            { path: 'cases/:id/censor', component: EditCase },
             // Patients
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },

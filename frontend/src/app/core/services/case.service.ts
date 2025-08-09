@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Case } from '../../models/case.model';
+import { PublicCase } from '../../models/public-case';
 
 @Injectable({
     providedIn: 'root',
@@ -26,5 +27,16 @@ export class CaseService {
 
     getCasesByPatientId(id: number): Observable<Case[]> {
         return this.http.get<Case[]>(`${this.apiUrl}/cases/patient/${id}`);
+    }
+
+    censorCase(id: number): Observable<Case> {
+        return this.http.get<Case>(`${this.apiUrl}/cases/censor/${id}`);
+    }
+
+    publishCase(id: number, publicCase: PublicCase): Observable<void> {
+        return this.http.post<void>(
+            `${this.apiUrl}/cases/publish/${id}`,
+            publicCase,
+        );
     }
 }
