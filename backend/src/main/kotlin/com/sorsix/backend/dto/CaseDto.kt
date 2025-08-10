@@ -1,9 +1,7 @@
 package com.sorsix.backend.dto
 
 import com.sorsix.backend.domain.Case
-import com.sorsix.backend.domain.Examination
 import com.sorsix.backend.domain.enums.CaseStatus
-import com.sorsix.backend.domain.users.Patient
 import java.time.LocalDateTime
 
 data class CaseDto(
@@ -13,11 +11,11 @@ data class CaseDto(
     val description: String?,
     val treatmentPlan: String?,
     val status: CaseStatus,
-    val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime,
-    val patient: Patient,
+    val createdAt: LocalDateTime?,
+    val updatedAt: LocalDateTime?,
+    val patientId: Long,
     val doctorId: Long,
-    val examinations: List<Examination>
+    val examinationsIds: List<Long>
 )
 
 fun Case.toCaseDto() = CaseDto(
@@ -29,8 +27,8 @@ fun Case.toCaseDto() = CaseDto(
     status = this.status,
     createdAt = this.createdAt,
     updatedAt = this.updatedAt,
-    patient = this.patient,
+    patientId = this.patient.id,
     doctorId = this.doctor.id,
-    examinations = this.examinations
+    examinationsIds = this.examinations.map { it.id }
 )
 

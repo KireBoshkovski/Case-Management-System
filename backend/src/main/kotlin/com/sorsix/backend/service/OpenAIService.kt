@@ -3,8 +3,8 @@ package com.sorsix.backend.service
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.sorsix.backend.domain.Case
-import com.sorsix.backend.dto.CensoredCaseDto
-import com.sorsix.backend.dto.CensoredExaminationDto
+import com.sorsix.backend.dto.nlp.CensoredCaseDto
+import com.sorsix.backend.dto.nlp.CensoredExaminationDto
 import org.springframework.ai.chat.messages.UserMessage
 import org.springframework.ai.chat.prompt.Prompt
 import org.springframework.ai.openai.OpenAiChatModel

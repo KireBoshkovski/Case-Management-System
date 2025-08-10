@@ -1,4 +1,4 @@
-package com.sorsix.backend.dto
+package com.sorsix.backend.dto.nlp
 
 data class CensoredCaseDto(
     val description: String?,

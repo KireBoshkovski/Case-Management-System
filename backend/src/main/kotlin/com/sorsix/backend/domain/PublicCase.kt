@@ -30,10 +30,10 @@ class PublicCase(
     val patientGender: String?,
 
     @Column(name = "created_at", nullable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    val createdAt: LocalDateTime,
 
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val updatedAt: LocalDateTime,
 
     @Column(name = "published_at")
     val publishedAt: LocalDateTime = LocalDateTime.now(),

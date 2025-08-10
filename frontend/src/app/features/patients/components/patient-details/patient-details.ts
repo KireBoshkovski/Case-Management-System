@@ -54,13 +54,13 @@ export class PatientDetails implements OnInit {
             },
         });
 
-        this.caseService.getCasesByPatientId(patientId).subscribe({
-            next: (cases) => {
-                this.cases = cases;
-            },
-            error: (err) => {
-                console.error('Error fetching cases for patient:', err);
-            },
-        });
+        //        this.caseService.getCasesByPatientId(patientId).subscribe({
+        //          next: (cases) => {
+        //            this.cases = cases;
+        //      },
+        //    error: (err) => {
+        //      console.error('Error fetching cases for patient:', err);
+        //},
+        // });
     }
 }

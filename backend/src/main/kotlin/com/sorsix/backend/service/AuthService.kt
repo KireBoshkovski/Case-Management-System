@@ -3,9 +3,9 @@ package com.sorsix.backend.service
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.domain.users.Doctor
 import com.sorsix.backend.domain.users.Patient
-import com.sorsix.backend.dto.JwtResponse
-import com.sorsix.backend.dto.LoginRequest
-import com.sorsix.backend.dto.SignUpRequest
+import com.sorsix.backend.dto.security.JwtResponse
+import com.sorsix.backend.dto.security.LoginRequest
+import com.sorsix.backend.dto.security.SignUpRequest
 import com.sorsix.backend.repository.UserRepository
 import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.security.JWTUtility

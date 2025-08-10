@@ -1,8 +1,8 @@
 package com.sorsix.backend.web
 
-import com.sorsix.backend.dto.JwtResponse
-import com.sorsix.backend.dto.LoginRequest
-import com.sorsix.backend.dto.SignUpRequest
+import com.sorsix.backend.dto.security.JwtResponse
+import com.sorsix.backend.dto.security.LoginRequest
+import com.sorsix.backend.dto.security.SignUpRequest
 import com.sorsix.backend.service.AuthService
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity

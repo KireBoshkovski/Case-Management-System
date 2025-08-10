@@ -1,4 +1,4 @@
-package com.sorsix.backend.dto
+package com.sorsix.backend.dto.security
 
 import com.sorsix.backend.domain.enums.UserRole
 import jakarta.validation.constraints.Email

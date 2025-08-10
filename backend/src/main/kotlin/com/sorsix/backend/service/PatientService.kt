@@ -23,12 +23,6 @@ class PatientService(
     fun save(patient: Patient) = patientRepository.save(patient)
 
     @Transactional
-    fun deleteById(id: Long) {
-        if (!patientRepository.existsById(id)) throw PatientNotFoundException(id)
-        return patientRepository.deleteById(id)
-    }
-
-    @Transactional
     fun update(id: Long, patientUpdate: Patient): Patient {
         val existing = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
         val updated = existing.copy(
@@ -42,5 +36,4 @@ class PatientService(
         )
         return patientRepository.save(updated)
     }
-
 }

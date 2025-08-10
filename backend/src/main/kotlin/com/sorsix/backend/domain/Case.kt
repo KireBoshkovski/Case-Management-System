@@ -31,10 +31,10 @@ data class Case(
     val status: CaseStatus = CaseStatus.ACTIVE,
 
     @Column(name = "created_at", nullable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    var createdAt: LocalDateTime = LocalDateTime.now(),
 
     @Column(name = "updated_at", nullable = false)
-    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    var updatedAt: LocalDateTime = LocalDateTime.now(),
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
@@ -50,5 +50,10 @@ data class Case(
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "published_case_id")
-    val publishedCase: PublicCase?,
-)
+    val publishedCase: PublicCase? = null,
+) {
+    @PreUpdate
+    fun onUpdate() {
+        updatedAt = LocalDateTime.now()
+    }
+}

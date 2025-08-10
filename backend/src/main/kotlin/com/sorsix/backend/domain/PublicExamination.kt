@@ -34,7 +34,7 @@ data class PublicExamination(
     val vitalSigns: String?,
 
     @Column(name = "examination_date")
-    val examinationDate: LocalDateTime?,
+    val examinationDate: LocalDateTime,
 
     @Column(name = "examining_doctor_specialty", length = 100)
     val examiningDoctorSpecialty: String?,

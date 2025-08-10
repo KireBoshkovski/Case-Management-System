@@ -14,6 +14,5 @@ class UserService(val userRepository: UserRepository) : UserDetailsService {
             ?: throw UsernameNotFoundException("User not found with email: $username")
 
         return CustomUserDetails(user)
-
     }
 }

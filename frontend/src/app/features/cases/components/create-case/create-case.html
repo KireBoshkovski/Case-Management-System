@@ -1,0 +1,28 @@
+<h2>Create New Case</h2>
+    <form [formGroup]="caseForm" (ngSubmit)="onSubmit()">
+      <label>Blood Type:</label>
+      <input formControlName="bloodType" />
+
+      <label>Allergies:</label>
+      <textarea formControlName="allergies"></textarea>
+
+      <label>Description:</label>
+      <textarea formControlName="description"></textarea>
+
+      <label>Treatment Plan:</label>
+      <textarea formControlName="treatmentPlan"></textarea>
+
+      <label>Status:</label>
+      <select formControlName="status">
+        <option value="ACTIVE">Active</option>
+        <option value="CLOSED">Closed</option>
+      </select>
+
+      <label>Patient ID:</label>
+      <input type="number" formControlName="patientId" />
+
+      <label>Doctor ID:</label>
+      <input type="number" formControlName="doctorId" />
+
+      <button type="submit" [disabled]="caseForm.invalid">Create Case</button>
+    </form>

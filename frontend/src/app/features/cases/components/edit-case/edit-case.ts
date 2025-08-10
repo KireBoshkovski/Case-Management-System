@@ -68,7 +68,7 @@ export class EditCase implements OnInit {
 
     initForm(caseData: Case) {
         // Calculate patient age range and gender from original case
-        const patientAgeRange = this.originalCase?.patient?.dateOfBirth
+        const patientAgeRange = this.originalCase?.patientId?
             ? this.calculateAgeRange(this.originalCase.patient.dateOfBirth)
             : '';
         const patientGender = this.originalCase?.patient?.gender || '';
@@ -158,16 +158,19 @@ export class EditCase implements OnInit {
             examinations: this.createPublicExaminations(),
         };
 
-        this.caseService.publishCase(this.originalCase.id, publicCase).subscribe({
-            next: (response) => {
-                this.router.navigate(['/cases/public']);
-            },
-            error: (error) => {
-                console.error('Publishing failed:', error);
-                this.errorMessage = 'Failed to publish case. Please try again.';
-                this.saving = false;
-            },
-        });
+        this.caseService
+            .publishCase(this.originalCase.id!, publicCase)
+            .subscribe({
+                next: (response) => {
+                    this.router.navigate(['/cases/public']);
+                },
+                error: (error) => {
+                    console.error('Publishing failed:', error);
+                    this.errorMessage =
+                        'Failed to publish case. Please try again.';
+                    this.saving = false;
+                },
+            });
     }
 
     private createPublicExaminations(): PublicExamination[] {

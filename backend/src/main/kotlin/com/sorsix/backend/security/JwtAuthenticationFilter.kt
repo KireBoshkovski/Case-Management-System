@@ -37,7 +37,7 @@ class JwtAuthenticationFilter(
             }
 
         } catch (e: Exception) {
-            println(e.message)
+            println("JwtAuthenticationFilter caught exception: " + e.message)
         }
 
         filterChain.doFilter(request, response)

@@ -25,18 +25,18 @@ export class CaseService {
         return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
     }
 
-    getCasesByPatientId(id: number): Observable<Case[]> {
-        return this.http.get<Case[]>(`${this.apiUrl}/cases/patient/${id}`);
-    }
-
     censorCase(id: number): Observable<Case> {
         return this.http.get<Case>(`${this.apiUrl}/cases/censor/${id}`);
     }
 
-    publishCase(id: number, publicCase: PublicCase): Observable<void> {
-        return this.http.post<void>(
+    publishCase(id: number, publicCase: PublicCase): Observable<PublicCase> {
+        return this.http.post<PublicCase>(
             `${this.apiUrl}/cases/publish/${id}`,
             publicCase,
         );
+    }
+
+    createCase(newCase: Case): Observable<Case> {
+        return this.http.post<Case>(`${this.apiUrl}/cases`, newCase);
     }
 }
