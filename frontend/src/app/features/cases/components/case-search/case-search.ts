@@ -1,12 +1,13 @@
 import { OnInit, Component, inject } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
-import { Case } from '../../../../models/case.model';
+import { Case } from '../../../../models/cases/case.model';
 import { ActivatedRoute } from '@angular/router';
 import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { PatientDetailsModel } from '../../../../models/patient-details.model';
 import { Pagination } from '../../../../shared/components/pagination/pagination';
+import { CaseDto } from '../../../../models/cases/case-dto.model';
 
 @Component({
     selector: 'case-search',
@@ -15,17 +16,17 @@ import { Pagination } from '../../../../shared/components/pagination/pagination'
     styleUrl: './case-search.css',
 })
 export class CaseSearch implements OnInit {
-    cases: Case[] = [];
+    service = inject(CaseService);
+    route = inject(ActivatedRoute);
 
-    caseColumns: ColumnDef<Case>[] = [
+    cases: CaseDto[] = [];
+
+    caseColumns: ColumnDef<CaseDto>[] = [
+        { header: 'Case ID', field: 'id' },
         {
             header: 'Patient',
-            field: 'patient',
-            formatter: (patient: PatientDetailsModel) =>
-                `${patient.firstName} ${patient.lastName}`,
-            idField: 'id',
+            field: 'patientId',
         },
-        { header: 'Case ID', field: 'id' },
         { header: 'Status', field: 'status' },
         {
             header: 'Creation Date',
@@ -39,32 +40,15 @@ export class CaseSearch implements OnInit {
         },
     ];
 
-    service = inject(CaseService);
-    route = inject(ActivatedRoute);
-
-    ngOnInit(): void {
-        const isPublic: boolean = this.route.snapshot.data['public'] || false;
-
-        console.log('Loading Case Search');
-
-        if (isPublic) {
-            this.service.getPublicCases().subscribe({
-                next: (caseData) => {
-                    this.cases = caseData;
-                },
-                error: (err) => {
-                    console.error('Error fetching public cases:', err);
-                },
-            });
-        } else {
-            this.service.getCases().subscribe({
-                next: (caseData) => {
-                    this.cases = caseData;
-                },
-                error: (err) => {
-                    console.error('Error fetching cases:', err);
-                },
-            });
-        }
+    ngOnInit() {
+        this.service.getCases().subscribe({
+            next: (caseData) => {
+                console.log('Fetched cases:', caseData);
+                this.cases = caseData;
+            },
+            error: (err) => {
+                console.error('Error fetching cases:', err);
+            },
+        });
     }
 }

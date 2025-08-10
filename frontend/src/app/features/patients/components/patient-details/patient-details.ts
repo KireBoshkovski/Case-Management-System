@@ -3,7 +3,7 @@ import { PatientsService } from '../../../../core/services/patients.service';
 import { CaseService } from '../../../../core/services/case.service';
 import { ActivatedRoute } from '@angular/router';
 import { PatientDetailsModel } from '../../../../models/patient-details.model';
-import { Case } from '../../../../models/case.model';
+import { Case } from '../../../../models/cases/case.model';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { DatePipe } from '@angular/common';

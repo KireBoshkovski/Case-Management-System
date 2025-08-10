@@ -1,28 +1,125 @@
-<h2>Create New Case</h2>
+<div>
+    <header>
+        <h1>{{ getPageTitle() }}</h1>
+    </header>
+
     <form [formGroup]="caseForm" (ngSubmit)="onSubmit()">
-      <label>Blood Type:</label>
-      <input formControlName="bloodType" />
+        <!-- Required Fields -->
+        <section>
+            <h2>Basic Information</h2>
 
-      <label>Allergies:</label>
-      <textarea formControlName="allergies"></textarea>
+            <div>
+                <label for="description">Description *</label>
+                <textarea
+                    id="description"
+                    formControlName="description"
+                    placeholder="Enter case description"
+                    rows="4"
+                >
+                </textarea>
+                @if (isFieldInvalid("description")) {
+                    <span>{{ getFieldError("description") }}</span>
+                }
+            </div>
 
-      <label>Description:</label>
-      <textarea formControlName="description"></textarea>
+            <div>
+                <label for="status">Status *</label>
+                <select id="status" formControlName="status">
+                    <option value="ACTIVE">Active</option>
+                    <option value="CLOSED">Closed</option>
+                </select>
+                @if (isFieldInvalid("status")) {
+                    <span>{{ getFieldError("status") }}</span>
+                }
+            </div>
 
-      <label>Treatment Plan:</label>
-      <textarea formControlName="treatmentPlan"></textarea>
+            <div>
+                <label for="patientId">Patient ID *</label>
+                <input
+                    type="number"
+                    id="patientId"
+                    formControlName="patientId"
+                    placeholder="Enter patient ID"
+                />
+                @if (isFieldInvalid("patientId")) {
+                    <span>{{ getFieldError("patientId") }}</span>
+                }
+            </div>
 
-      <label>Status:</label>
-      <select formControlName="status">
-        <option value="ACTIVE">Active</option>
-        <option value="CLOSED">Closed</option>
-      </select>
+            <div>
+                <label for="doctorId">Doctor ID *</label>
+                <input
+                    type="number"
+                    id="doctorId"
+                    formControlName="doctorId"
+                    placeholder="Enter doctor ID"
+                />
+                @if (isFieldInvalid("doctorId")) {
+                    <span>{{ getFieldError("doctorId") }}</span>
+                }
+            </div>
+        </section>
 
-      <label>Patient ID:</label>
-      <input type="number" formControlName="patientId" />
+        <!-- Optional Fields -->
+        <section>
+            <h2>Additional Information</h2>
 
-      <label>Doctor ID:</label>
-      <input type="number" formControlName="doctorId" />
+            <div>
+                <label for="bloodType">Blood Type</label>
+                <select id="bloodType" formControlName="bloodType">
+                    <option value="">Select blood type</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
 
-      <button type="submit" [disabled]="caseForm.invalid">Create Case</button>
+            <div>
+                <label for="allergies">Allergies</label>
+                <textarea
+                    id="allergies"
+                    formControlName="allergies"
+                    placeholder="Enter known allergies"
+                    rows="3"
+                >
+                </textarea>
+            </div>
+
+            <div>
+                <label for="treatmentPlan">Treatment Plan</label>
+                <textarea
+                    id="treatmentPlan"
+                    formControlName="treatmentPlan"
+                    placeholder="Enter treatment plan"
+                    rows="4"
+                >
+                </textarea>
+            </div>
+        </section>
+
+        <!-- Submit Actions -->
+        <div>
+            <button type="submit" [disabled]="caseForm.invalid">
+                {{ getSubmitButtonText() }}
+            </button>
+
+            <button type="button" (click)="router.navigate(['/cases'])">
+                Cancel
+            </button>
+
+            @if (isEditMode && caseId) {
+                <button
+                    type="button"
+                    (click)="router.navigate(['/cases', caseId])"
+                >
+                    View Case
+                </button>
+            }
+        </div>
     </form>
+</div>

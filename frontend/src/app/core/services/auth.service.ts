@@ -14,35 +14,38 @@ export class AuthService {
 
     http = inject(HttpClient);
 
-    private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+    private _isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
     isLoggedIn$ = this._isLoggedIn$.asObservable();
+
+    private hasToken(): boolean {
+        const token = localStorage.getItem('token');
+        return !!token;
+    }
 
     signIn(LoginRequest: LoginRequest): Observable<JwtResponse> {
         return this.http
             .post<JwtResponse>(`${this.apiUrl}/auth/signin`, LoginRequest)
             .pipe(
                 tap((response) => {
+                    localStorage.setItem('token', response.accessToken);
                     this._isLoggedIn$.next(true);
-
-                    localStorage.setItem('access_token', response.accessToken);
-                })
+                }),
             );
     }
 
     signUp(signUpRequest: SignupRequest): Observable<String> {
         return this.http.post<String>(
             `${this.apiUrl}/auth/signup`,
-            signUpRequest
+            signUpRequest,
         );
     }
 
     logout(): void {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('token');
         this._isLoggedIn$.next(false);
     }
 
     getToken(): string | null {
-        return localStorage.getItem('access_token');
+        return localStorage.getItem('token');
     }
 }

@@ -3,21 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CaseDetail } from './case-detail';
 
 describe('CaseDetail', () => {
-  let component: CaseDetail;
-  let fixture: ComponentFixture<CaseDetail>;
+    let component: CaseDetail;
+    let fixture: ComponentFixture<CaseDetail>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CaseDetail]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [CaseDetail],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(CaseDetail);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(CaseDetail);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

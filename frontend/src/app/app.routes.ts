@@ -7,35 +7,36 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
-import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
-import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { PatientSearch } from './features/patients/components/patient-search/patient-search';
 import { PatientDetails } from './features/patients/components/patient-details/patient-details';
-import { ForkDetails } from './features/forks/components/fork-details/fork-details';
-import { authGuard } from './core/guards/auth-guard';
+import { AuthGuard } from './core/guards/auth-guard';
 import { Logout } from './features/auth/logout/logout';
-import { EditCase } from './features/cases/components/edit-case/edit-case';
+import { PublicCaseSearch } from './features/cases/components/public-case-search/public-case-search';
+import { PublicCaseDetails } from './features/cases/components/public-case-details/public-case-details';
+import { CreateCase } from './features/cases/components/create-case/create-case';
+import { PublishCase } from './features/cases/components/publish-case/publish-case';
 
 export const routes: Routes = [
     {
         path: '',
         component: MainLayout,
-        //        canActivate: [authGuard],
+        canActivate: [AuthGuard],
         children: [
+            { path: '', redirectTo: 'cases', pathMatch: 'full' },
             // Cases
             { path: 'cases', component: CaseSearch },
-            {
-                path: 'cases/public',
-                component: CaseSearch,
-                data: { public: true },
-            },
+            { path: 'public', component: PublicCaseSearch },
+
             { path: 'cases/:id', component: CaseDetail },
-            { path: 'cases/:id/censor', component: EditCase },
+            { path: 'public/:id', component: PublicCaseDetails },
+
+            { path: 'cases/new', component: CreateCase },
+            { path: 'cases/:id/edit', component: CreateCase },
+
+            { path: 'cases/:id/publish', component: PublishCase },
             // Patients
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },
-            // Forks
-            { path: 'forks/:id', component: ForkDetails },
         ],
     },
     {
@@ -45,8 +46,6 @@ export const routes: Routes = [
             { path: '', redirectTo: 'login', pathMatch: 'full' },
             { path: 'login', component: Login },
             { path: 'register', component: Register },
-            { path: 'forgot-password', component: ForgotPassword },
-            { path: 'reset-password', component: ResetPassword },
             { path: 'logout', component: Logout },
         ],
     },

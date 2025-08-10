@@ -10,10 +10,10 @@
             <input id="password" type="password" formControlName="password" />
         </div>
         <button type="submit" [disabled]="loginForm.invalid">Log In</button>
-        @if(errorMessage) {
-        <div class="error-message">
-            {{ errorMessage }}
-        </div>
+        @if (errorMessage) {
+            <div class="error-message">
+                {{ errorMessage }}
+            </div>
         }
     </form>
 </div>

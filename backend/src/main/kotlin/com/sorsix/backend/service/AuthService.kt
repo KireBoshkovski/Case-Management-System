@@ -32,9 +32,6 @@ class AuthService(
         return JwtResponse(
             accessToken = jwt,
             id = userDetails.getId(),
-            email = userDetails.username,
-            firstName = userDetails.getFirstName(),
-            lastName = userDetails.getLastName(),
             role = userDetails.getRole()
         )
     }

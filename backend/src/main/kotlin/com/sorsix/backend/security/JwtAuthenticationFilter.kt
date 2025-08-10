@@ -22,22 +22,24 @@ class JwtAuthenticationFilter(
     ) {
         try {
             val jwt = parseJwt(request)
-            val username = jwtUtils.getUsernameFromJwtToken(jwt)
 
-            if (!jwt.isNullOrBlank() && !jwtUtils.isTokenExpired(jwt)) {
-                val userDetails = userDetailsService.loadUserByUsername(username)
-                val authentication = UsernamePasswordAuthenticationToken(
-                    userDetails,
-                    null,
-                    userDetails.authorities
-                )
-                authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+            if (!jwt.isNullOrBlank()) {
+                val username = jwtUtils.getUsernameFromJwtToken(jwt)
 
-                SecurityContextHolder.getContext().authentication = authentication
+                if (username.isNotBlank() && !jwtUtils.isTokenExpired(jwt)) {
+                    val userDetails = userDetailsService.loadUserByUsername(username)
+                    val authentication = UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.authorities
+                    )
+                    authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
+                    SecurityContextHolder.getContext().authentication = authentication
+                }
             }
-
         } catch (e: Exception) {
-            println("JwtAuthenticationFilter caught exception: " + e.message)
+            logger.error("Cannot set user authentication: ${e.message}", e)
+            SecurityContextHolder.clearContext()
         }
 
         filterChain.doFilter(request, response)

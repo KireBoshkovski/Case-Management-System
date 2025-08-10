@@ -27,7 +27,7 @@ class Doctor(
     firstName = firstName,
     lastName = lastName,
     phoneNumber = phoneNumber,
-    role = UserRole.DOCTOR
+    role = UserRole.DOCTOR,
 ) {
     constructor() : this(
         email = "",

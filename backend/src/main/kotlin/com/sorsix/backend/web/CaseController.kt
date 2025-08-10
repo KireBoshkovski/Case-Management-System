@@ -32,14 +32,6 @@ class CaseController(
     }
 
     /*
-    * This returns all public cases in new PublicCase entity format
-    *  */
-    @GetMapping("/public")
-    fun getAllPublicCases(): List<PublicCase> {
-        return caseService.findAllPublic()
-    }
-
-    /*
     * Returns case by case id but first checks if user actually have access to the case.
     * Users who have access to case: Patients which belong to the case, Doctors that created the case.
     * */
@@ -54,7 +46,7 @@ class CaseController(
 
     @PutMapping("/{id}")
     fun updateCase(@PathVariable id: Long, @RequestBody case: CaseDto): ResponseEntity<CaseDto> =
-        ResponseEntity.ok(caseService.update(case).toCaseDto())
+        ResponseEntity.ok(caseService.update(id, case).toCaseDto())
 
     @GetMapping("/censor/{id}")
     fun censor(@PathVariable id: Long): ResponseEntity<Case> = ResponseEntity.ok(openAIService.censor(id))

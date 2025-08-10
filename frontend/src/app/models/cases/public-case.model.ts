@@ -1,4 +1,4 @@
-import { PublicExamination } from './public-examination';
+import { PublicExamination } from '../public-examination';
 
 export interface PublicCase {
     id: number;

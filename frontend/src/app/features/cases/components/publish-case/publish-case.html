@@ -1,0 +1,357 @@
+<div>
+    <header>
+        <h1>Publish Case #{{ caseId }}</h1>
+        <p>Review and edit the case content before publishing it publicly</p>
+    </header>
+
+    @if (originalCase) {
+        <!-- Original Case Preview -->
+        <section>
+            <h2>Original Case Information</h2>
+            <div>
+                <div>
+                    <label>Patient:</label>
+                    <span
+                        >{{ originalCase.patient.firstName }}
+                        {{ originalCase.patient.lastName }}</span
+                    >
+                </div>
+                <div>
+                    <label>Doctor:</label>
+                    <span
+                        >{{ originalCase.doctor.firstName }}
+                        {{ originalCase.doctor.lastName }}</span
+                    >
+                </div>
+                <div>
+                    <label>Status:</label>
+                    <span>{{ originalCase.status }}</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Censoring Section -->
+        <section>
+            <h2>AI Content Censoring</h2>
+            <p>
+                Use AI to automatically remove sensitive information before
+                publishing.
+            </p>
+
+            <div>
+                <button
+                    type="button"
+                    (click)="requestCensoring()"
+                    [disabled]="censoring"
+                >
+                    @if (censoring) {
+                        Censoring Content...
+                    } @else {
+                        @if (hasCensoredData()) {
+                            Re-censor Content
+                        } @else {
+                            Censor Content with AI
+                        }
+                    }
+                </button>
+            </div>
+        </section>
+
+        <!-- Publishing Form -->
+        @if (hasCensoredData() || !censoring) {
+            <form [formGroup]="publishForm" (ngSubmit)="publishCase()">
+                <!-- Medical Information -->
+                <section>
+                    <h2>Medical Information</h2>
+
+                    <div>
+                        <label for="description">Description *</label>
+                        <textarea
+                            id="description"
+                            formControlName="description"
+                            placeholder="Case description (sensitive info should be removed)"
+                            rows="4"
+                        >
+                        </textarea>
+                        @if (isFieldInvalid("description")) {
+                            <span>{{ getFieldError("description") }}</span>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="treatmentPlan">Treatment Plan</label>
+                        <textarea
+                            id="treatmentPlan"
+                            formControlName="treatmentPlan"
+                            placeholder="Treatment plan (sensitive info should be removed)"
+                            rows="4"
+                        >
+                        </textarea>
+                    </div>
+
+                    <div>
+                        <label for="bloodType">Blood Type</label>
+                        <select id="bloodType" formControlName="bloodType">
+                            <option value="">Select blood type</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="allergies">Allergies</label>
+                        <textarea
+                            id="allergies"
+                            formControlName="allergies"
+                            placeholder="Known allergies (sensitive info should be removed)"
+                            rows="3"
+                        >
+                        </textarea>
+                    </div>
+                </section>
+
+                <!-- Examinations Section -->
+                <section>
+                    <h2>Examinations</h2>
+                    <p>
+                        Edit examination data to remove sensitive information
+                        before publishing.
+                    </p>
+
+                    @if (
+                        originalCase.examinations &&
+                        originalCase.examinations.length > 0
+                    ) {
+                        <div formArrayName="examinations">
+                            @for (
+                                examination of getExaminationsFormArray()
+                                    .controls;
+                                track examination;
+                                let i = $index
+                            ) {
+                                <div
+                                    [formGroupName]="i"
+                                    class="examination-item"
+                                >
+                                    <h3>Examination {{ i + 1 }}</h3>
+
+                                    <div class="examination-fields">
+                                        <div>
+                                            <label [for]="'exam-type-' + i"
+                                                >Examination Type *</label
+                                            >
+                                            <input
+                                                [id]="'exam-type-' + i"
+                                                type="text"
+                                                formControlName="examinationType"
+                                                placeholder="e.g., Blood Test, X-Ray, MRI"
+                                            />
+                                            @if (
+                                                examination.get(
+                                                    "examinationType"
+                                                )?.invalid &&
+                                                examination.get(
+                                                    "examinationType"
+                                                )?.touched
+                                            ) {
+                                                <span class="error-message"
+                                                    >Examination type is
+                                                    required</span
+                                                >
+                                            }
+                                        </div>
+
+                                        <div>
+                                            <label [for]="'exam-date-' + i"
+                                                >Examination Date *</label
+                                            >
+                                            <input
+                                                [id]="'exam-date-' + i"
+                                                type="date"
+                                                formControlName="examinationDate"
+                                            />
+                                            @if (
+                                                examination.get(
+                                                    "examinationDate"
+                                                )?.invalid &&
+                                                examination.get(
+                                                    "examinationDate"
+                                                )?.touched
+                                            ) {
+                                                <span class="error-message"
+                                                    >Examination date is
+                                                    required</span
+                                                >
+                                            }
+                                        </div>
+
+                                        <div>
+                                            <label [for]="'exam-findings-' + i"
+                                                >Findings</label
+                                            >
+                                            <textarea
+                                                [id]="'exam-findings-' + i"
+                                                formControlName="findings"
+                                                placeholder="Examination findings (sensitive info should be removed)"
+                                                rows="3"
+                                            >
+                                            </textarea>
+                                        </div>
+
+                                        <div>
+                                            <label [for]="'exam-results-' + i"
+                                                >Results</label
+                                            >
+                                            <textarea
+                                                [id]="'exam-results-' + i"
+                                                formControlName="results"
+                                                placeholder="Examination results (sensitive info should be removed)"
+                                                rows="3"
+                                            >
+                                            </textarea>
+                                        </div>
+
+                                        <div>
+                                            <label [for]="'exam-notes-' + i"
+                                                >Notes</label
+                                            >
+                                            <textarea
+                                                [id]="'exam-notes-' + i"
+                                                formControlName="notes"
+                                                placeholder="Additional notes (sensitive info should be removed)"
+                                                rows="2"
+                                            >
+                                            </textarea>
+                                        </div>
+
+                                        <div>
+                                            <label
+                                                [for]="'exam-vital-signs-' + i"
+                                                >Vital Signs</label
+                                            >
+                                            <textarea
+                                                [id]="'exam-vital-signs-' + i"
+                                                formControlName="vitalSigns"
+                                                placeholder="Vital signs data (sensitive info should be removed)"
+                                                rows="2"
+                                            >
+                                            </textarea>
+                                        </div>
+
+                                        <div class="examination-actions">
+                                            <button
+                                                type="button"
+                                                (click)="removeExamination(i)"
+                                                class="remove-examination-btn"
+                                            >
+                                                Remove Examination
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="examination-actions">
+                            <button
+                                type="button"
+                                (click)="addExamination()"
+                                class="add-examination-btn"
+                            >
+                                Add New Examination
+                            </button>
+                        </div>
+                    } @else {
+                        <div class="no-examinations">
+                            <p>No examinations found for this case.</p>
+                            <button
+                                type="button"
+                                (click)="addExamination()"
+                                class="add-examination-btn"
+                            >
+                                Add Examination
+                            </button>
+                        </div>
+                    }
+                </section>
+
+                <!-- Anonymized Patient Information -->
+                <section>
+                    <h2>Anonymized Patient Information</h2>
+
+                    <div>
+                        <label for="patientAgeRange">Patient Age Range *</label>
+                        <select
+                            id="patientAgeRange"
+                            formControlName="patientAgeRange"
+                        >
+                            <option value="">Select age range</option>
+                            <option value="Under 18">Under 18</option>
+                            <option value="18-29">18-29</option>
+                            <option value="30-44">30-44</option>
+                            <option value="45-59">45-59</option>
+                            <option value="60-74">60-74</option>
+                            <option value="75+">75+</option>
+                        </select>
+                        @if (isFieldInvalid("patientAgeRange")) {
+                            <span>{{ getFieldError("patientAgeRange") }}</span>
+                        }
+                    </div>
+
+                    <div>
+                        <label for="patientGender">Patient Gender *</label>
+                        <select
+                            id="patientGender"
+                            formControlName="patientGender"
+                        >
+                            <option value="">Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                            <option value="Prefer not to say">
+                                Prefer not to say
+                            </option>
+                        </select>
+                        @if (isFieldInvalid("patientGender")) {
+                            <span>{{ getFieldError("patientGender") }}</span>
+                        }
+                    </div>
+                </section>
+
+                <!-- Error Message -->
+                @if (errorMessage) {
+                    <div>
+                        {{ errorMessage }}
+                    </div>
+                }
+
+                <!-- Publishing Actions -->
+                <div>
+                    <button
+                        type="submit"
+                        [disabled]="publishing || publishForm.invalid"
+                    >
+                        @if (publishing) {
+                            Publishing Case...
+                        } @else {
+                            Publish Case
+                        }
+                    </button>
+
+                    <button
+                        type="button"
+                        (click)="router.navigate(['/cases', caseId])"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        }
+    }
+</div>

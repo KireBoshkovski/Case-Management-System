@@ -34,6 +34,9 @@ class CaseService(
     fun findById(id: Long): Case =
         caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
 
+    fun findPublicById(id: Long): PublicCase =
+        publicCaseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
+
     fun findByIdSecured(id: Long, currentUser: CustomUserDetails): Case {
         val case = findById(id)
         val canAccess = when (currentUser.getRole()) {
@@ -61,8 +64,8 @@ class CaseService(
         )
 
     @Transactional
-    fun update(case: CaseDto): Case {
-        val existing = findById(case.id)
+    fun update(id: Long, case: CaseDto): Case {
+        val existing = findById(id)
 
         val updated = existing.copy(
             bloodType = case.bloodType,

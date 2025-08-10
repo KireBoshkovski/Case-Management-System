@@ -1,5 +1,6 @@
 package com.sorsix.backend.security
 
+import com.sorsix.backend.service.UserService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -20,7 +21,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
-    private val jwtAuthenticationFilter: JwtAuthenticationFilter
+    private val userDetailsService: UserService,
+    private val jwtUtility: JWTUtility
 ) {
 
     @Bean
@@ -33,17 +35,22 @@ class SecurityConfig(
     ): AuthenticationManager = authConfig.authenticationManager
 
     @Bean
+    fun jwtAuthenticationFilter(): JwtAuthenticationFilter {
+        return JwtAuthenticationFilter(jwtUtility, userDetailsService)
+    }
+
+    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain = http
         .cors { it.configurationSource(corsConfigurationSource()) }
         .csrf { it.disable() }
         .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .authorizeHttpRequests { auth ->
             auth
-//                .requestMatchers("/api/auth/**").permitAll()
-//                .anyRequest().authenticated()
-                .anyRequest().permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
+                // TODO: /api/public MAYBE should be public path
         }
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+        .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
         .build()
 
     @Bean

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AuthLayout } from './auth-layout';
+import { PublicCaseSearch } from './public-case-search';
 
-describe('AuthLayout', () => {
-    let component: AuthLayout;
-    let fixture: ComponentFixture<AuthLayout>;
+describe('PublicCaseSearch', () => {
+    let component: PublicCaseSearch;
+    let fixture: ComponentFixture<PublicCaseSearch>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [AuthLayout],
+            imports: [PublicCaseSearch],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(AuthLayout);
+        fixture = TestBed.createComponent(PublicCaseSearch);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

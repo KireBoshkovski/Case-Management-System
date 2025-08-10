@@ -2,8 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Case } from '../../models/case.model';
-import { PublicCase } from '../../models/public-case';
+import { Case } from '../../models/cases/case.model';
+import { PublicCase } from '../../models/cases/public-case.model';
+import { CaseDto } from '../../models/cases/case-dto.model';
 
 @Injectable({
     providedIn: 'root',
@@ -13,30 +14,41 @@ export class CaseService {
 
     http = inject(HttpClient);
 
-    getCases(): Observable<Case[]> {
-        return this.http.get<Case[]>(`${this.apiUrl}/cases`);
+    getCases() {
+        return this.http.get<CaseDto[]>(`${this.apiUrl}/cases`);
     }
 
-    getPublicCases() {
-        return this.http.get<Case[]>(`${this.apiUrl}/cases/public`);
-    }
-
-    getCaseById(id: number): Observable<Case> {
+    getCaseById(id: number) {
         return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
     }
 
-    censorCase(id: number): Observable<Case> {
+    getPublicCases() {
+        return this.http.get<PublicCase[]>(`${this.apiUrl}/public`);
+    }
+
+    getPublicCaseById(id: number) {
+        return this.http.get<PublicCase>(`${this.apiUrl}/public/${id}`);
+    }
+
+    censorCase(id: number) {
         return this.http.get<Case>(`${this.apiUrl}/cases/censor/${id}`);
     }
 
-    publishCase(id: number, publicCase: PublicCase): Observable<PublicCase> {
-        return this.http.post<PublicCase>(
+    publishCase(id: number, publicCase: PublicCase) {
+        return this.http.post<void>(
             `${this.apiUrl}/cases/publish/${id}`,
             publicCase,
         );
     }
 
-    createCase(newCase: Case): Observable<Case> {
-        return this.http.post<Case>(`${this.apiUrl}/cases`, newCase);
+    createCase(newCase: Partial<CaseDto>): Observable<CaseDto> {
+        return this.http.post<CaseDto>(`${this.apiUrl}/cases`, newCase);
+    }
+
+    updateCase(id: number, updatedCase: Partial<CaseDto>): Observable<CaseDto> {
+        return this.http.put<CaseDto>(
+            `${this.apiUrl}/cases/${id}`,
+            updatedCase,
+        );
     }
 }

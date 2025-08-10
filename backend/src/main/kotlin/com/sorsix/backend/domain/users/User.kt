@@ -13,7 +13,7 @@ abstract class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    val id: Long = 0,
+    val id: Long = 0L,
 
     @Column(name = "email", nullable = false, unique = true, length = 100)
     val email: String,

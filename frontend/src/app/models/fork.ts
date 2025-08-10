@@ -1,4 +1,4 @@
-import { Case } from './case.model';
+import { Case } from './cases/case.model';
 import { Doctor } from './doctor.model';
 
 export interface Fork {

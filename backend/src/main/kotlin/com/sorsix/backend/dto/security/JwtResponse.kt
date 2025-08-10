@@ -6,8 +6,5 @@ data class JwtResponse(
     val accessToken: String,
     val type: String = "Bearer",
     val id: Long,
-    val email: String,
-    val firstName: String,
-    val lastName: String,
-    val role: UserRole
+    val role: UserRole,
 )

@@ -1,61 +1,60 @@
 <div class="patient-details-container">
     @if (loading) {
-    <div class="loading-message">Loading patient details...</div>
+        <div class="loading-message">Loading patient details...</div>
     }
 
     @if (!loading && !patient) {
-    <div class="error-message">Failed to load patient details</div>
+        <div class="error-message">Failed to load patient details</div>
     }
 
     @if (patient) {
-    <div class="patient-info">
-        <div class="header">
-            <h1>{{ patient.firstName }} {{ patient.lastName }}</h1>
-            <div class="patient-id">ID: {{ patient.id }}</div>
+        <div class="patient-info">
+            <div class="header">
+                <h1>{{ patient.firstName }} {{ patient.lastName }}</h1>
+                <div class="patient-id">ID: {{ patient.id }}</div>
+            </div>
+
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Date of Birth:</span>
+                    <span class="detail-value">{{
+                        patient.dateOfBirth | date
+                    }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Gender:</span>
+                    <span class="detail-value">{{ patient.gender }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Phone:</span>
+                    <span class="detail-value">{{ patient.phoneNumber }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value">{{ patient.email }}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="detail-label">Address:</span>
+                    <span class="detail-value">{{ patient.address }}</span>
+                </div>
+            </div>
         </div>
-
-        <div class="details-grid">
-            <div class="detail-item">
-                <span class="detail-label">Date of Birth:</span>
-                <span class="detail-value">{{
-                    patient.dateOfBirth | date
-                }}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Gender:</span>
-                <span class="detail-value">{{ patient.gender }}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Phone:</span>
-                <span class="detail-value">{{ patient.phoneNumber }}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Email:</span>
-                <span class="detail-value">{{ patient.email }}</span>
-            </div>
-
-            <div class="detail-item">
-                <span class="detail-label">Address:</span>
-                <span class="detail-value">{{ patient.address }}</span>
-            </div>
-        </div>
-    </div>
     }
 
     <div class="cases-section">
         <h2>Cases</h2>
         @if (cases.length > 0) {
-        <list
-            [items]="cases"
-            [columns]="caseColumns"
-            routePrefix="cases"
-        ></list>
-
+            <list
+                [items]="cases"
+                [columns]="caseColumns"
+                routePrefix="cases"
+            ></list>
         } @else {
-        <div class="no-cases-message">No cases found for this patient</div>
+            <div class="no-cases-message">No cases found for this patient</div>
         }
     </div>
 </div>

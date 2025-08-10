@@ -1,0 +1,127 @@
+<div>
+    @if (caseData) {
+        <header>
+            <h1>Public Case #{{ caseData.id }}</h1>
+        </header>
+
+        <section>
+            <h2>Case Information</h2>
+            <div>
+                <div>
+                    <label>Blood Type:</label>
+                    <span>{{ caseData.bloodType || "Not specified" }}</span>
+                </div>
+                <div>
+                    <label>Created:</label>
+                    <span>{{ formatDate(caseData.createdAt) }}</span>
+                </div>
+                <div>
+                    <label>Last Updated:</label>
+                    <span>{{ formatDate(caseData.updatedAt) }}</span>
+                </div>
+                <div>
+                    <label>Published:</label>
+                    <span>{{ formatDate(caseData.publishedAt) }}</span>
+                </div>
+            </div>
+
+            @if (caseData.description) {
+                <div>
+                    <label>Description:</label>
+                    <p>{{ caseData.description }}</p>
+                </div>
+            }
+
+            @if (caseData.allergies) {
+                <div>
+                    <label>Allergies:</label>
+                    <p>{{ caseData.allergies }}</p>
+                </div>
+            }
+
+            @if (caseData.treatmentPlan) {
+                <div>
+                    <label>Treatment Plan:</label>
+                    <p>{{ caseData.treatmentPlan }}</p>
+                </div>
+            }
+        </section>
+
+        <section>
+            <h2>Patient Information (Anonymized)</h2>
+            <div>
+                <div>
+                    <label>Age Range:</label>
+                    <span>{{
+                        caseData.patientAgeRange || "Not specified"
+                    }}</span>
+                </div>
+                <div>
+                    <label>Gender:</label>
+                    <span>{{ caseData.patientGender || "Not specified" }}</span>
+                </div>
+            </div>
+        </section>
+
+        @if (caseData.examinations && caseData.examinations.length > 0) {
+            <section>
+                <h2>Examinations ({{ caseData.examinations.length }})</h2>
+                <div>
+                    @for (exam of caseData.examinations; track exam.id) {
+                        <div class="examination-card">
+                            <h3>Examination #{{ exam.id }}</h3>
+                            <div>
+                                <label>Type:</label>
+                                <span>{{ exam.examinationType }}</span>
+                            </div>
+                            <div>
+                                <label>Date:</label>
+                                <span>{{
+                                    formatDate(exam.examinationDate!) ||
+                                        "Not specified"
+                                }}</span>
+                            </div>
+                            <div>
+                                <label>Doctor Specialty:</label>
+                                <span>{{
+                                    exam.examiningDoctorSpecialty ||
+                                        "Not specified"
+                                }}</span>
+                            </div>
+
+                            @if (exam.findings) {
+                                <div>
+                                    <label>Findings:</label>
+                                    <p>{{ exam.findings }}</p>
+                                </div>
+                            }
+                            @if (exam.results) {
+                                <div>
+                                    <label>Results:</label>
+                                    <p>{{ exam.results }}</p>
+                                </div>
+                            }
+                            @if (exam.notes) {
+                                <div>
+                                    <label>Notes:</label>
+                                    <p>{{ exam.notes }}</p>
+                                </div>
+                            }
+                            @if (exam.vitalSigns) {
+                                <div>
+                                    <label>Vital Signs:</label>
+                                    <p>{{ exam.vitalSigns }}</p>
+                                </div>
+                            }
+
+                            <div>
+                                <label>Published:</label>
+                                <span>{{ formatDate(exam.publishedAt) }}</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+    }
+</div>
