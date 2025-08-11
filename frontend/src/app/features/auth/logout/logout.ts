@@ -15,7 +15,7 @@ export class Logout {
     constructor() {
         this.authService.logout();
         setTimeout(() => {
-            this.router.navigate(['/auth/login']);
+            this.router.navigate(['/login']);
         }, 2000);
     }
 }

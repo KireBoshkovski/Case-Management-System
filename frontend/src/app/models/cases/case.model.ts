@@ -1,4 +1,4 @@
-import { CaseStatus } from '../case-status.enum';
+import { CaseStatus } from './case-status.enum';
 import { Doctor } from '../doctor.model';
 import { Examination } from '../examination.model';
 import { Patient } from '../patient.model';

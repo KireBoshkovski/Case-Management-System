@@ -123,5 +123,14 @@
                 </div>
             </section>
         }
+        @if (forks && forks.length > 0) {
+            <h2>Forks for this case: {{ forks.length }}</h2>
+
+            <list
+                [items]="forks"
+                [columns]="forkColumns"
+                routePrefix="forks"
+            ></list>
+        }
     }
 </div>

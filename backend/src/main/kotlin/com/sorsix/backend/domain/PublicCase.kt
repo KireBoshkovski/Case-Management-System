@@ -9,25 +9,25 @@ class PublicCase(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "public_case_id")
-    val id: Long,
+    val id: Long? = null,
 
     @Column(name = "blood_type", length = 5)
-    val bloodType: String?,
+    val bloodType: String? = null,
 
     @Column(name = "allergies", columnDefinition = "TEXT")
-    val allergies: String?,
+    val allergies: String? = null,
 
     @Column(name = "description", columnDefinition = "TEXT")
-    val description: String?,
+    val description: String? = null,
 
     @Column(name = "treatment_plan", columnDefinition = "TEXT")
-    val treatmentPlan: String?,
+    val treatmentPlan: String? = null,
 
     @Column(name = "patient_age_range", length = 20)
-    val patientAgeRange: String?, // e.g., "20-25", "30-35"
+    val patientAgeRange: String? = null, // e.g., "20-25", "30-35"
 
     @Column(name = "patient_gender")
-    val patientGender: String?,
+    val patientGender: String? = null,
 
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime,

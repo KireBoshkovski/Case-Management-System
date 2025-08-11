@@ -11,7 +11,7 @@ data class PublicExamination(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "public_examination_id")
-    val id: Long,
+    val id: Long? = null,
 
     // Reference to original examination for audit purposes
     @Column(name = "original_examination_id", nullable = false)
@@ -21,23 +21,23 @@ data class PublicExamination(
     val examinationType: String,
 
     @Column(name = "findings", columnDefinition = "TEXT")
-    val findings: String?,
+    val findings: String? = null,
 
     @Column(name = "results", columnDefinition = "TEXT")
-    val results: String?,
+    val results: String? = null,
 
     @Column(name = "notes", columnDefinition = "TEXT")
-    val notes: String?,
+    val notes: String? = null,
 
     @Column(name = "vital_signs", columnDefinition = "JSON")
     @JdbcTypeCode(SqlTypes.JSON)
-    val vitalSigns: String?,
+    val vitalSigns: String? = null,
 
     @Column(name = "examination_date")
     val examinationDate: LocalDateTime,
 
     @Column(name = "examining_doctor_specialty", length = 100)
-    val examiningDoctorSpecialty: String?,
+    val examiningDoctorSpecialty: String? = null,
 
     @Column(name = "published_at", nullable = false)
     val publishedAt: LocalDateTime = LocalDateTime.now(),

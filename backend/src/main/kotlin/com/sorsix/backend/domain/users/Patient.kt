@@ -21,10 +21,10 @@ data class Patient(
     val dateOfBirth: LocalDate,
 
     @Column(name = "gender", length = 10)
-    val gender: String?,
+    val gender: String? = null,
 
     @Column(name = "address", columnDefinition = "TEXT")
-    val address: String?,
+    val address: String? = null,
 ) : User(
     email = email,
     password = password,

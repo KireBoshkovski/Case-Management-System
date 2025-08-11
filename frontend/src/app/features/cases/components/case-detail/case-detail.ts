@@ -7,6 +7,7 @@ import { Patient } from '../../../../models/patient.model';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { Examination } from '../../../../models/examination.model';
+import { ForkListItem } from '../../../../models/forks/fork-list-item.model';
 
 @Component({
     selector: 'case-detail',
@@ -34,8 +35,6 @@ export class CaseDetail implements OnInit {
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
     ];
-
-    //TODO: Add forks list for the case
 
     ngOnInit(): void {
         const caseId = Number(this.route.snapshot.paramMap.get('id'));

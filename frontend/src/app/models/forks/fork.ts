@@ -1,6 +1,3 @@
-import { Case } from './cases/case.model';
-import { Doctor } from './doctor.model';
-
 export interface Fork {
     id: number;
     title: string;
@@ -9,6 +6,6 @@ export interface Fork {
     alternativeTreatment: string;
     analysisNotes: string;
     recommendations: string;
-    origin: Case;
-    editor: Doctor;
+    originId: number;
+    editorId: number;
 }

@@ -1,0 +1,181 @@
+<div class="create-fork-container">
+    <div class="form-header">
+        <h1 class="form-title">
+            {{ isEditMode ? "Edit Fork" : "Create New Fork" }}
+        </h1>
+        @if (!isEditMode) {
+            <p class="form-subtitle">
+                Create an alternative analysis for this medical case
+            </p>
+        }
+    </div>
+
+    <form [formGroup]="forkForm" (ngSubmit)="onSubmit()" class="fork-form">
+        <!-- Basic Information Section -->
+        <section class="form-section">
+            <h2 class="section-title">Basic Information</h2>
+
+            <div class="form-group">
+                <label for="title" class="form-label">Title *</label>
+                <input
+                    id="title"
+                    type="text"
+                    formControlName="title"
+                    class="form-input"
+                    [class.error]="isFieldInvalid('title')"
+                    placeholder="Enter a descriptive title for this fork"
+                />
+                @if (getFieldError("title")) {
+                    <div class="error-message">
+                        {{ getFieldError("title") }}
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="originId" class="form-label"
+                    >Origin Case ID *</label
+                >
+                <input
+                    id="originId"
+                    type="number"
+                    formControlName="originId"
+                    class="form-input"
+                    [class.error]="isFieldInvalid('originId')"
+                    placeholder="Enter the ID of the original case"
+                    [readonly]="isEditMode"
+                />
+                @if (getFieldError("originId")) {
+                    <div class="error-message">
+                        {{ getFieldError("originId") }}
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="description" class="form-label"
+                    >Description *</label
+                >
+                <textarea
+                    id="description"
+                    formControlName="description"
+                    class="form-textarea"
+                    [class.error]="isFieldInvalid('description')"
+                    placeholder="Provide a detailed description of this fork"
+                    rows="4"
+                ></textarea>
+                @if (getFieldError("description")) {
+                    <div class="error-message">
+                        {{ getFieldError("description") }}
+                    </div>
+                }
+            </div>
+        </section>
+
+        <!-- Clinical Analysis Section -->
+        <section class="form-section">
+            <h2 class="section-title">Clinical Analysis</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="alternativeDiagnosis" class="form-label"
+                        >Alternative Diagnosis *</label
+                    >
+                    <textarea
+                        id="alternativeDiagnosis"
+                        formControlName="alternativeDiagnosis"
+                        class="form-textarea"
+                        [class.error]="isFieldInvalid('alternativeDiagnosis')"
+                        placeholder="Describe the alternative diagnosis"
+                        rows="5"
+                    ></textarea>
+                    @if (getFieldError("alternativeDiagnosis")) {
+                        <div class="error-message">
+                            {{ getFieldError("alternativeDiagnosis") }}
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="alternativeTreatment" class="form-label"
+                        >Alternative Treatment *</label
+                    >
+                    <textarea
+                        id="alternativeTreatment"
+                        formControlName="alternativeTreatment"
+                        class="form-textarea"
+                        [class.error]="isFieldInvalid('alternativeTreatment')"
+                        placeholder="Describe the alternative treatment approach"
+                        rows="5"
+                    ></textarea>
+                    @if (getFieldError("alternativeTreatment")) {
+                        <div class="error-message">
+                            {{ getFieldError("alternativeTreatment") }}
+                        </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <!-- Professional Notes Section -->
+        <section class="form-section">
+            <h2 class="section-title">Professional Notes</h2>
+
+            <div class="form-group">
+                <label for="analysisNotes" class="form-label"
+                    >Analysis Notes *</label
+                >
+                <textarea
+                    id="analysisNotes"
+                    formControlName="analysisNotes"
+                    class="form-textarea"
+                    [class.error]="isFieldInvalid('analysisNotes')"
+                    placeholder="Document your analysis and reasoning"
+                    rows="6"
+                ></textarea>
+                @if (getFieldError("analysisNotes")) {
+                    <div class="error-message">
+                        {{ getFieldError("analysisNotes") }}
+                    </div>
+                }
+            </div>
+
+            <div class="form-group">
+                <label for="recommendations" class="form-label"
+                    >Recommendations *</label
+                >
+                <textarea
+                    id="recommendations"
+                    formControlName="recommendations"
+                    class="form-textarea"
+                    [class.error]="isFieldInvalid('recommendations')"
+                    placeholder="Provide your professional recommendations"
+                    rows="6"
+                ></textarea>
+
+                @if (getFieldError("recommendations")) {
+                    <div class="error-message">
+                        {{ getFieldError("recommendations") }}
+                    </div>
+                }
+            </div>
+        </section>
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+            <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="onCancel()"
+            >
+                Cancel
+            </button>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="forkForm.invalid"
+            ></button>
+        </div>
+    </form>
+</div>

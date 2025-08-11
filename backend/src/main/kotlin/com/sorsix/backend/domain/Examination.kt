@@ -10,22 +10,22 @@ data class Examination(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "examination_id")
-    val id: Long,
+    val id: Long? = null,
 
     @Column(name = "examination_type", nullable = false, length = 100)
     val examinationType: String,
 
     @Column(name = "findings", columnDefinition = "TEXT")
-    val findings: String?,
+    val findings: String? = null,
 
     @Column(name = "results", columnDefinition = "TEXT")
-    val results: String?,
+    val results: String? = null,
 
     @Column(name = "notes", columnDefinition = "TEXT")
-    val notes: String?,
+    val notes: String? = null,
 
     @Column(name = "vital_signs", columnDefinition = "JSON")
-    val vitalSigns: String?,
+    val vitalSigns: String? = null,
 
     @Column(name = "examination_date", nullable = false)
     val examinationDate: LocalDateTime = LocalDateTime.now(),

@@ -8,7 +8,7 @@ import jakarta.persistence.*
 data class Fork(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,  // Add default value
+    val id: Long? = null,
 
     @Column(name = "fork_title", nullable = false, length = 200)
     val title: String,
@@ -30,7 +30,7 @@ data class Fork(
 
     @ManyToOne
     @JoinColumn(name = "case_id")
-    val origin: Case,
+    val origin: PublicCase,
 
     @OneToOne
     @JoinColumn(name = "doctor_id")

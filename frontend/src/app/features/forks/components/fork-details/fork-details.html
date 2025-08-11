@@ -1,0 +1,49 @@
+@if (fork) {
+    <div class="fork-details-container">
+        <div class="fork-header">
+            <h1 class="fork-title">{{ fork.title }}</h1>
+            <div class="fork-meta">
+                <span class="fork-id">ID: {{ fork.id }}</span>
+                <span class="origin-id">Origin Case: {{ fork.originId }}</span>
+                <span class="editor-id">Editor: {{ fork.editorId }}</span>
+            </div>
+        </div>
+
+        <div class="fork-content">
+            <section class="description-section">
+                <h2>Description</h2>
+                <p class="description-text">{{ fork.description }}</p>
+            </section>
+
+            <div class="diagnosis-treatment-grid">
+                <section class="diagnosis-section">
+                    <h2>Alternative Diagnosis</h2>
+                    <div class="content-card">
+                        <p>{{ fork.alternativeDiagnosis }}</p>
+                    </div>
+                </section>
+
+                <section class="treatment-section">
+                    <h2>Alternative Treatment</h2>
+                    <div class="content-card">
+                        <p>{{ fork.alternativeTreatment }}</p>
+                    </div>
+                </section>
+            </div>
+
+            <section class="analysis-section">
+                <h2>Analysis Notes</h2>
+                <div class="content-card analysis-card">
+                    <p>{{ fork.analysisNotes }}</p>
+                </div>
+            </section>
+
+            <section class="recommendations-section">
+                <h2>Recommendations</h2>
+                <div class="content-card recommendations-card">
+                    <p>{{ fork.recommendations }}</p>
+                </div>
+            </section>
+        </div>
+    </div>
+}

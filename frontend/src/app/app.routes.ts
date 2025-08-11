@@ -15,6 +15,9 @@ import { PublicCaseSearch } from './features/cases/components/public-case-search
 import { PublicCaseDetails } from './features/cases/components/public-case-details/public-case-details';
 import { CreateCase } from './features/cases/components/create-case/create-case';
 import { PublishCase } from './features/cases/components/publish-case/publish-case';
+import { ForkSearch } from './features/forks/components/fork-search/fork-search';
+import { ForkDetails } from './features/forks/components/fork-details/fork-details';
+import { CreateFork } from './features/forks/components/create-fork/create-fork';
 
 export const routes: Routes = [
     {
@@ -22,28 +25,32 @@ export const routes: Routes = [
         component: MainLayout,
         canActivate: [AuthGuard],
         children: [
-            { path: '', redirectTo: 'cases', pathMatch: 'full' },
             // Cases
-            { path: 'cases', component: CaseSearch },
             { path: 'public', component: PublicCaseSearch },
-
-            { path: 'cases/:id', component: CaseDetail },
             { path: 'public/:id', component: PublicCaseDetails },
 
+            { path: 'cases', component: CaseSearch },
+            { path: 'cases/:id', component: CaseDetail },
             { path: 'cases/new', component: CreateCase },
             { path: 'cases/:id/edit', component: CreateCase },
 
             { path: 'cases/:id/publish', component: PublishCase },
+
             // Patients
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },
+
+            // Forks
+            { path: 'forks', component: ForkSearch },
+            { path: 'forks/:id', component: ForkDetails },
+            { path: 'forks/new', component: CreateFork },
+            { path: 'forks/:id/edit', component: CreateFork },
         ],
     },
     {
-        path: 'auth',
+        path: '',
         component: AuthLayout,
         children: [
-            { path: '', redirectTo: 'login', pathMatch: 'full' },
             { path: 'login', component: Login },
             { path: 'register', component: Register },
             { path: 'logout', component: Logout },

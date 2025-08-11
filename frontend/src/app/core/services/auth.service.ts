@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { LoginRequest } from '../../models/login-request';
+import { LoginRequest } from '../../models/security/login-request';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { JwtResponse } from '../../models/jwt-response';
-import { SignupRequest } from '../../models/signup-request';
+import { JwtResponse } from '../../models/security/jwt-response';
+import { SignupRequest } from '../../models/security/signup-request';
 
 @Injectable({
     providedIn: 'root',

@@ -12,7 +12,7 @@ data class Case(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "case_id")
-    val id: Long,
+    val id: Long?,
 
     @Column(name = "blood_type", length = 5)
     val bloodType: String?,
