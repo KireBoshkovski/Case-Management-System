@@ -1,12 +1,13 @@
-<div class="main-layout">
+<div class="main-layout d-flex flex-column min-vh-100">
     <header>
         <navbar></navbar>
     </header>
-    <main class="layout-main">
+
+    <main class="layout-main flex-grow-1 container my-4">
         <router-outlet></router-outlet>
     </main>
 
-    <footer class="layout-footer">
-        TODO: Add footer details in main-layout
+    <footer class="layout-footer bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">&copy; 2025 Case Management System</p>
     </footer>
 </div>

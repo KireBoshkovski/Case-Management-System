@@ -1,40 +1,39 @@
 package com.sorsix.backend.web
 
-import com.sorsix.backend.domain.MedicalThread
+import com.sorsix.backend.domain.toResponse
 import com.sorsix.backend.dto.CreateThreadRequest
+import com.sorsix.backend.dto.ThreadResponse
 import com.sorsix.backend.service.MedicalThreadService
-import org.springframework.http.ResponseEntity
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/threads")
 class MedicalThreadController(
-    val medicalThreadService: MedicalThreadService
+    private val service: MedicalThreadService
 ) {
-    @PostMapping
-    fun createThread(@RequestBody request: CreateThreadRequest): ResponseEntity<MedicalThread> =
-        ResponseEntity.ok(
-            medicalThreadService.createThreadFromCase(
-                caseId = request.caseId, creatingDoctorId = request.creatingDoctorId, title = request.title
-            )
-        )
-
-    @PostMapping("/{threadId}/fork")
-    fun forkThread(
-        @PathVariable threadId: Long, @RequestParam forkingDoctorId: Long
-    ): ResponseEntity<MedicalThread?> =
-        ResponseEntity.ok(
-            medicalThreadService.forkThread(
-                originalThreadId = threadId,
-                forkingDoctorId = forkingDoctorId,
-            )
-        )
-
-    @GetMapping
-    fun getActiveThreads(): ResponseEntity<List<MedicalThread>> =
-        ResponseEntity.ok(medicalThreadService.findActiveThreads())
+    @GetMapping("/active")
+    fun getActive(pageable: Pageable): Page<ThreadResponse> =
+        service.getActive(pageable).map { it.toResponse() }
 
     @GetMapping("/{id}")
-    fun getThreadById(@PathVariable id: Long) =
-        ResponseEntity.ok(medicalThreadService.findById(id))
+    fun getById(@PathVariable id: Long): ThreadResponse =
+        service.findById(id).toResponse()
+
+    @GetMapping("/{id}/forks")
+    fun getForks(@PathVariable id: Long, pageable: Pageable): Page<ThreadResponse> =
+        service.getForksOf(id, pageable).map { it.toResponse() }
+
+    @PostMapping
+    fun create(@RequestBody req: CreateThreadRequest): ThreadResponse =
+        service.createThread(req).toResponse()
+
+    @PostMapping("/{id}/fork")
+    fun fork(@PathVariable id: Long, @RequestParam forkingDoctorId: Long): ThreadResponse =
+        service.forkThread(id, forkingDoctorId).toResponse()
+
+    @PostMapping("/{id}/close")
+    fun close(@PathVariable id: Long): ThreadResponse =
+        service.closeThread(id).toResponse()
 }

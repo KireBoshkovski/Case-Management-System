@@ -7,6 +7,8 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
+import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
+import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { PatientSearch } from './features/patients/components/patient-search/patient-search';
 import { PatientDetails } from './features/patients/components/patient-details/patient-details';
 import { AuthGuard } from './core/guards/auth-guard';
@@ -17,6 +19,8 @@ import { CreateCase } from './features/cases/components/create-case/create-case'
 import { PublishCase } from './features/cases/components/publish-case/publish-case';
 import { ForkSearch } from './features/forks/components/fork-search/fork-search';
 import { ForkDetails } from './features/forks/components/fork-details/fork-details';
+import ThreadList from './features/threads/thread-list/thread-list';
+import ThreadDetail from './features/threads/thread-details/thread-detail';
 import { CreateFork } from './features/forks/components/create-fork/create-fork';
 import { ExaminationDetails } from './features/examinations/components/examination-details/examination-details';
 
@@ -49,6 +53,11 @@ export const routes: Routes = [
 
             // Examinations
             { path: 'examinations/:id', component: ExaminationDetails },
+            { path: 'forks/:id', component: ForkDetails},
+
+            //Threads
+            { path: 'threads', component: ThreadList },
+            { path: 'threads/:id', component: ThreadDetail },
         ],
     },
     {

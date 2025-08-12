@@ -6,11 +6,11 @@ import { PatientDetailsModel } from '../../../../models/patient-details.model';
 import { Case } from '../../../../models/cases/case.model';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
-import { DatePipe } from '@angular/common';
+import { List } from '../../../../shared/components/list/list';
 
 @Component({
     selector: 'patient-details',
-    imports: [List, DatePipe],
+    imports: [CommonModule, List, DatePipe],
     templateUrl: './patient-details.html',
     styleUrl: './patient-details.css',
 })
@@ -19,33 +19,32 @@ export class PatientDetails implements OnInit {
     caseService = inject(CaseService);
     route = inject(ActivatedRoute);
 
-    patient: PatientDetailsModel | undefined;
-    loading: boolean = true;
-    cases: Case[] = [];
+    patient?: PatientDetailsModel;
+    loading = true;
 
-    caseColumns: ColumnDef<Case>[] = [
+    cases: CaseDto[] = [];
+
+    caseColumns: ColumnDef<CaseDto>[] = [
         { header: 'Case ID', field: 'id' },
         { header: 'Status', field: 'status' },
         {
             header: 'Creation Date',
             field: 'createdAt',
-            formatter: (date: string) => new Date(date).toLocaleDateString(),
+            formatter: (iso: string) => new Date(iso).toLocaleDateString(),
         },
         {
             header: 'Last Update Date',
             field: 'updatedAt',
-            formatter: (date: string) => new Date(date).toLocaleDateString(),
+            formatter: (iso: string) => new Date(iso).toLocaleDateString(),
         },
     ];
 
     ngOnInit() {
         const patientId = Number(this.route.snapshot.paramMap.get('id'));
 
-        console.log('Loading Patient Details');
-
         this.patientService.getPatientById(patientId).subscribe({
-            next: (patientDetails) => {
-                this.patient = patientDetails;
+            next: (details) => {
+                this.patient = details;
                 this.loading = false;
             },
             error: (err) => {
@@ -54,6 +53,14 @@ export class PatientDetails implements OnInit {
             },
         });
 
+        this.caseService.getCasesByPatientIdPaged(patientId).subscribe({
+            next: (page) => {
+                this.cases = page.content; // <-- was assigning the whole page before
+            },
+            error: (err) => {
+                console.error('Error fetching cases for patient:', err);
+            },
+        });
         //        this.caseService.getCasesByPatientId(patientId).subscribe({
         //          next: (cases) => {
         //            this.cases = cases;
