@@ -5,7 +5,7 @@ import com.sorsix.backend.domain.enums.CaseStatus
 import java.time.LocalDateTime
 
 data class CaseDto(
-    val id: Long,
+    val id: Long?,
     val bloodType: String?,
     val allergies: String?,
     val description: String?,
@@ -15,7 +15,7 @@ data class CaseDto(
     val updatedAt: LocalDateTime?,
     val patientId: Long,
     val doctorId: Long,
-    val examinationsIds: List<Long>
+    val examinationsIds: List<Long?>
 )
 
 fun Case.toCaseDto() = CaseDto(

@@ -7,8 +7,6 @@ spring:
     username: sorsix
     password: sorsix
 
-
-
   jpa:
     hibernate:
       ddl-auto: update

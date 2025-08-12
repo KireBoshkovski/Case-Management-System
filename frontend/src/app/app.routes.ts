@@ -18,6 +18,7 @@ import { PublishCase } from './features/cases/components/publish-case/publish-ca
 import { ForkSearch } from './features/forks/components/fork-search/fork-search';
 import { ForkDetails } from './features/forks/components/fork-details/fork-details';
 import { CreateFork } from './features/forks/components/create-fork/create-fork';
+import { ExaminationDetails } from './features/examinations/components/examination-details/examination-details';
 
 export const routes: Routes = [
     {
@@ -45,6 +46,9 @@ export const routes: Routes = [
             { path: 'forks/:id', component: ForkDetails },
             { path: 'forks/new', component: CreateFork },
             { path: 'forks/:id/edit', component: CreateFork },
+
+            // Examinations
+            { path: 'examinations/:id', component: ExaminationDetails },
         ],
     },
     {

@@ -34,7 +34,7 @@
             <input id="password" type="password" formControlName="password" />
         </div>
 
-        <div *ngIf="formControls['role'].value === 'PATIENT'">
+        @if (formControls['role'].value === 'PATIENT') {
             <div>
                 <label for="dateOfBirth">Date of Birth</label>
                 <input
@@ -64,9 +64,9 @@
                     <option value="OTHER">Other</option>
                 </select>
             </div>
-        </div>
+        }
 
-        <div *ngIf="formControls['role'].value === 'DOCTOR'">
+        @if (formControls['role'].value === 'DOCTOR') {
             <div>
                 <label for="specialization">Specialization</label>
                 <input
@@ -83,17 +83,23 @@
                     formControlName="department"
                 />
             </div>
-        </div>
+        }
 
         <button type="submit" [disabled]="registerForm.invalid">
             Register
         </button>
-
-        <div *ngIf="successMessage" class="message success">
-            {{ successMessage }}
-        </div>
-        <div *ngIf="errorMessage" class="message error">
-            {{ errorMessage }}
-        </div>
+        @if (successMessage) {
+            <div class="message success">
+                {{ successMessage }}
+            </div>
+        }
+        @if (errorMessage) {
+            <div class="message error">
+                {{ errorMessage }}
+            </div>
+        }
+        <a routerLink="/login" class="btn btn-block btn-light btn-transparent"
+            >Already have an account? Login here!</a
+        >
     </form>
 </div>
