@@ -2,10 +2,11 @@ package com.sorsix.backend.repository
 
 import com.sorsix.backend.domain.MedicalThread
 import com.sorsix.backend.domain.enums.ThreadStatus
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.stereotype.Repository
 
-@Repository
 interface MedicalThreadRepository : JpaRepository<MedicalThread, Long> {
-    fun findByStatus(active: ThreadStatus): List<MedicalThread>
+    fun findByStatus(status: ThreadStatus, pageable: Pageable): Page<MedicalThread>
+    fun findByParentThreadId(parentThreadId: Long, pageable: Pageable): Page<MedicalThread>
 }

@@ -4,10 +4,11 @@ import com.sorsix.backend.domain.Case
 import com.sorsix.backend.domain.enums.CaseStatus
 import com.sorsix.backend.exceptions.CaseNotFoundException
 import com.sorsix.backend.repository.CaseRepository
+import com.sorsix.backend.specification.CaseSpecifications
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
-import org.springframework.data.repository.findByIdOrNull
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -15,35 +16,46 @@ enum class Visibility { ALL, PUBLIC, PRIVATE }
 
 @Service
 class CaseService(
-    val caseRepository: CaseRepository
+    private val caseRepository: CaseRepository
 ) {
     fun getCases(
         visibility: Visibility,
         patientId: Long?,
+        q: String?,
         pageable: Pageable
     ): Page<Case> {
-        if (patientId != null) {
-            return caseRepository.findAllByPatientId(patientId, pageable)
+        val publicVal: Boolean? = when (visibility) {
+            Visibility.PUBLIC  -> true
+            Visibility.PRIVATE -> false
+            Visibility.ALL     -> null
         }
-        return when (visibility) {
-            Visibility.PUBLIC -> caseRepository.findAllByPublicTrue(pageable)
-            Visibility.PRIVATE -> caseRepository.findAllByPublicFalse(pageable)
-            Visibility.ALL -> caseRepository.findAll(pageable)
+
+        var spec: Specification<Case>? = null
+
+        CaseSpecifications.hasPatientId(patientId)?.let {
+            spec = spec?.and(it) ?: it
         }
+
+        CaseSpecifications.isPublic(publicVal)?.let {
+            spec = spec?.and(it) ?: it
+        }
+
+        CaseSpecifications.searchByTermOrId(q?.trim())?.let {
+            spec = spec?.and(it) ?: it
+        }
+
+        return caseRepository.findAll(spec, pageable)
     }
 
-
     fun findById(id: Long): Case =
-        caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
+        caseRepository.findById(id).orElseThrow { CaseNotFoundException(id) }
 
     @Transactional
-    fun save(case: Case): Case =
-        caseRepository.save(case)
+    fun save(case: Case): Case = caseRepository.save(case)
 
     @Transactional
     fun update(case: Case): Case {
         val existing = findById(case.id)
-
         val updated = existing.copy(
             public = case.public,
             bloodType = case.bloodType,
@@ -64,12 +76,7 @@ class CaseService(
 
     @Transactional
     fun updateStatus(id: Long, status: CaseStatus): Case {
-        val case = findById(id)
-        val updated = case.copy(
-            status = status,
-            updatedAt = LocalDateTime.now()
-        )
-        return caseRepository.save(updated)
+        val e = findById(id)
+        return caseRepository.save(e.copy(status = status, updatedAt = LocalDateTime.now()))
     }
-
 }

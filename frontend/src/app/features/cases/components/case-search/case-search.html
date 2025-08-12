@@ -1,4 +1,5 @@
-<search-bar></search-bar>
+<search-bar (searchChange)="onSearchChange($event)"></search-bar>
+
 
 <list
     [items]="(cases$ | async) ?? []"

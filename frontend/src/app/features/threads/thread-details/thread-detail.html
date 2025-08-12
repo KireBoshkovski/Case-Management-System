@@ -1,0 +1,103 @@
+<div class="container py-3">
+    @if (thread) {
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+            <div>
+                <h2 class="mb-1">{{ thread.title }}</h2>
+                <div class="text-muted small">
+                    #{{ thread.id }} · {{ thread.status }} · Created {{ thread.createdAt | date:'medium' }}
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-secondary" (click)="fork()">Fork (educational)</button>
+                <button class="btn btn-outline-danger" (click)="close()">Close</button>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-header fw-semibold">Symptoms</div>
+            <div class="card-body">
+                <p class="mb-0">{{ thread.anonymizedSymptoms }}</p>
+            </div>
+        </div>
+
+        @if (thread.anonymizedPatientInfo) {
+            <div class="card mb-4">
+                <div class="card-header fw-semibold">Patient Info</div>
+                <div class="card-body">
+                    <p class="mb-0">{{ thread.anonymizedPatientInfo }}</p>
+                </div>
+            </div>
+        }
+
+        <div class="card mb-3">
+            <div class="card-header fw-semibold">Add Discussion</div>
+            <div class="card-body">
+                <div class="mb-3">
+          <textarea
+              class="form-control"
+              [(ngModel)]="newContent"
+              rows="4"
+              placeholder="Add your analysis..."
+          ></textarea>
+                </div>
+                <div class="row g-2">
+                    <div class="col-md">
+                        <input
+                            class="form-control"
+                            type="text"
+                            [(ngModel)]="newDiagnosis"
+                            placeholder="Diagnosis suggestion (optional)"
+                        />
+                    </div>
+                    <div class="col-md-auto">
+                        <input
+                            class="form-control"
+                            type="number"
+                            [(ngModel)]="newConfidence"
+                            placeholder="Confidence 1–10"
+                            min="1"
+                            max="10"
+                        />
+                    </div>
+                    <div class="col-md-auto">
+                        <button class="btn btn-primary" (click)="postDiscussion()">Post</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mb-2">
+            <h5 class="mb-0">Discussions</h5>
+            <button class="btn btn-outline-primary btn-sm" (click)="loadMore()" [disabled]="!hasMore">
+                Load more
+            </button>
+        </div>
+
+        <div class="list-group">
+            @for (d of discussions; track d.id) {
+                <div class="list-group-item">
+                    <div class="d-flex flex-wrap gap-2 justify-content-between small text-muted">
+                        <div>
+                            <span class="me-2">#{{ d.id }}</span>
+                            <span class="me-2">Doctor: {{ d.doctorId }}</span>
+                        </div>
+                        <span>{{ d.createdAt | date:'short' }}</span>
+                    </div>
+                    <p class="mb-2 mt-2">{{ d.content }}</p>
+                    @if (d.diagnosisSuggestion) {
+                        <div class="badge bg-light text-dark">
+                            Suggested: {{ d.diagnosisSuggestion }}
+                            @if (d.confidenceLevel) {
+                                <span> ({{ d.confidenceLevel }}/10)</span>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (!discussions?.length) {
+            <div class="alert alert-light border mt-3 mb-0">No discussions yet.</div>
+        }
+    }
+</div>

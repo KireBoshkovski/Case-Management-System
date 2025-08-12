@@ -18,13 +18,13 @@ data class Case(
     @Column(name = "blood_type", length = 5)
     val bloodType: String?,
 
-    @Column(name = "allergies", columnDefinition = "TEXT")
+    @Column(name = "allergies")  // Removed columnDefinition = "TEXT"
     val allergies: String?,
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description")  // Removed columnDefinition = "TEXT"
     val description: String?,
 
-    @Column(name = "treatment_plan", columnDefinition = "TEXT")
+    @Column(name = "treatment_plan")  // Removed columnDefinition = "TEXT"
     val treatmentPlan: String?,
 
     @Enumerated(EnumType.STRING)
@@ -48,5 +48,4 @@ data class Case(
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "case_id")
     val examinations: MutableList<Examination> = mutableListOf(),
-
-    )
+)

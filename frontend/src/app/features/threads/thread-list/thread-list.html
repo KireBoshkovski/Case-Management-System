@@ -1,0 +1,30 @@
+<div class="container py-3">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="mb-0">Active Threads</h2>
+        <button class="btn btn-outline-primary" (click)="loadMore()" [disabled]="!hasMore">
+            Load more
+        </button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+        @for (t of threads; track t.id) {
+            <div class="col">
+                <a class="card h-100 text-decoration-none text-body" [routerLink]="['/threads', t.id]">
+                    <div class="card-body">
+                        <h5 class="card-title mb-1">{{ t.title }}</h5>
+                        <div class="text-muted small mb-2">
+                            #{{ t.id }} · {{ t.status }} · {{ t.createdAt | date:'medium' }}
+                        </div>
+                        <p class="card-text mb-0 text-truncate-3">
+                            {{ t.anonymizedSymptoms }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (!threads?.length) {
+        <div class="alert alert-light border mt-3 mb-0">No threads yet.</div>
+    }
+</div>

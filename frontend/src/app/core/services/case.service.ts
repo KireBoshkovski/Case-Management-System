@@ -13,6 +13,7 @@ export interface GetCasesOptions {
     page?: number;
     size?: number;
     sort?: string[];
+    query?: string;
 }
 
 @Injectable({
@@ -30,6 +31,7 @@ export class CaseService {
             page = 0,
             size = 20,
             sort = ['createdAt,desc'],
+            query,
         } = options;
 
         let params = new HttpParams()
@@ -39,9 +41,11 @@ export class CaseService {
 
         sort.forEach(s => (params = params.append('sort', s)));
         if (patientId != null) params = params.set('patientId', patientId);
+        if (query && query.trim().length > 0) params = params.set('q', query.trim());
 
-        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases`, {params});
+        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases`, { params });
     }
+
 
     getPublicCasesPaged(page = 0, size = 20): Observable<PageResponse<CaseDto>> {
         return this.getCases({ visibility: 'PUBLIC', page, size });

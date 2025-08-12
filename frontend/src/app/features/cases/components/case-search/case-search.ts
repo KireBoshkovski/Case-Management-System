@@ -24,27 +24,31 @@ export class CaseSearch implements OnInit {
     private service = inject(CaseService);
     private route = inject(ActivatedRoute);
 
-    private page$ = new BehaviorSubject<number>(0);
-    private size$ = new BehaviorSubject<number>(10);
+    private page$  = new BehaviorSubject<number>(0);
+    private size$  = new BehaviorSubject<number>(10);
+    private query$ = new BehaviorSubject<string>('');
 
     readonly visibility$ = this.route.data.pipe<Visibility>(
         map(d => (d['public'] ? 'PUBLIC' : 'ALL'))
     );
 
-    readonly pageResponse$ = combineLatest([this.visibility$, this.page$, this.size$]).pipe(
-        switchMap(([visibility, page, size]) =>
+    readonly pageResponse$ = combineLatest([
+        this.visibility$, this.page$, this.size$, this.query$
+    ]).pipe(
+        switchMap(([visibility, page, size, q]) =>
             this.service.getCases({
                 visibility,
                 page,
                 size,
                 sort: ['createdAt,desc'],
+                query: q?.trim() || undefined,
             })
         ),
-        shareReplay({bufferSize: 1, refCount: true})
+        shareReplay({ bufferSize: 1, refCount: true })
     );
 
-    readonly cases$ = this.pageResponse$.pipe(map((res: PageResponse<CaseDto>) => res.content));
-    readonly totalPages$ = this.pageResponse$.pipe(map(res => res.totalPages));
+    readonly cases$       = this.pageResponse$.pipe(map((res: PageResponse<CaseDto>) => res.content));
+    readonly totalPages$  = this.pageResponse$.pipe(map(res => res.totalPages));
     readonly currentPage$ = this.pageResponse$.pipe(map(res => res.page));
 
     readonly caseColumns: ColumnDef<CaseDto>[] = [
@@ -54,8 +58,8 @@ export class CaseSearch implements OnInit {
             formatter: (p: PatientDetailsModel) => `${p.firstName} ${p.lastName}`,
             idField: 'id',
         },
-        {header: 'Case ID', field: 'id'},
-        {header: 'Status', field: 'status'},
+        { header: 'Case ID', field: 'id' },
+        { header: 'Status', field: 'status' },
         {
             header: 'Creation Date',
             field: 'createdAt',
@@ -68,8 +72,11 @@ export class CaseSearch implements OnInit {
         },
     ];
 
-    ngOnInit(): void {
+    ngOnInit(): void {}
 
+    onSearchChange(q: string) {
+        this.page$.next(0);
+        this.query$.next(q);
     }
 
     onPageChange(nextPage: number) {

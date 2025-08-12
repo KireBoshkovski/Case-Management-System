@@ -8,6 +8,7 @@ import com.sorsix.backend.dto.toPageResponse
 import com.sorsix.backend.service.CaseService
 import com.sorsix.backend.service.Visibility
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -22,9 +23,11 @@ class CaseController(
     fun getCases(
         @RequestParam(defaultValue = "ALL") visibility: Visibility,
         @RequestParam(required = false) patientId: Long?,
-        @PageableDefault(size = 20, sort = ["createdAt"]) pageable: Pageable
+        @RequestParam(required = false) q: String?,
+        @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable
     ): ResponseEntity<PageResponse<CaseDto>> {
-        val page = caseService.getCases(visibility, patientId, pageable).map { it.toCaseDto() }
+        val page = caseService.getCases(visibility, patientId, q, pageable)
+            .map { it.toCaseDto() }
         return ResponseEntity.ok(page.toPageResponse())
     }
 

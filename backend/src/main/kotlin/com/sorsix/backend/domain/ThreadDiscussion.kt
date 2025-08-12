@@ -1,13 +1,12 @@
 package com.sorsix.backend.domain
 
+import com.sorsix.backend.dto.DiscussionResponse
 import jakarta.persistence.*
 import java.time.LocalDateTime
-
 @Entity
 @Table(name = "thread_discussions")
 data class ThreadDiscussion(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "discussion_id")
     val id: Long = 0,
 
@@ -15,26 +14,31 @@ data class ThreadDiscussion(
     val content: String,
 
     @Column(name = "diagnosis_suggestion", columnDefinition = "TEXT")
-    val diagnosisSuggestion: String?,
+    val diagnosisSuggestion: String? = null,
 
     @Column(name = "confidence_level")
-    val confidenceLevel: Int?, // 1-10 scale
+    val confidenceLevel: Int? = null, // 1–10
 
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne
-    @JoinColumn(name = "thread_id", nullable = false)
+    @ManyToOne(optional = false) @JoinColumn(name = "thread_id")
     val thread: MedicalThread,
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
+    @ManyToOne(optional = false) @JoinColumn(name = "doctor_id")
     val doctor: Doctor,
 
-    @ManyToOne
-    @JoinColumn(name = "parent_discussion_id")
-    val parentDiscussion: ThreadDiscussion? = null, // For replies
+    @ManyToOne @JoinColumn(name = "parent_discussion_id")
+    val parentDiscussion: ThreadDiscussion? = null
+)
 
-    @OneToMany(mappedBy = "parentDiscussion", fetch = FetchType.LAZY)
-    val replies: MutableList<ThreadDiscussion> = mutableListOf()
+fun ThreadDiscussion.toResponse() = DiscussionResponse(
+    id = id,
+    content = content,
+    diagnosisSuggestion = diagnosisSuggestion,
+    confidenceLevel = confidenceLevel,
+    createdAt = createdAt,
+    threadId = thread.id,
+    doctorId = doctor.id!!,
+    parentDiscussionId = parentDiscussion?.id
 )
