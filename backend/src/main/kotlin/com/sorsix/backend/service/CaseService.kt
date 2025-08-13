@@ -10,56 +10,26 @@ import com.sorsix.backend.repository.CaseRepository
 import com.sorsix.backend.repository.PublicCaseRepository
 import com.sorsix.backend.repository.PublicExaminationRepository
 import com.sorsix.backend.security.CustomUserDetails
-import com.sorsix.backend.specification.CaseSpecifications
 import jakarta.transaction.Transactional
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.access.AccessDeniedException
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.domain.Specification
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
 class CaseService(
-    private val caseRepository: CaseRepository,
+    val caseRepository: CaseRepository,
     val publicCaseRepository: PublicCaseRepository,
     val publicExaminationRepository: PublicExaminationRepository,
     val patientService: PatientService,
     val doctorService: DoctorService
 ) {
     fun findByPatientId(id: Long) = caseRepository.findAllByPatientId(id)
-    fun getCases(
-        visibility: Visibility,
-        patientId: Long?,
-        q: String?,
-        pageable: Pageable
-    ): Page<Case> {
-        val publicVal: Boolean? = when (visibility) {
-            Visibility.PUBLIC  -> true
-            Visibility.PRIVATE -> false
-            Visibility.ALL     -> null
-        }
-
-        var spec: Specification<Case>? = null
 
     fun findByDoctorId(id: Long) = caseRepository.findAllByDoctorId(id)
-        CaseSpecifications.hasPatientId(patientId)?.let {
-            spec = spec?.and(it) ?: it
-        }
 
     fun findAllPublic(): List<PublicCase> =
         publicCaseRepository.findAll()
-        CaseSpecifications.isPublic(publicVal)?.let {
-            spec = spec?.and(it) ?: it
-        }
-
-        CaseSpecifications.searchByTermOrId(q?.trim())?.let {
-            spec = spec?.and(it) ?: it
-        }
-
-        return caseRepository.findAll(spec, pageable)
-    }
 
     fun findById(id: Long): Case =
         caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
@@ -136,11 +106,5 @@ class CaseService(
             savedCase.examinations.addAll(publicExaminations.toMutableList())
             publicCaseRepository.save(savedCase)
         }
-    }
-
-    @Transactional
-    fun updateStatus(id: Long, status: CaseStatus): Case {
-        val e = findById(id)
-        return caseRepository.save(e.copy(status = status, updatedAt = LocalDateTime.now()))
     }
 }

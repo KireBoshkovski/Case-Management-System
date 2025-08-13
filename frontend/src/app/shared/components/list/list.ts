@@ -5,7 +5,6 @@ import { ColumnDef } from '../../../models/columnDef';
 @Component({
     selector: 'list',
     imports: [ListItem],
-    standalone: true,
     templateUrl: './list.html',
     styleUrl: './list.css',
 })

@@ -1,39 +1,46 @@
 package com.sorsix.backend.service
 
 import com.sorsix.backend.domain.ThreadDiscussion
-import com.sorsix.backend.dto.CreateDiscussionRequest
 import com.sorsix.backend.exceptions.MedicalThreadNotFoundException
 import com.sorsix.backend.repository.ThreadDiscussionRepository
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class ThreadDiscussionService(
-    private val threadService: MedicalThreadService,
-    private val discussionRepository: ThreadDiscussionRepository,
-    private val doctorService: DoctorService
+    val threadService: MedicalThreadService,
+    val discussionRepository: ThreadDiscussionRepository,
+    val doctorService: DoctorService
 ) {
-    fun listByThread(threadId: Long, pageable: Pageable): Page<ThreadDiscussion> =
-        discussionRepository.findByThreadIdOrderByCreatedAtAsc(threadId, pageable)
 
     fun findById(id: Long): ThreadDiscussion =
         discussionRepository.findByIdOrNull(id) ?: throw MedicalThreadNotFoundException(id)
 
-    fun addDiscussion(req: CreateDiscussionRequest): ThreadDiscussion {
-        val thread = threadService.findById(req.threadId)
-        val doctor = doctorService.findById(req.doctorId)
-        val parent = req.parentDiscussionId?.let { findById(it) }
+    fun findByThreadId(threadId: Long): List<ThreadDiscussion> =
+        discussionRepository.findByThreadIdOrderByCreatedAtAsc(threadId)
 
-        val entity = ThreadDiscussion(
-            content = req.content,
-            diagnosisSuggestion = req.diagnosisSuggestion,
-            confidenceLevel = req.confidenceLevel,
+
+    fun addDiscussion(
+        threadId: Long,
+        doctorId: Long,
+        content: String,
+        diagnosisSuggestion: String?,
+        confidenceLevel: Int?,
+        parentDiscussionId: Long? = null
+    ): ThreadDiscussion {
+        val thread = threadService.findById(threadId)
+        val doctor = doctorService.findById(doctorId)
+        val parentDiscussion = parentDiscussionId?.let { findById(it) }
+
+        val discussion = ThreadDiscussion(
+            content = content,
+            diagnosisSuggestion = diagnosisSuggestion,
+            confidenceLevel = confidenceLevel,
             thread = thread,
             doctor = doctor,
-            parentDiscussion = parent
+            parentDiscussion = parentDiscussion
         )
-        return discussionRepository.save(entity)
+
+        return discussionRepository.save(discussion)
     }
 }

@@ -2,7 +2,6 @@ package com.sorsix.backend.domain
 
 import com.sorsix.backend.domain.enums.ThreadStatus
 import com.sorsix.backend.domain.users.Doctor
-import com.sorsix.backend.dto.ThreadResponse
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -21,7 +20,7 @@ data class MedicalThread(
     val anonymizedSymptoms: String,
 
     @Column(name = "anonymized_patient_info", columnDefinition = "TEXT")
-    val anonymizedPatientInfo: String? = null,
+    val anonymizedPatientInfo: String?,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -36,26 +35,24 @@ data class MedicalThread(
     @Column(name = "updated_at", nullable = false)
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 
-    @ManyToOne(optional = false) @JoinColumn(name = "original_case_id")
+    @ManyToOne
+    @JoinColumn(name = "original_case_id")
     val originalCase: Case,
 
-    @ManyToOne(optional = false) @JoinColumn(name = "creating_doctor_id")
+    @ManyToOne
+    @JoinColumn(name = "creating_doctor_id")
     val creatingDoctor: Doctor,
 
-    @ManyToOne @JoinColumn(name = "parent_thread_id")
-    val parentThread: MedicalThread? = null
-)
+    @ManyToOne
+    @JoinColumn(name = "parent_thread_id")
+    val parentThread: MedicalThread? = null,
 
-fun MedicalThread.toResponse() = ThreadResponse(
-    id = id,
-    title = title,
-    anonymizedSymptoms = anonymizedSymptoms,
-    anonymizedPatientInfo = anonymizedPatientInfo,
-    status = status.name,
-    isEducational = isEducational,
-    createdAt = createdAt,
-    updatedAt = updatedAt,
-    originalCaseId = originalCase.id,
-    creatingDoctorId = creatingDoctor.id!!,
-    parentThreadId = parentThread?.id
+    @OneToMany(mappedBy = "thread", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val discussions: MutableList<ThreadDiscussion> = mutableListOf(),
+
+    @OneToMany(mappedBy = "thread", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val attachments: MutableList<ThreadAttachment> = mutableListOf(),
+
+    @OneToMany(mappedBy = "parentThread", fetch = FetchType.LAZY)
+    val forkedThreads: MutableList<MedicalThread> = mutableListOf()
 )
