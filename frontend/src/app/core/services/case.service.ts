@@ -1,12 +1,12 @@
-import {inject, Injectable} from '@angular/core';
-import {environment} from '../../../environments/environments';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {PageResponse} from '../../models/page-response.model';
-import {Visibility} from '../../models/visibility.type';
-import {Case} from '../../models/cases/case.model';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '../../../environments/environments';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { PageResponse } from '../../models/page-response.model';
+import { Visibility } from '../../models/visibility.type';
+import { Case } from '../../models/cases/case.model';
 import { PublicCase } from '../../models/cases/public-case.model';
-import { CaseDto } from '../../models/cases/case-dto.model';
+import { CaseDto } from '../../models/case.dto';
 
 export interface GetCasesOptions {
     visibility?: Visibility;
@@ -17,18 +17,10 @@ export interface GetCasesOptions {
     query?: string;
 }
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class CaseService {
     private apiUrl = environment.apiUrl;
-
-    http = inject(HttpClient);
-
-    //TODO FIX
-    getCases() {
-        return this.http.get<CaseDto[]>(`${this.apiUrl}/cases`);
-    }
+    private http = inject(HttpClient);
 
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {
@@ -49,9 +41,9 @@ export class CaseService {
         if (patientId != null) params = params.set('patientId', patientId);
         if (query && query.trim().length > 0) params = params.set('q', query.trim());
 
-        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases`, { params });
+        // IMPORTANT: paged/search endpoint is /cases/search (not /cases)
+        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases/search`, { params });
     }
-
 
     getPublicCasesPaged(page = 0, size = 20): Observable<PageResponse<CaseDto>> {
         return this.getCases({ visibility: 'PUBLIC', page, size });
@@ -66,11 +58,11 @@ export class CaseService {
     }
 
     getPublicCases() {
-        return this.http.get<PublicCase[]>(`${this.apiUrl}/public`);
+        return this.http.get<PublicCase[]>(`${this.apiUrl}/cases/public`);
     }
 
     getPublicCaseById(id: number) {
-        return this.http.get<PublicCase>(`${this.apiUrl}/public/${id}`);
+        return this.http.get<PublicCase>(`${this.apiUrl}/cases/public/${id}`);
     }
 
     censorCase(id: number) {
@@ -78,10 +70,7 @@ export class CaseService {
     }
 
     publishCase(id: number, publicCase: PublicCase) {
-        return this.http.post<void>(
-            `${this.apiUrl}/cases/publish/${id}`,
-            publicCase,
-        );
+        return this.http.post<void>(`${this.apiUrl}/cases/publish/${id}`, publicCase);
     }
 
     createCase(newCase: Partial<CaseDto>): Observable<CaseDto> {
@@ -89,9 +78,6 @@ export class CaseService {
     }
 
     updateCase(id: number, updatedCase: Partial<CaseDto>): Observable<CaseDto> {
-        return this.http.put<CaseDto>(
-            `${this.apiUrl}/cases/${id}`,
-            updatedCase,
-        );
+        return this.http.put<CaseDto>(`${this.apiUrl}/cases/${id}`, updatedCase);
     }
 }

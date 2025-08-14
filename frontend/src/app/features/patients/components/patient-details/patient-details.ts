@@ -1,12 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { PatientsService } from '../../../../core/services/patients.service';
-import { CaseService } from '../../../../core/services/case.service';
-import { ActivatedRoute } from '@angular/router';
-import { PatientDetailsModel } from '../../../../models/patient-details.model';
-import { Case } from '../../../../models/cases/case.model';
-import { List } from '../../../../shared/components/list/list';
-import { ColumnDef } from '../../../../models/columnDef';
-import { List } from '../../../../shared/components/list/list';
+import {Component, inject, OnInit} from '@angular/core';
+import {PatientsService} from '../../../../core/services/patients.service';
+import {CaseService} from '../../../../core/services/case.service';
+import {ActivatedRoute} from '@angular/router';
+import {PatientDetailsModel} from '../../../../models/patient-details.model';
+import {List} from '../../../../shared/components/list/list';
+import {ColumnDef} from '../../../../models/columnDef';
+import {CommonModule, DatePipe} from '@angular/common';
+import {CaseDto} from '../../../../models/case.dto';
+import {PageResponse} from '../../../../models/page-response.model';
 
 @Component({
     selector: 'patient-details',
@@ -25,8 +26,8 @@ export class PatientDetails implements OnInit {
     cases: CaseDto[] = [];
 
     caseColumns: ColumnDef<CaseDto>[] = [
-        { header: 'Case ID', field: 'id' },
-        { header: 'Status', field: 'status' },
+        {header: 'Case ID', field: 'id'},
+        {header: 'Status', field: 'status'},
         {
             header: 'Creation Date',
             field: 'createdAt',
@@ -54,7 +55,7 @@ export class PatientDetails implements OnInit {
         });
 
         this.caseService.getCasesByPatientIdPaged(patientId).subscribe({
-            next: (page) => {
+            next: (page: PageResponse<any>) => {//TODO
                 this.cases = page.content; // <-- was assigning the whole page before
             },
             error: (err) => {

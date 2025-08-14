@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
-import { CaseDto } from '../../../../models/cases/case-dto.model';
+import { CaseDto } from '../../../../models/case.dto';
 import {
     ReactiveFormsModule,
     FormBuilder,
@@ -81,9 +81,9 @@ export class CreateCase implements OnInit {
                 description: formValue.description,
                 treatmentPlan: formValue.treatmentPlan || undefined,
                 status: formValue.status,
-                patientId: Number(formValue.patientId),
+                // patientId: Number(formValue.patientId), //TODO
                 doctorId: Number(formValue.doctorId),
-                examinationsIds: formValue.examinationsIds || [],
+                // examinationsIds: formValue.examinationsIds || [], //TODO
             };
 
             if (this.isEditMode) {

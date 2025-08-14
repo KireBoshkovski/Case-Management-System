@@ -7,8 +7,6 @@ import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
-import { ForgotPassword } from './features/auth/forgot-password/forgot-password';
-import { ResetPassword } from './features/auth/reset-password/reset-password';
 import { PatientSearch } from './features/patients/components/patient-search/patient-search';
 import { PatientDetails } from './features/patients/components/patient-details/patient-details';
 import { AuthGuard } from './core/guards/auth-guard';
