@@ -37,7 +37,7 @@ data class MedicalThread(
     val updatedAt: LocalDateTime = LocalDateTime.now(),
 
     @ManyToOne(optional = false) @JoinColumn(name = "original_case_id")
-    val originalCase: Case,
+    val originalCase: Case,//PUBLIC
 
     @ManyToOne(optional = false) @JoinColumn(name = "creating_doctor_id")
     val creatingDoctor: Doctor,
@@ -55,7 +55,7 @@ fun MedicalThread.toResponse() = ThreadResponse(
     isEducational = isEducational,
     createdAt = createdAt,
     updatedAt = updatedAt,
-    originalCaseId = originalCase.id,
-    creatingDoctorId = creatingDoctor.id!!,
+    originalCaseId = originalCase.id!!,
+    creatingDoctorId = creatingDoctor.id,
     parentThreadId = parentThread?.id
 )

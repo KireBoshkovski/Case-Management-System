@@ -2,6 +2,7 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.PublicCase
 import com.sorsix.backend.service.CaseService
+import com.sorsix.backend.service.Visibility
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,8 +18,8 @@ class PublicController(
     /*
     * This returns all public cases in new PublicCase entity format
     *  */
-    @GetMapping
-    fun getAllPublicCases(): List<PublicCase> = caseService.findAllPublic()
+//    @GetMapping
+//    fun getAllPublicCases(): List<PublicCase> = caseService.getCases(visibility = Visibility.PUBLIC)
 
 
     @GetMapping("/{id}")

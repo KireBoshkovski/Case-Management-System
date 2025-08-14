@@ -3,6 +3,7 @@ package com.sorsix.backend.service
 import com.sorsix.backend.domain.Case
 import com.sorsix.backend.domain.PublicCase
 import com.sorsix.backend.domain.PublicExamination
+import com.sorsix.backend.domain.enums.CaseStatus
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.exceptions.CaseNotFoundException
@@ -12,23 +13,34 @@ import com.sorsix.backend.repository.PublicExaminationRepository
 import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.specification.CaseSpecifications
 import jakarta.transaction.Transactional
-import org.springframework.data.repository.findByIdOrNull
-import org.springframework.security.access.AccessDeniedException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.domain.Specification
+import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+
+enum class Visibility { PUBLIC, PRIVATE, ALL }
 
 @Service
 class CaseService(
     private val caseRepository: CaseRepository,
-    val publicCaseRepository: PublicCaseRepository,
-    val publicExaminationRepository: PublicExaminationRepository,
-    val patientService: PatientService,
-    val doctorService: DoctorService
+    private val publicCaseRepository: PublicCaseRepository,
+    private val publicExaminationRepository: PublicExaminationRepository,
+    private val patientService: PatientService,
+    private val doctorService: DoctorService
 ) {
-    fun findByPatientId(id: Long) = caseRepository.findAllByPatientId(id)
+
+    @Transactional
+    fun findByPatientId(id: Long): List<Case> =
+        caseRepository.findAllByPatientId(id)
+
+    @Transactional
+    fun findByDoctorId(id: Long): List<Case> =
+        caseRepository.findAllByDoctorId(id)
+
+    @Transactional
     fun getCases(
         visibility: Visibility,
         patientId: Long?,
@@ -41,77 +53,76 @@ class CaseService(
             Visibility.ALL     -> null
         }
 
-        var spec: Specification<Case>? = null
+        val specs = listOfNotNull(
+            CaseSpecifications.hasPatientId(patientId),
+            CaseSpecifications.isPublic(publicVal),
+            CaseSpecifications.searchByTermOrId(q?.trim())
+        )
 
-    fun findByDoctorId(id: Long) = caseRepository.findAllByDoctorId(id)
-        CaseSpecifications.hasPatientId(patientId)?.let {
-            spec = spec?.and(it) ?: it
-        }
+        val spec: Specification<Case>? = specs.reduceOrNull { acc, s -> acc.and(s) }
 
-    fun findAllPublic(): List<PublicCase> =
-        publicCaseRepository.findAll()
-        CaseSpecifications.isPublic(publicVal)?.let {
-            spec = spec?.and(it) ?: it
-        }
-
-        CaseSpecifications.searchByTermOrId(q?.trim())?.let {
-            spec = spec?.and(it) ?: it
-        }
-
-        return caseRepository.findAll(spec, pageable)
-    }
-
-    fun findById(id: Long): Case =
-        caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
-
-    fun findPublicById(id: Long): PublicCase =
-        publicCaseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
-
-    fun findByIdSecured(id: Long, currentUser: CustomUserDetails): Case {
-        val case = findById(id)
-        val canAccess = when (currentUser.getRole()) {
-            UserRole.PATIENT -> case.patient.id == currentUser.getId()
-            UserRole.DOCTOR -> case.doctor.id == currentUser.getId()
-            else -> false
-        }
-        if (!canAccess) throw AccessDeniedException("You are not authorized to view this case")
-        return case
+        return if (spec != null) caseRepository.findAll(spec, pageable)
+        else caseRepository.findAll(pageable)
     }
 
     @Transactional
-    fun save(case: CaseDto) =
+    fun findById(id: Long): Case =
+        caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
+
+    @Transactional
+    fun findPublicById(id: Long): PublicCase =
+        publicCaseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)
+
+    @Transactional
+    fun findByIdSecured(id: Long, currentUser: CustomUserDetails): Case {
+        val c = findById(id)
+        val canAccess = when (currentUser.getRole()) {
+            UserRole.PATIENT -> c.patient.id == currentUser.getId()
+            UserRole.DOCTOR  -> c.doctor.id == currentUser.getId()
+            else -> false
+        }
+        if (!canAccess) throw AccessDeniedException("You are not authorized to view this case")
+        return c
+    }
+
+    @Transactional
+    fun save(dto: CaseDto): Case =
         caseRepository.save(
             Case(
-                id = 0,
-                bloodType = case.bloodType,
-                allergies = case.allergies,
-                description = case.description,
-                treatmentPlan = case.treatmentPlan,
-                status = case.status,
-                patient = patientService.findById(case.patientId),
-                doctor = doctorService.findById(case.doctorId),
+                id = null, // important for @GeneratedValue
+                bloodType = dto.bloodType,
+                allergies = dto.allergies,
+                description = dto.description,
+                treatmentPlan = dto.treatmentPlan,
+                status = dto.status,
+                patient = patientService.findById(dto.patientId),
+                doctor = doctorService.findById(dto.doctorId),
             )
         )
 
     @Transactional
-    fun update(id: Long, case: CaseDto): Case {
+    fun update(id: Long, dto: CaseDto): Case {
         val existing = findById(id)
-
         val updated = existing.copy(
-            bloodType = case.bloodType,
-            allergies = case.allergies,
-            description = case.description,
-            treatmentPlan = case.treatmentPlan,
-            status = case.status
+            bloodType = dto.bloodType,
+            allergies = dto.allergies,
+            description = dto.description,
+            treatmentPlan = dto.treatmentPlan,
+            status = dto.status,
+            updatedAt = LocalDateTime.now()
         )
         return caseRepository.save(updated)
     }
 
-    /*
-    * Function should take a case object after the doctor approved changes from the frontend page.
-    * Meaning this function should persist the new case.
-    * The way it's persisting
-    * */
+    @Transactional
+    fun deleteById(id: Long) {
+        if (!caseRepository.existsById(id)) throw CaseNotFoundException(id)
+        caseRepository.deleteById(id)
+    }
+
+    /**
+     * Persist a public case and its public examinations.
+     */
     @Transactional
     fun publishCase(case: PublicCase) {
         val savedCase = publicCaseRepository.save(case)
@@ -119,7 +130,7 @@ class CaseService(
         if (case.examinations.isNotEmpty()) {
             val publicExaminations = case.examinations.map { exam ->
                 PublicExamination(
-                    id = 0,
+                    id = null,
                     originalExaminationId = exam.originalExaminationId,
                     examinationType = exam.examinationType,
                     findings = exam.findings,
@@ -132,7 +143,6 @@ class CaseService(
                 )
             }
             publicExaminationRepository.saveAll(publicExaminations)
-
             savedCase.examinations.addAll(publicExaminations.toMutableList())
             publicCaseRepository.save(savedCase)
         }

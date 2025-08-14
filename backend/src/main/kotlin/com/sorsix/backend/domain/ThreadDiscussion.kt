@@ -42,6 +42,6 @@ fun ThreadDiscussion.toResponse() = DiscussionResponse(
     confidenceLevel = confidenceLevel,
     createdAt = createdAt,
     threadId = thread.id,
-    doctorId = doctor.id!!,
+    doctorId = doctor.id,
     parentDiscussionId = parentDiscussion?.id
 )
