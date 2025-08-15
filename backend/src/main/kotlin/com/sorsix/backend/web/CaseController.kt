@@ -1,7 +1,7 @@
 package com.sorsix.backend.web
 
-import com.sorsix.backend.domain.Case
-import com.sorsix.backend.domain.PublicCase
+import com.sorsix.backend.domain.cases.Case
+import com.sorsix.backend.domain.cases.PublicCase
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.dto.PageResponse

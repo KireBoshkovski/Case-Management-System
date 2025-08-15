@@ -1,6 +1,6 @@
 package com.sorsix.backend.dto
 
-import com.sorsix.backend.domain.Case
+import com.sorsix.backend.domain.cases.Case
 import com.sorsix.backend.domain.enums.CaseStatus
 import java.time.LocalDateTime
 

@@ -1,6 +1,6 @@
 package com.sorsix.backend.web
 
-import com.sorsix.backend.domain.PublicCase
+import com.sorsix.backend.domain.cases.PublicCase
 import com.sorsix.backend.service.CaseService
 import com.sorsix.backend.service.Visibility
 import org.springframework.http.ResponseEntity

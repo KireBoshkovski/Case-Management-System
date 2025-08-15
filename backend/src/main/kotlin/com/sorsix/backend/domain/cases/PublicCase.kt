@@ -1,4 +1,4 @@
-package com.sorsix.backend.domain
+package com.sorsix.backend.domain.cases
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package com.sorsix.backend.domain
+package com.sorsix.backend.domain.cases
 
 import com.sorsix.backend.domain.users.Doctor
 import jakarta.persistence.*

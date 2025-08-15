@@ -48,7 +48,7 @@ class SecurityConfig(
             auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
-                // TODO: /api/public MAYBE should be public path
+            // TODO: /api/public MAYBE should be public path
         }
         .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter::class.java)
         .build()
