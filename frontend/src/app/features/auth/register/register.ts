@@ -92,6 +92,7 @@ export class Register {
 
     onSubmit() {
         if (this.registerForm.invalid) {
+            this.errorMessage = 'Please fill in all required fields correctly.';
             this.registerForm.markAllAsTouched();
             return;
         }
@@ -100,11 +101,13 @@ export class Register {
         this.successMessage = null;
 
         this.authService.signUp(this.registerForm.value).subscribe({
-            next: (response) => {
-                console.log(response);
+            next: () => {
                 setTimeout(() => {
                     this.router.navigate(['/login']);
                 }, 3000);
+            },
+            error: (response) => {
+                this.errorMessage = response.error.error;
             },
         });
     }

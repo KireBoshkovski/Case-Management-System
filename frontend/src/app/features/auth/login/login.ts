@@ -29,11 +29,12 @@ export class Login {
         if (this.loginForm.valid) {
             this.authService.signIn(this.loginForm.value).subscribe({
                 next: () => {
-                    this.router.navigate(['/cases']);
+                    setTimeout(() => {
+                        this.router.navigate(['/cases']);
+                    }, 2000);
                 },
-                error: (error) => {
-                    this.errorMessage =
-                        error.message || 'Login failed. Please try again.';
+                error: (response) => {
+                    this.errorMessage = response.error.error;
                 },
             });
         } else {

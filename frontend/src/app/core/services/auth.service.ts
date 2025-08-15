@@ -14,9 +14,6 @@ export class AuthService {
 
     http = inject(HttpClient);
 
-    private _isLoggedIn$ = new BehaviorSubject<boolean>(this.hasToken());
-    isLoggedIn$ = this._isLoggedIn$.asObservable();
-
     private hasToken(): boolean {
         const token = localStorage.getItem('token');
         return !!token;
@@ -28,13 +25,12 @@ export class AuthService {
             .pipe(
                 tap((response) => {
                     localStorage.setItem('token', response.accessToken);
-                    this._isLoggedIn$.next(true);
                 }),
             );
     }
 
-    signUp(signUpRequest: SignupRequest): Observable<String> {
-        return this.http.post<String>(
+    signUp(signUpRequest: SignupRequest): Observable<{ message: string }> {
+        return this.http.post<{ message: string }>(
             `${this.apiUrl}/auth/signup`,
             signUpRequest,
         );
@@ -42,7 +38,6 @@ export class AuthService {
 
     logout(): void {
         localStorage.removeItem('token');
-        this._isLoggedIn$.next(false);
     }
 
     getToken(): string | null {
