@@ -16,7 +16,6 @@ data class Discussion(
     @Column(nullable = false)
     var title: String,
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     var description: String,
 

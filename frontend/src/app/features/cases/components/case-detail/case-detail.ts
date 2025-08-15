@@ -7,7 +7,6 @@ import { Patient } from '../../../../models/patient.model';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { Examination } from '../../../../models/examination.model';
-import { ForkListItem } from '../../../../models/forks/fork-list-item.model';
 
 @Component({
     selector: 'case-detail',

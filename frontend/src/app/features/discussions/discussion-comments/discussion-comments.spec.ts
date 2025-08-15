@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ForkDetails } from './fork-details';
+import { DiscussionComments } from './discussion-comments';
 
-describe('ForkDetails', () => {
-  let component: ForkDetails;
-  let fixture: ComponentFixture<ForkDetails>;
+describe('DiscussionComments', () => {
+  let component: DiscussionComments;
+  let fixture: ComponentFixture<DiscussionComments>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ForkDetails]
+      imports: [DiscussionComments]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ForkDetails);
+    fixture = TestBed.createComponent(DiscussionComments);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

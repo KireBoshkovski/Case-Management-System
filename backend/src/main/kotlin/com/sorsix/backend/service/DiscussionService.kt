@@ -42,7 +42,7 @@ class DiscussionService(
         )
     }
 
-    fun getCommentsByDiscussion(discussionId: Long) = commentRepository.findAllByDiscussionId(discussionId)
+    fun getCommentsByDiscussion(discussionId: Long) = commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)
 
     @Transactional
     fun addComment(dto: CommentDto): Comment {

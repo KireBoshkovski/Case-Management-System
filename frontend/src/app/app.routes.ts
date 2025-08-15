@@ -15,12 +15,8 @@ import { PublicCaseSearch } from './features/cases/components/public-case-search
 import { PublicCaseDetails } from './features/cases/components/public-case-details/public-case-details';
 import { CreateCase } from './features/cases/components/create-case/create-case';
 import { PublishCase } from './features/cases/components/publish-case/publish-case';
-import { ForkSearch } from './features/forks/components/fork-search/fork-search';
-import { ForkDetails } from './features/forks/components/fork-details/fork-details';
-import ThreadList from './features/threads/thread-list/thread-list';
-import ThreadDetail from './features/threads/thread-details/thread-detail';
-import { CreateFork } from './features/forks/components/create-fork/create-fork';
 import { ExaminationDetails } from './features/examinations/components/examination-details/examination-details';
+import { DiscussionComments } from './features/discussions/discussion-comments/discussion-comments';
 
 export const routes: Routes = [
     {
@@ -43,19 +39,11 @@ export const routes: Routes = [
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },
 
-            // Forks
-            { path: 'forks', component: ForkSearch },
-            { path: 'forks/:id', component: ForkDetails },
-            { path: 'forks/new', component: CreateFork },
-            { path: 'forks/:id/edit', component: CreateFork },
+            // Discussions
+            { path: 'discussions/:id', component: DiscussionComments },
 
             // Examinations
             { path: 'examinations/:id', component: ExaminationDetails },
-            { path: 'forks/:id', component: ForkDetails},
-
-            //Threads
-            { path: 'threads', component: ThreadList },
-            { path: 'threads/:id', component: ThreadDetail },
         ],
     },
     {

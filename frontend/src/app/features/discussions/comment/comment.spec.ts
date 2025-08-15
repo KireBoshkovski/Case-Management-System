@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateFork } from './create-fork';
+import { Comment } from './comment';
 
-describe('CreateFork', () => {
-  let component: CreateFork;
-  let fixture: ComponentFixture<CreateFork>;
+describe('Comment', () => {
+  let component: Comment;
+  let fixture: ComponentFixture<Comment>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateFork]
+      imports: [Comment]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CreateFork);
+    fixture = TestBed.createComponent(Comment);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,0 +1,13 @@
+<div class="comment">
+    <p>
+        {{ comment.content }} <small>by user {{ comment.userId }}</small>
+    </p>
+
+    @if (comment.replies?.length) {
+        <div class="replies">
+            @for (reply of comment.replies; track reply.id) {
+                <comment [comment]="reply"></comment>
+            }
+        </div>
+    }
+</div>

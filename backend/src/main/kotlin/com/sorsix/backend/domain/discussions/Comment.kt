@@ -12,7 +12,6 @@ data class Comment(
     @Column(name = "comment_id")
     val id: Long?,
 
-    @Lob
     @Column(nullable = false, columnDefinition = "TEXT")
     var content: String,
 
