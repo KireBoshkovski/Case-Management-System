@@ -1,71 +1,83 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest, map, shareReplay, switchMap, Observable } from 'rxjs';
-
+import { Component, inject } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
+import { ActivatedRoute } from '@angular/router';
 import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
-
 import { ColumnDef } from '../../../../models/columnDef';
-import { CaseDto } from '../../../../models/case.dto';
-import { PageResponse } from '../../../../models/page-response.model';
-import { Visibility } from '../../../../models/visibility.type';
-import { PatientDetailsModel } from '../../../../models/patient-details.model';
+import { Pagination } from '../../../../shared/components/pagination/pagination';
+import { CaseDto } from '../../../../models/cases/case-dto.model';
+import {
+    BehaviorSubject,
+    combineLatest,
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    shareReplay,
+    switchMap,
+} from 'rxjs';
+import { AsyncPipe } from '@angular/common';
+import { PageResponse } from '../../../../models/page-response';
 
 @Component({
     selector: 'case-search',
-    standalone: true,
-    imports: [SearchBar, List, CommonModule],
+    imports: [SearchBar, List, Pagination, AsyncPipe],
     templateUrl: './case-search.html',
-    styleUrls: ['./case-search.css'],
+    styleUrl: './case-search.css',
 })
-export class CaseSearch implements OnInit {
-    private service = inject(CaseService);
-    private route = inject(ActivatedRoute);
+export class CaseSearch {
+    service = inject(CaseService);
+    route = inject(ActivatedRoute);
+
+    caseColumns: ColumnDef<CaseDto>[] = [
+        { header: 'Case ID', field: 'id' },
+        {
+            header: 'Patient',
+            field: 'patientId',
+        },
+        { header: 'Status', field: 'status' },
+        {
+            header: 'Creation Date',
+            field: 'createdAt',
+            formatter: (date: string) => new Date(date).toLocaleDateString(),
+        },
+        {
+            header: 'Last Update Date',
+            field: 'updatedAt',
+            formatter: (date: string) => new Date(date).toLocaleDateString(),
+        },
+    ];
 
     private page$ = new BehaviorSubject<number>(0);
     private size$ = new BehaviorSubject<number>(10);
     private query$ = new BehaviorSubject<string>('');
 
-    // derive visibility from route.data ('public' => 'PUBLIC', else 'ALL')
-    readonly visibility$: Observable<Visibility> = this.route.data.pipe(
-        map(d => (d['public'] ? 'PUBLIC' : 'ALL'))
-    );
-
     readonly pageResponse$ = combineLatest([
-        this.visibility$, this.page$, this.size$, this.query$
+        this.page$,
+        this.size$,
+        this.query$,
     ]).pipe(
-        switchMap(([visibility, page, size, q]) =>
+        debounceTime(400),
+        distinctUntilChanged(),
+        switchMap(([page, size, query]) =>
             this.service.getCases({
-                visibility,
                 page,
                 size,
                 sort: ['createdAt,desc'],
-                query: q?.trim() || undefined,
-            })
+                query: query?.trim() || undefined,
+            }),
         ),
-        shareReplay({ bufferSize: 1, refCount: true })
+        shareReplay({ bufferSize: 1, refCount: true }),
     );
 
-    readonly cases$ = this.pageResponse$.pipe(map((res: PageResponse<CaseDto>) => res.content));
-    readonly totalPages$ = this.pageResponse$.pipe(map(res => res.totalPages));
-    readonly currentPage$ = this.pageResponse$.pipe(map(res => res.page));
+    readonly cases$ = this.pageResponse$.pipe(
+        map((res: PageResponse<CaseDto>) => res.content),
+    );
+    readonly totalElements$ = this.pageResponse$.pipe(
+        map((res) => res.totalElements),
+    );
+    readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
 
-    caseColumns: ColumnDef<CaseDto>[] = [
-        {
-            header: 'Patient',
-            field: 'patient',
-            formatter: (p: PatientDetailsModel) => `${p.firstName} ${p.lastName}`,
-            idField: 'id',
-        },
-    ];
-
-    ngOnInit(): void {
-        // no-op; streams above drive fetching
-    }
-
-    onSearchChange(q: string) {
+    onSearch(q: string) {
         this.page$.next(0);
         this.query$.next(q);
     }

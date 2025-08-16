@@ -4,13 +4,11 @@ import com.sorsix.backend.domain.cases.Case
 import com.sorsix.backend.domain.cases.PublicCase
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.dto.CaseDto
-import com.sorsix.backend.dto.PageResponse
 import com.sorsix.backend.dto.toCaseDto
-import com.sorsix.backend.dto.toPageResponse
 import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.service.CaseService
 import com.sorsix.backend.service.OpenAIService
-import com.sorsix.backend.service.Visibility
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.data.web.PageableDefault
@@ -20,49 +18,38 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/cases")
-@CrossOrigin(origins = ["http://localhost:4200"])
 class CaseController(
-    private val caseService: CaseService,
-    private val openAIService: OpenAIService
+    val caseService: CaseService,
+    val openAIService: OpenAIService
 ) {
     /**
-     * Return cases available for the specific doctor/patient (PRIVATE only).
-     */
+     * Return cases available for the specific doctor/user logged in.
+     * All cases returned from this function are PRIVATE.
+     * Also, pagination and searching is through this endpoint
+     * */
     @GetMapping
-    fun getAllCases(@AuthenticationPrincipal userDetails: CustomUserDetails): List<CaseDto> =
-        when (userDetails.getRole()) {
-            UserRole.PATIENT -> caseService.findByPatientId(userDetails.getId())
-            UserRole.DOCTOR  -> caseService.findByDoctorId(userDetails.getId())
-            else             -> emptyList()
-        }.map { it.toCaseDto() }
-
-    /**
-     * Paginated/searchable endpoint (PUBLIC/PRIVATE/ALL).
-     */
-    @GetMapping("/search")
-    fun getCases(
-        @RequestParam(defaultValue = "ALL") visibility: Visibility,
+    fun findCases(
         @RequestParam(required = false) patientId: Long?,
         @RequestParam(required = false) q: String?,
-        @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC)
-        pageable: Pageable
-    ): ResponseEntity<PageResponse<CaseDto>> {
-        val page = caseService.getCases(visibility, patientId, q, pageable).map { it.toCaseDto() }
-        return ResponseEntity.ok(page.toPageResponse())
+        @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
+        @AuthenticationPrincipal userDetails: CustomUserDetails
+    ): Page<CaseDto> {
+        val cases = when (userDetails.getRole()) {
+            UserRole.PATIENT -> caseService.findByPatientId(userDetails.getId(), q, pageable)
+            UserRole.DOCTOR -> caseService.findByDoctorId(userDetails.getId(), patientId, q, pageable)
+            else -> Page.empty(pageable)
+        }
+        return cases.map { it.toCaseDto() }
     }
 
-    /** Unsecured raw fetch by id  */
+    /**
+     * Returns case by case id but first checks if user actually have access to the case.
+     * Users who have access to case: Patients which belong to the case, Doctors that created the case.
+     * */
     @GetMapping("/{id}")
-    fun findCaseById(@PathVariable id: Long): ResponseEntity<Case> =
-        ResponseEntity.ok(caseService.findById(id))
-
-    /** Secured fetch by id */
-    @GetMapping("/{id}/secured")
-    fun findCaseByIdSecured(
-        @PathVariable id: Long,
-        @AuthenticationPrincipal userDetails: CustomUserDetails
-    ): ResponseEntity<Case> =
-        ResponseEntity.ok(caseService.findByIdSecured(id, userDetails))
+    fun findCaseById(
+        @PathVariable id: Long, @AuthenticationPrincipal userDetails: CustomUserDetails
+    ): ResponseEntity<Case> = ResponseEntity.ok(caseService.findByIdSecured(id, userDetails))
 
     @PostMapping
     fun createCase(@RequestBody case: CaseDto): ResponseEntity<CaseDto> =
@@ -72,19 +59,12 @@ class CaseController(
     fun updateCase(@PathVariable id: Long, @RequestBody case: CaseDto): ResponseEntity<CaseDto> =
         ResponseEntity.ok(caseService.update(id, case).toCaseDto())
 
-    @DeleteMapping("/{id}")
-    fun deleteCaseById(@PathVariable id: Long): ResponseEntity<Unit> {
-        caseService.deleteById(id)
-        return ResponseEntity.ok().build()
-    }
-
     @GetMapping("/censor/{id}")
-    fun censor(@PathVariable id: Long): ResponseEntity<Case> =
-        ResponseEntity.ok(openAIService.censor(id))
+    fun censor(@PathVariable id: Long): ResponseEntity<Case> = ResponseEntity.ok(openAIService.censor(id))
 
     @PostMapping("/publish/{id}")
     fun publishCase(@PathVariable id: Long, @RequestBody case: PublicCase): ResponseEntity<Void> {
-        caseService.publishCase(case)
+        this.caseService.publishCase(case)
         return ResponseEntity.ok().build()
     }
-}
+}   

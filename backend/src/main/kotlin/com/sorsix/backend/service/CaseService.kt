@@ -10,7 +10,11 @@ import com.sorsix.backend.repository.CaseRepository
 import com.sorsix.backend.repository.PublicCaseRepository
 import com.sorsix.backend.repository.PublicExaminationRepository
 import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.specification.CaseSpecifications
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.stereotype.Service
@@ -24,12 +28,35 @@ class CaseService(
     val patientService: PatientService,
     val doctorService: DoctorService
 ) {
-    fun findByPatientId(id: Long) = caseRepository.findAllByPatientId(id)
+    // TODO CHECK IF IT IS SECURE
+    fun findByPatientId(user: Long, q: String?, pageable: Pageable): Page<Case> {
+        val specs = listOfNotNull(
+            CaseSpecifications.hasPatientId(user),
+            CaseSpecifications.searchByTermOrId(q?.trim())
+        )
 
-    fun findByDoctorId(id: Long) = caseRepository.findAllByDoctorId(id)
+        val spec: Specification<Case>? = specs.reduceOrNull { acc, s -> acc.and(s) }
 
-    fun findAllPublic(): List<PublicCase> =
-        publicCaseRepository.findAll()
+        return caseRepository.findAll(spec, pageable)
+    }
+
+    fun findByDoctorId(user: Long, patientId: Long?, q: String?, pageable: Pageable): Page<Case> {
+        val specs = listOfNotNull(
+            CaseSpecifications.hasDoctorId(user),
+            CaseSpecifications.hasPatientId(patientId),
+            CaseSpecifications.searchByTermOrId(q?.trim())
+        )
+
+        val spec: Specification<Case>? = specs.reduceOrNull { acc, s -> acc.and(s) }
+
+        return caseRepository.findAll(spec, pageable)
+    }
+
+    fun findAllPublic(q: String?, pageable: Pageable): Page<PublicCase> {
+        val spec = CaseSpecifications.publicCaseSearch(q)
+
+        return publicCaseRepository.findAll(spec, pageable)
+    }
 
     fun findById(id: Long): Case =
         caseRepository.findByIdOrNull(id) ?: throw CaseNotFoundException(id)

@@ -2,29 +2,22 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PageResponse } from '../../models/page-response.model';
-import { Visibility } from '../../models/visibility.type';
 import { Case } from '../../models/cases/case.model';
 import { PublicCase } from '../../models/cases/public-case.model';
-import { CaseDto } from '../../models/case.dto';
+import { CaseDto } from '../../models/cases/case-dto.model';
+import { PageResponse } from '../../models/page-response';
+import { GetCasesOptions } from '../../models/cases-options';
 
-export interface GetCasesOptions {
-    visibility?: Visibility;
-    patientId?: number;
-    page?: number;
-    size?: number;
-    sort?: string[];
-    query?: string;
-}
-
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root',
+})
 export class CaseService {
     private apiUrl = environment.apiUrl;
-    private http = inject(HttpClient);
+
+    http = inject(HttpClient);
 
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {
-            visibility = 'ALL',
             patientId,
             page = 0,
             size = 20,
@@ -32,37 +25,50 @@ export class CaseService {
             query,
         } = options;
 
-        let params = new HttpParams()
-            .set('visibility', visibility)
-            .set('page', page)
-            .set('size', size);
+        let params = new HttpParams().set('page', page).set('size', size);
 
-        sort.forEach(s => (params = params.append('sort', s)));
+        sort.forEach((s) => (params = params.append('sort', s)));
         if (patientId != null) params = params.set('patientId', patientId);
-        if (query && query.trim().length > 0) params = params.set('q', query.trim());
+        if (query && query.trim().length > 0)
+            params = params.set('q', query.trim());
 
-        // IMPORTANT: paged/search endpoint is /cases/search (not /cases)
-        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases/search`, { params });
-    }
+        console.log('Request with params:', params);
 
-    getPublicCasesPaged(page = 0, size = 20): Observable<PageResponse<CaseDto>> {
-        return this.getCases({ visibility: 'PUBLIC', page, size });
-    }
-
-    getCasesByPatientIdPaged(patientId: number, page = 0, size = 20): Observable<PageResponse<CaseDto>> {
-        return this.getCases({ patientId, page, size });
+        return this.http.get<PageResponse<CaseDto>>(`${this.apiUrl}/cases`, {
+            params,
+        });
     }
 
     getCaseById(id: number) {
         return this.http.get<Case>(`${this.apiUrl}/cases/${id}`);
     }
 
-    getPublicCases() {
-        return this.http.get<PublicCase[]>(`${this.apiUrl}/cases/public`);
+    getPublicCases(
+        options: GetCasesOptions = {},
+    ): Observable<PageResponse<PublicCase>> {
+        const {
+            page = 0,
+            size = 20,
+            sort = ['createdAt,desc'],
+            query,
+        } = options;
+
+        let params = new HttpParams().set('page', page).set('size', size);
+
+        sort.forEach((s) => (params = params.append('sort', s)));
+        if (query && query.trim().length > 0)
+            params = params.set('q', query.trim());
+
+        console.log('Request with params:', params);
+
+        return this.http.get<PageResponse<PublicCase>>(
+            `${this.apiUrl}/public`,
+            { params },
+        );
     }
 
     getPublicCaseById(id: number) {
-        return this.http.get<PublicCase>(`${this.apiUrl}/cases/public/${id}`);
+        return this.http.get<PublicCase>(`${this.apiUrl}/public/${id}`);
     }
 
     censorCase(id: number) {
@@ -70,7 +76,10 @@ export class CaseService {
     }
 
     publishCase(id: number, publicCase: PublicCase) {
-        return this.http.post<void>(`${this.apiUrl}/cases/publish/${id}`, publicCase);
+        return this.http.post<void>(
+            `${this.apiUrl}/cases/publish/${id}`,
+            publicCase,
+        );
     }
 
     createCase(newCase: Partial<CaseDto>): Observable<CaseDto> {
@@ -78,6 +87,9 @@ export class CaseService {
     }
 
     updateCase(id: number, updatedCase: Partial<CaseDto>): Observable<CaseDto> {
-        return this.http.put<CaseDto>(`${this.apiUrl}/cases/${id}`, updatedCase);
+        return this.http.put<CaseDto>(
+            `${this.apiUrl}/cases/${id}`,
+            updatedCase,
+        );
     }
 }

@@ -1,14 +1,11 @@
-<search-bar (searchChange)="onSearchChange($event)"></search-bar>
-
-
+<search-bar (search)="onSearch($event)"></search-bar>
+<pagination
+    [currentPage]="(currentPage$ | async) ?? 1"
+    [totalElements]="(totalElements$ | async) ?? 0"
+    (pageChange)="onPageChange($event)"
+></pagination>
 <list
     [items]="(cases$ | async) ?? []"
     [columns]="caseColumns"
-    routePrefix="cases">
-</list>
-
-<!--<pagination-->
-<!--    [page]="(currentPage$ | async) ?? 0"-->
-<!--    [totalPages]="(totalPages$ | async) ?? 0"-->
-<!--    (pageChange)="onPageChange($event)">-->
-<!--</pagination>-->
+    routePrefix="cases"
+></list>

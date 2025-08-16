@@ -2,12 +2,12 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.cases.PublicCase
 import com.sorsix.backend.service.CaseService
-import com.sorsix.backend.service.Visibility
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/public")
@@ -18,9 +18,11 @@ class PublicController(
     /*
     * This returns all public cases in new PublicCase entity format
     *  */
-//    @GetMapping
-//    fun getAllPublicCases(): List<PublicCase> = caseService.getCases(visibility = Visibility.PUBLIC)
-
+    @GetMapping
+    fun getAllPublicCases(
+        @RequestParam(required = false) q: String?,
+        @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
+    ): Page<PublicCase> = caseService.findAllPublic(q, pageable)
 
     @GetMapping("/{id}")
     fun getPublicCaseById(@PathVariable id: Long): ResponseEntity<PublicCase> =
