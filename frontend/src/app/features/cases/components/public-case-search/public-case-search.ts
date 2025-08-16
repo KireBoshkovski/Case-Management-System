@@ -16,7 +16,7 @@ import {
     Subject,
     switchMap,
 } from 'rxjs';
-import { CaseDto } from '../../../../models/cases/case-dto.model';
+import { CaseDto } from '../../../../models/cases/case.dto';
 import { PageResponse } from '../../../../models/page-response';
 import { AsyncPipe } from '@angular/common';
 
@@ -38,14 +38,6 @@ export class PublicCaseSearch {
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
     ];
-
-    cases: PublicCase[] = [];
-
-    query: string = '';
-
-    currentPage = 0;
-    totalElements = 0;
-    resultsPerPage = 10;
 
     private page$ = new BehaviorSubject<number>(0);
     private size$ = new BehaviorSubject<number>(10);
@@ -78,7 +70,7 @@ export class PublicCaseSearch {
     readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(0);
+        this.page$.next(1);
         this.query$.next(q);
     }
 
@@ -88,6 +80,6 @@ export class PublicCaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(0);
+        this.page$.next(1);
     }
 }

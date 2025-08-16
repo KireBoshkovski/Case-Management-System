@@ -1,5 +1,5 @@
-import { PatientDetailsModel } from './patient-details.model';
-import {CaseStatus} from './cases/case-status.enum';
+import { PatientDetailsModel } from '../patient-details.model';
+import { CaseStatus } from './case-status.enum';
 
 export interface CaseDto {
     id: number;
@@ -9,9 +9,9 @@ export interface CaseDto {
     description?: string | null;
     treatmentPlan?: string | null;
     status: CaseStatus;
-    createdAt: string;   // ISO
-    updatedAt: string;   // ISO
-    patient: PatientDetailsModel;
+    createdAt: string; // ISO
+    updatedAt: string; // ISO
+    patientId: number;
     doctorId: number;
     examinationIds: number[];
 }

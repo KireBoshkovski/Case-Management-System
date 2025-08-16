@@ -5,7 +5,7 @@ import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { Pagination } from '../../../../shared/components/pagination/pagination';
-import { CaseDto } from '../../../../models/cases/case-dto.model';
+import { CaseDto } from '../../../../models/cases/case.dto';
 import {
     BehaviorSubject,
     combineLatest,
@@ -47,7 +47,7 @@ export class CaseSearch {
         },
     ];
 
-    private page$ = new BehaviorSubject<number>(0);
+    private page$ = new BehaviorSubject<number>(1);
     private size$ = new BehaviorSubject<number>(10);
     private query$ = new BehaviorSubject<string>('');
 
@@ -78,7 +78,7 @@ export class CaseSearch {
     readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(0);
+        this.page$.next(1);
         this.query$.next(q);
     }
 
@@ -88,6 +88,6 @@ export class CaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(0);
+        this.page$.next(1);
     }
 }

@@ -18,7 +18,6 @@ export class Pagination {
 
     get pages(): number[] {
         const pages = [];
-        const maxVisiblePages = 5;
         let startPage = Math.max(1, this.currentPage - 2);
         let endPage = Math.min(this.totalPages, this.currentPage + 2);
 
@@ -39,6 +38,7 @@ export class Pagination {
 
     changePage(page: number): void {
         if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+            this.currentPage = page;
             this.pageChange.emit(page);
         }
     }

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Case } from '../../../../models/cases/case.model';
 import { Doctor } from '../../../../models/doctor.model';
 import { Patient } from '../../../../models/patient.model';
@@ -10,7 +10,7 @@ import { Examination } from '../../../../models/examination.model';
 
 @Component({
     selector: 'case-detail',
-    imports: [List],
+    imports: [List, RouterLink],
     templateUrl: './case-detail.html',
     styleUrl: './case-detail.css',
 })
@@ -36,7 +36,7 @@ export class CaseDetail implements OnInit {
     ];
 
     ngOnInit(): void {
-        const caseId = Number(this.route.snapshot.paramMap.get('id'));
+        const caseId = +this.route.snapshot.paramMap.get('id')!;
         if (caseId) {
             this.service.getCaseById(caseId).subscribe({
                 next: (caseData) => {

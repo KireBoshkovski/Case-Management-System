@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Case } from '../../models/cases/case.model';
 import { PublicCase } from '../../models/cases/public-case.model';
-import { CaseDto } from '../../models/cases/case-dto.model';
+import { CaseDto } from '../../models/cases/case.dto';
 import { PageResponse } from '../../models/page-response';
 import { GetCasesOptions } from '../../models/cases-options';
 
@@ -19,13 +19,13 @@ export class CaseService {
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {
             patientId,
-            page = 0,
+            page = 1,
             size = 20,
             sort = ['createdAt,desc'],
             query,
         } = options;
 
-        let params = new HttpParams().set('page', page).set('size', size);
+        let params = new HttpParams().set('page', page - 1).set('size', size);
 
         sort.forEach((s) => (params = params.append('sort', s)));
         if (patientId != null) params = params.set('patientId', patientId);
@@ -47,13 +47,13 @@ export class CaseService {
         options: GetCasesOptions = {},
     ): Observable<PageResponse<PublicCase>> {
         const {
-            page = 0,
+            page = 1,
             size = 20,
             sort = ['createdAt,desc'],
             query,
         } = options;
 
-        let params = new HttpParams().set('page', page).set('size', size);
+        let params = new HttpParams().set('page', page - 1).set('size', size);
 
         sort.forEach((s) => (params = params.append('sort', s)));
         if (query && query.trim().length > 0)
