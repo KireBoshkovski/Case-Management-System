@@ -3,6 +3,22 @@
         <header>
             <h1>Case #{{ caseData.id }}</h1>
             <span>{{ caseData.status }}</span>
+
+            <div class="action-buttons">
+                <button
+                    [routerLink]="['/cases', caseData.id, 'edit']"
+                    class="btn btn-primary"
+                >
+                    Edit Case
+                </button>
+
+                <button
+                    [routerLink]="['/cases', caseData.id, 'publish']"
+                    class="btn btn-success"
+                >
+                    Publish Case
+                </button>
+            </div>
         </header>
 
         <section>

@@ -12,6 +12,8 @@ export class ExaminationService {
     http = inject(HttpClient);
 
     getExaminationById(id: number) {
+        console.log('Requesting examination with id:', id);
+
         return this.http.get<Examination>(`${this.apiUrl}/examinations/${id}`);
     }
 }

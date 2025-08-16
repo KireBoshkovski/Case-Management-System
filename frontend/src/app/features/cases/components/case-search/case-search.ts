@@ -47,7 +47,7 @@ export class CaseSearch {
         },
     ];
 
-    private page$ = new BehaviorSubject<number>(0);
+    private page$ = new BehaviorSubject<number>(1);
     private size$ = new BehaviorSubject<number>(10);
     private query$ = new BehaviorSubject<string>('');
 
@@ -78,7 +78,7 @@ export class CaseSearch {
     readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(0);
+        this.page$.next(1);
         this.query$.next(q);
     }
 
@@ -88,6 +88,6 @@ export class CaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(0);
+        this.page$.next(1);
     }
 }

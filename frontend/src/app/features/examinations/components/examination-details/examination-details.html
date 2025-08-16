@@ -1,1 +1,59 @@
-<p>examination-details works!</p>
+@if (examination) {
+    <header>
+        <h1>Examination #{{ examination.id }}</h1>
+        <span>{{ examination.examinationType }}</span>
+        <span>— Date: {{ formatDate(examination.examinationDate) }}</span>
+    </header>
+
+    <section>
+        <h2>Examination Details</h2>
+        <div>
+            <div>
+                <label>Findings:</label>
+                <p>{{ examination.findings || "Not specified" }}</p>
+            </div>
+            <div>
+                <label>Results:</label>
+                <p>{{ examination.results || "Not specified" }}</p>
+            </div>
+            <div>
+                <label>Notes:</label>
+                <p>{{ examination.notes || "Not specified" }}</p>
+            </div>
+            <div>
+                <label>Vital Signs:</label>
+                <p>{{ examination.vitalSigns || "Not specified" }}</p>
+            </div>
+        </div>
+    </section>
+
+    @if (examination.doctor) {
+        <section>
+            <h2>Doctor Information</h2>
+            <div>
+                <div>
+                    <label>Doctor ID:</label>
+                    <span>{{ examination.doctor.id }}</span>
+                </div>
+                <div>
+                    <label>First Name:</label>
+                    <span>{{ examination.doctor.firstName }}</span>
+                </div>
+                <div>
+                    <label>Last Name:</label>
+                    <span>{{ examination.doctor.lastName }}</span>
+                </div>
+                <div>
+                    <label>Specialization:</label>
+                    <span>{{ examination.doctor.specialization }}</span>
+                </div>
+                <div>
+                    <label>Department:</label>
+                    <span>{{ examination.doctor.department }}</span>
+                </div>
+            </div>
+        </section>
+    }
+} @else {
+    <p>Loading examination details...</p>
+}

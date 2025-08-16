@@ -19,13 +19,13 @@ export class CaseService {
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {
             patientId,
-            page = 0,
+            page = 1,
             size = 20,
             sort = ['createdAt,desc'],
             query,
         } = options;
 
-        let params = new HttpParams().set('page', page).set('size', size);
+        let params = new HttpParams().set('page', page).set('size', size - 1);
 
         sort.forEach((s) => (params = params.append('sort', s)));
         if (patientId != null) params = params.set('patientId', patientId);
@@ -47,13 +47,13 @@ export class CaseService {
         options: GetCasesOptions = {},
     ): Observable<PageResponse<PublicCase>> {
         const {
-            page = 0,
+            page = 1,
             size = 20,
             sort = ['createdAt,desc'],
             query,
         } = options;
 
-        let params = new HttpParams().set('page', page).set('size', size);
+        let params = new HttpParams().set('page', page).set('size', size - 1);
 
         sort.forEach((s) => (params = params.append('sort', s)));
         if (query && query.trim().length > 0)
