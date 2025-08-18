@@ -6,7 +6,7 @@
     ></pagination>
 }
 <list
-    [items]="(patients$ | async) ?? []"
-    [columns]="patientColumns"
-    routePrefix="patients"
+    [items]="(discussions$ | async) ?? []"
+    [columns]="discussionColumns"
+    routePrefix="threads"
 ></list>

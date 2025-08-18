@@ -13,11 +13,8 @@ import {
     distinctUntilChanged,
     map,
     shareReplay,
-    Subject,
     switchMap,
 } from 'rxjs';
-import { CaseDto } from '../../../../models/cases/case.dto';
-import { PageResponse } from '../../../../models/page-response';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
@@ -61,25 +58,20 @@ export class PublicCaseSearch {
         shareReplay({ bufferSize: 1, refCount: true }),
     );
 
-    readonly cases$ = this.pageResponse$.pipe(
-        map((res: PageResponse<PublicCase>) => res.content),
-    );
-    readonly totalElements$ = this.pageResponse$.pipe(
-        map((res) => res.totalElements),
-    );
-    readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
+    readonly cases$ = this.pageResponse$.pipe(map((res) => res.content));
+    readonly pageInfo$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(1);
+        this.page$.next(0);
         this.query$.next(q);
     }
 
     onPageChange(nextPage: number) {
-        this.page$.next(nextPage);
+        this.page$.next(nextPage - 1);
     }
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(1);
+        this.page$.next(0);
     }
 }

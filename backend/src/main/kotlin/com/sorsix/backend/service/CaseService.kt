@@ -10,7 +10,7 @@ import com.sorsix.backend.repository.CaseRepository
 import com.sorsix.backend.repository.PublicCaseRepository
 import com.sorsix.backend.repository.PublicExaminationRepository
 import com.sorsix.backend.security.CustomUserDetails
-import com.sorsix.backend.specification.CaseSpecifications
+import com.sorsix.backend.service.specification.FieldFilterSpecification
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -28,11 +28,10 @@ class CaseService(
     val patientService: PatientService,
     val doctorService: DoctorService
 ) {
-    // TODO CHECK IF IT IS SECURE
     fun findByPatientId(user: Long, q: String?, pageable: Pageable): Page<Case> {
         val specs = listOfNotNull(
-            CaseSpecifications.hasPatientId(user),
-            CaseSpecifications.searchByTermOrId(q?.trim())
+            FieldFilterSpecification.filterEqualsT<Case, Long>("patient.id", user),
+            FieldFilterSpecification.filterContainsText<Case>(listOf("description", "allergies", "bloodType"), q)
         )
 
         val spec: Specification<Case>? = specs.reduceOrNull { acc, s -> acc.and(s) }
@@ -42,9 +41,9 @@ class CaseService(
 
     fun findByDoctorId(user: Long, patientId: Long?, q: String?, pageable: Pageable): Page<Case> {
         val specs = listOfNotNull(
-            CaseSpecifications.hasDoctorId(user),
-            CaseSpecifications.hasPatientId(patientId),
-            CaseSpecifications.searchByTermOrId(q?.trim())
+            FieldFilterSpecification.filterEqualsT<Case, Long>("patient.id", patientId),
+            FieldFilterSpecification.filterEqualsT<Case, Long>("doctor.id", user),
+            FieldFilterSpecification.filterContainsText(listOf("description", "allergies", "bloodType"), q)
         )
 
         val spec: Specification<Case>? = specs.reduceOrNull { acc, s -> acc.and(s) }
@@ -53,7 +52,18 @@ class CaseService(
     }
 
     fun findAllPublic(q: String?, pageable: Pageable): Page<PublicCase> {
-        val spec = CaseSpecifications.publicCaseSearch(q)
+
+        val specs = listOfNotNull(
+            FieldFilterSpecification.filterContainsText<PublicCase>(
+                listOf(
+                    "description", "allergies", "bloodType", "treatmentPlan",
+                    "patientAgeRange", "patientGender"
+                ), q
+            )
+
+        )
+
+        val spec: Specification<PublicCase>? = specs.reduceOrNull { acc, s -> acc.and(s) }
 
         return publicCaseRepository.findAll(spec, pageable)
     }

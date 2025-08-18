@@ -7,7 +7,7 @@ import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { CommonModule, DatePipe } from '@angular/common';
 import { CaseDto } from '../../../../models/cases/case.dto';
-import { PageResponse } from '../../../../models/page-response.model';
+import { PageResponse } from '../../../../models/page-response';
 
 @Component({
     selector: 'patient-details',

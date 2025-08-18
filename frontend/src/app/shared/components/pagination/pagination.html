@@ -1,4 +1,4 @@
-@if (totalPages > 1) {
+@if (page.totalPages > 1) {
     <nav aria-label="Search results pagination">
         <ul class="pagination">
             <li class="page-item" [class.disabled]="currentPage === 1">
@@ -11,6 +11,7 @@
                     &laquo;
                 </button>
             </li>
+
             <li class="page-item" [class.disabled]="currentPage === 1">
                 <button
                     class="page-link"
@@ -22,29 +23,36 @@
                 </button>
             </li>
 
-            @for (page of pages; track page) {
-                <li class="page-item" [class.active]="page === currentPage">
-                    <button class="page-link" (click)="changePage(page)">
-                        {{ page }}
+            @for (pageNum of pages; track pageNum) {
+                <li class="page-item" [class.active]="pageNum === currentPage">
+                    <button class="page-link" (click)="changePage(pageNum)">
+                        {{ pageNum }}
                     </button>
                 </li>
             }
 
-            <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <li
+                class="page-item"
+                [class.disabled]="currentPage === page.totalPages"
+            >
                 <button
                     class="page-link"
                     (click)="goToNextPage()"
-                    [disabled]="currentPage === totalPages"
+                    [disabled]="currentPage === page.totalPages"
                     aria-label="Next page"
                 >
                     &rsaquo;
                 </button>
             </li>
-            <li class="page-item" [class.disabled]="currentPage === totalPages">
+
+            <li
+                class="page-item"
+                [class.disabled]="currentPage === page.totalPages"
+            >
                 <button
                     class="page-link"
                     (click)="goToLastPage()"
-                    [disabled]="currentPage === totalPages"
+                    [disabled]="currentPage === page.totalPages"
                     aria-label="Last page"
                 >
                     &raquo;

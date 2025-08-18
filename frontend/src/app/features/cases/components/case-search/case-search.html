@@ -1,9 +1,10 @@
 <search-bar (search)="onSearch($event)"></search-bar>
-<pagination
-    [currentPage]="(currentPage$ | async) ?? 1"
-    [totalElements]="(totalElements$ | async) ?? 0"
-    (pageChange)="onPageChange($event)"
-></pagination>
+@if (pageInfo$ | async; as pageInfo) {
+    <pagination
+        [page]="pageInfo"
+        (pageChange)="onPageChange($event)"
+    ></pagination>
+}
 <list
     [items]="(cases$ | async) ?? []"
     [columns]="caseColumns"

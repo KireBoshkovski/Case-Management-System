@@ -17,6 +17,7 @@ import { CreateCase } from './features/cases/components/create-case/create-case'
 import { PublishCase } from './features/cases/components/publish-case/publish-case';
 import { ExaminationDetails } from './features/examinations/components/examination-details/examination-details';
 import { DiscussionComments } from './features/discussions/discussion-comments/discussion-comments';
+import { DiscussionList } from './features/discussions/discussion-list/discussion-list';
 
 export const routes: Routes = [
     {
@@ -39,8 +40,9 @@ export const routes: Routes = [
             { path: 'patients', component: PatientSearch },
             { path: 'patients/:id', component: PatientDetails },
 
-            // Discussions
-            { path: 'discussions/:id', component: DiscussionComments },
+            // Threads (Discussions)
+            { path: 'threads/:id', component: DiscussionComments },
+            { path: 'threads', component: DiscussionList },
 
             // Examinations
             { path: 'examinations/:id', component: ExaminationDetails },
