@@ -4,12 +4,12 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/case-management
-    username: sorsix
-    password: sorsix
+    username: postgres
+    password: postgres
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
 
   flyway:

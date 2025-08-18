@@ -1,10 +1,10 @@
 package com.sorsix.backend.specification
 
-import com.sorsix.backend.domain.Case
+import com.sorsix.backend.domain.cases.Case
 import org.springframework.data.jpa.domain.Specification
 import jakarta.persistence.criteria.JoinType
 
-object CaseSpecifications {
+object CaseSpecificationsa {
 
     fun hasPatientId(patientId: Long?): Specification<Case>? =
         patientId?.let { id ->
