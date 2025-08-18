@@ -1,7 +1,36 @@
+@if (data) {
+    <div class="discussion-header">
+        <h1>{{ data.title }}</h1>
+        <p class="meta">Posted by {{ data.user }}</p>
+        <div class="description">
+            <p>{{ data.description }}</p>
+        </div>
+    </div>
+} @else {
+    <p>Loading...</p>
+}
+
 @if (comments.length === 0) {
     <div>No comments yet.</div>
 }
 
+<button (click)="toggleCommentInput()" class="comment-btn">
+    {{ showCommentInput ? "Cancel" : "Comment" }}
+</button>
+
+@if (showCommentInput) {
+    <div class="commetn-input-container">
+        <comment-input
+            [placeholder]="'Write a comment...'"
+            (commentSubmitted)="onCommentSubmitted($event)"
+        >
+        </comment-input>
+    </div>
+}
+
 @for (comment of comments; track comment.id) {
-    <comment [comment]="comment"></comment>
+    <comment
+        [comment]="comment"
+        (replyAdded)="handleReplyAdded($event)"
+    ></comment>
 }

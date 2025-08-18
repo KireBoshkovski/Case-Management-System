@@ -4,11 +4,17 @@ import com.sorsix.backend.domain.discussions.Comment
 import com.sorsix.backend.domain.discussions.Discussion
 import com.sorsix.backend.dto.CommentDto
 import com.sorsix.backend.dto.DiscussionDto
+import com.sorsix.backend.dto.toDiscussionDto
 import com.sorsix.backend.exceptions.DiscussionNotFoundException
 import com.sorsix.backend.exceptions.DoctorNotFoundException
 import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
+import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.service.specification.FieldFilterSpecification
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +26,17 @@ class DiscussionService(
     private val caseService: CaseService,
     private val commentRepository: CommentRepository
 ) {
+    fun listAll(q: String?, pageable: Pageable): Page<DiscussionDto> {
+        val specs = listOfNotNull(
+            FieldFilterSpecification.filterContainsText<Discussion>(listOf("title", "description"), q)
+        )
+
+        val spec: Specification<Discussion>? = specs.reduceOrNull { acc, s -> acc.and(s) }
+
+        return discussionRepository.findAll(spec, pageable).map { it.toDiscussionDto() }
+    }
+
+    fun findById(id: Long) = this.discussionRepository.findById(id)
 
     fun getDiscussionsByCase(caseId: Long): List<Discussion> {
         return discussionRepository.findAllByPublicCaseId(caseId)
@@ -42,12 +59,13 @@ class DiscussionService(
         )
     }
 
-    fun getCommentsByDiscussion(discussionId: Long) = commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)
+    fun getCommentsByDiscussion(discussionId: Long) =
+        commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)
 
     @Transactional
-    fun addComment(dto: CommentDto): Comment {
-        val user = userRepository.findByIdOrNull(dto.userId)
-            ?: throw DoctorNotFoundException(dto.userId)
+    fun addComment(dto: CommentDto, userDetails: CustomUserDetails): Comment {
+        val user = userRepository.findByIdOrNull(userDetails.getId())
+
         val discussion = discussionRepository.findById(dto.discussionId)
             .orElseThrow { DiscussionNotFoundException(dto.discussionId) }
 
@@ -58,7 +76,7 @@ class DiscussionService(
                 id = null,
                 content = dto.content,
                 discussion = discussion,
-                user = user,
+                user = user!!,
                 parent = parent
             )
         )

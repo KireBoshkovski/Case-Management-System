@@ -1,13 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {PatientsService} from '../../../../core/services/patients.service';
-import {CaseService} from '../../../../core/services/case.service';
-import {ActivatedRoute} from '@angular/router';
-import {PatientDetailsModel} from '../../../../models/patient-details.model';
-import {List} from '../../../../shared/components/list/list';
-import {ColumnDef} from '../../../../models/columnDef';
-import {CommonModule, DatePipe} from '@angular/common';
-import {CaseDto} from '../../../../models/case.dto';
-import {PageResponse} from '../../../../models/page-response.model';
+import { Component, inject, OnInit } from '@angular/core';
+import { PatientsService } from '../../../../core/services/patients.service';
+import { CaseService } from '../../../../core/services/case.service';
+import { ActivatedRoute } from '@angular/router';
+import { PatientDetailsModel } from '../../../../models/patient-details.model';
+import { List } from '../../../../shared/components/list/list';
+import { ColumnDef } from '../../../../models/columnDef';
+import { CommonModule, DatePipe } from '@angular/common';
+import { CaseDto } from '../../../../models/cases/case.dto';
+import { PageResponse } from '../../../../models/page-response';
 
 @Component({
     selector: 'patient-details',
@@ -26,8 +26,8 @@ export class PatientDetails implements OnInit {
     cases: CaseDto[] = [];
 
     caseColumns: ColumnDef<CaseDto>[] = [
-        {header: 'Case ID', field: 'id'},
-        {header: 'Status', field: 'status'},
+        { header: 'Case ID', field: 'id' },
+        { header: 'Status', field: 'status' },
         {
             header: 'Creation Date',
             field: 'createdAt',
@@ -53,22 +53,5 @@ export class PatientDetails implements OnInit {
                 this.loading = false;
             },
         });
-
-        this.caseService.getCasesByPatientIdPaged(patientId).subscribe({
-            next: (page: PageResponse<any>) => {//TODO
-                this.cases = page.content; // <-- was assigning the whole page before
-            },
-            error: (err) => {
-                console.error('Error fetching cases for patient:', err);
-            },
-        });
-        //        this.caseService.getCasesByPatientId(patientId).subscribe({
-        //          next: (cases) => {
-        //            this.cases = cases;
-        //      },
-        //    error: (err) => {
-        //      console.error('Error fetching cases for patient:', err);
-        //},
-        // });
     }
 }

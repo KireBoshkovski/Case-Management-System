@@ -1,11 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { PublicCase } from '../../../../models/cases/public-case.model';
-import { ActivatedRoute } from '@angular/router';
-import { CaseService } from '../../../../core/services/case.service';
-import { Pagination } from '../../../../shared/components/pagination/pagination';
-import { List } from '../../../../shared/components/list/list';
-import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
-import { ColumnDef } from '../../../../models/columnDef';
+import { DiscussionService } from '../../../core/services/discussion.service';
+import { ColumnDef } from '../../../models/columnDef';
+import { DiscussionDto } from '../../../models/discussions/discussion-dto';
 import {
     BehaviorSubject,
     combineLatest,
@@ -15,23 +11,25 @@ import {
     shareReplay,
     switchMap,
 } from 'rxjs';
+import { SearchBar } from '../../../shared/components/search-bar/search-bar';
+import { Pagination } from '../../../shared/components/pagination/pagination';
+import { List } from '../../../shared/components/list/list';
 import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'public-case-search',
-    imports: [SearchBar, List, Pagination, AsyncPipe],
-    templateUrl: './public-case-search.html',
-    styleUrl: './public-case-search.css',
+    selector: 'discussion-list',
+    imports: [SearchBar, Pagination, List, AsyncPipe],
+    templateUrl: './discussion-list.html',
+    styleUrl: './discussion-list.css',
 })
-export class PublicCaseSearch {
-    service = inject(CaseService);
-    route = inject(ActivatedRoute);
+export class DiscussionList {
+    service = inject(DiscussionService);
 
-    caseColumns: ColumnDef<PublicCase>[] = [
-        { header: 'Case ID', field: 'id' },
+    discussionColumns: ColumnDef<DiscussionDto>[] = [
+        { header: 'Title', field: 'title' },
         {
-            header: 'Published At',
-            field: 'publishedAt',
+            header: 'Created At',
+            field: 'createdAt',
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
     ];
@@ -48,7 +46,7 @@ export class PublicCaseSearch {
         debounceTime(400),
         distinctUntilChanged(),
         switchMap(([page, size, query]) =>
-            this.service.getPublicCases({
+            this.service.getDiscussions({
                 page,
                 size,
                 sort: ['createdAt,desc'],
@@ -58,11 +56,11 @@ export class PublicCaseSearch {
         shareReplay({ bufferSize: 1, refCount: true }),
     );
 
-    readonly cases$ = this.pageResponse$.pipe(map((res) => res.content));
+    readonly discussions$ = this.pageResponse$.pipe(map((res) => res.content));
     readonly pageInfo$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(1);
+        this.page$.next(0);
         this.query$.next(q);
     }
 
@@ -72,6 +70,6 @@ export class PublicCaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(1);
+        this.page$.next(0);
     }
 }

@@ -5,7 +5,11 @@ import com.sorsix.backend.dto.PatientDto
 import com.sorsix.backend.dto.toPatientDto
 import com.sorsix.backend.exceptions.PatientNotFoundException
 import com.sorsix.backend.repository.PatientRepository
+import com.sorsix.backend.service.specification.FieldFilterSpecification
 import jakarta.transaction.Transactional
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -13,8 +17,15 @@ import org.springframework.stereotype.Service
 class PatientService(
     val patientRepository: PatientRepository
 ) {
-    fun findAll(): List<PatientDto> =
-        patientRepository.findAll().map { it.toPatientDto() }
+    fun findAll(q: String?, pageable: Pageable): Page<PatientDto> {
+        val specs = listOfNotNull(
+            FieldFilterSpecification.filterContainsText<Patient>(listOf("firstName", "lastName"), q)
+        )
+
+        val spec: Specification<Patient>? = specs.reduceOrNull { acc, s -> acc.and(s) }
+
+        return patientRepository.findAll(spec, pageable).map { it.toPatientDto() }
+    }
 
     fun findById(id: Long): Patient =
         patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)

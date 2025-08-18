@@ -4,7 +4,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Case } from '../../models/cases/case.model';
 import { PublicCase } from '../../models/cases/public-case.model';
-import { CaseDto } from '../../models/cases/case-dto.model';
+import { CaseDto } from '../../models/cases/case.dto';
 import { PageResponse } from '../../models/page-response';
 import { GetCasesOptions } from '../../models/cases-options';
 

@@ -5,7 +5,7 @@ import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
 import { Pagination } from '../../../../shared/components/pagination/pagination';
-import { CaseDto } from '../../../../models/cases/case-dto.model';
+import { CaseDto } from '../../../../models/cases/case.dto';
 import {
     BehaviorSubject,
     combineLatest,
@@ -16,7 +16,6 @@ import {
     switchMap,
 } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { PageResponse } from '../../../../models/page-response';
 
 @Component({
     selector: 'case-search',
@@ -69,13 +68,8 @@ export class CaseSearch {
         shareReplay({ bufferSize: 1, refCount: true }),
     );
 
-    readonly cases$ = this.pageResponse$.pipe(
-        map((res: PageResponse<CaseDto>) => res.content),
-    );
-    readonly totalElements$ = this.pageResponse$.pipe(
-        map((res) => res.totalElements),
-    );
-    readonly currentPage$ = this.pageResponse$.pipe(map((res) => res.page));
+    readonly cases$ = this.pageResponse$.pipe(map((res) => res.content));
+    readonly pageInfo$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
         this.page$.next(1);
@@ -83,7 +77,7 @@ export class CaseSearch {
     }
 
     onPageChange(nextPage: number) {
-        this.page$.next(nextPage);
+        this.page$.next(nextPage - 1);
     }
 
     setPageSize(size: number) {

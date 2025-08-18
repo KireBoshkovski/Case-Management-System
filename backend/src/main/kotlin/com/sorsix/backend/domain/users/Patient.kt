@@ -32,15 +32,4 @@ data class Patient(
     lastName = lastName,
     phoneNumber = phoneNumber,
     role = UserRole.PATIENT
-) {
-    constructor() : this(
-        email = "",
-        password = "",
-        firstName = "",
-        lastName = "",
-        phoneNumber = null,
-        dateOfBirth = LocalDate.now(),
-        gender = null,
-        address = null,
-    )
-}
+)

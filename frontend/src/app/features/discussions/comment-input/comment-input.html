@@ -1,0 +1,23 @@
+<div class="comment-input-wrapper">
+    <textarea
+        [value]="commentText"
+        (input)="updateText($event)"
+        [placeholder]="placeholder"
+        (keydown)="onKeyDown($event)"
+        class="comment-textarea"
+        rows="3"
+    >
+    </textarea>
+
+    <div class="comment-actions">
+        <small class="keyboard-hint">Ctrl+Enter to submit</small>
+        <button
+            type="button"
+            (click)="onSubmit()"
+            [disabled]="!commentText.trim()"
+            class="submit-btn"
+        >
+            Post Comment
+        </button>
+    </div>
+</div>

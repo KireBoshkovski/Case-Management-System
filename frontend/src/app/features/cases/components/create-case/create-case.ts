@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
-import { CaseDto } from '../../../../models/case.dto';
+import { CaseDto } from '../../../../models/cases/case.dto';
 import {
     ReactiveFormsModule,
     FormBuilder,
