@@ -10,6 +10,7 @@ import com.sorsix.backend.exceptions.DoctorNotFoundException
 import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
+import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -34,6 +35,8 @@ class DiscussionService(
 
         return discussionRepository.findAll(spec, pageable).map { it.toDiscussionDto() }
     }
+
+    fun findById(id: Long) = this.discussionRepository.findById(id)
 
     fun getDiscussionsByCase(caseId: Long): List<Discussion> {
         return discussionRepository.findAllByPublicCaseId(caseId)
@@ -60,9 +63,9 @@ class DiscussionService(
         commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)
 
     @Transactional
-    fun addComment(dto: CommentDto): Comment {
-        val user = userRepository.findByIdOrNull(dto.userId)
-            ?: throw DoctorNotFoundException(dto.userId)
+    fun addComment(dto: CommentDto, userDetails: CustomUserDetails): Comment {
+        val user = userRepository.findByIdOrNull(userDetails.getId())
+
         val discussion = discussionRepository.findById(dto.discussionId)
             .orElseThrow { DiscussionNotFoundException(dto.discussionId) }
 
@@ -73,7 +76,7 @@ class DiscussionService(
                 id = null,
                 content = dto.content,
                 discussion = discussion,
-                user = user,
+                user = user!!,
                 parent = parent
             )
         )

@@ -1,8 +1,8 @@
 export interface CommentDto {
-    id: number;
+    id?: number;
     content: string;
-    createdAt: string;
-    userId: number;
+    createdAt?: string;
+    userId?: number;
     discussionId: number;
     parentId?: number;
     replies?: CommentDto[];

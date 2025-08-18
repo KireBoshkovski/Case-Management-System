@@ -3,10 +3,28 @@
         {{ comment.content }} <small>by user {{ comment.userId }}</small>
     </p>
 
+    <button (click)="toggleReplyInput()" class="reply-btn">
+        {{ showReplyInput ? "Cancel" : "Reply" }}
+    </button>
+
+    @if (showReplyInput) {
+        <div class="reply-input-container">
+            <comment-input
+                [placeholder]="'Write a reply...'"
+                (commentSubmitted)="onReplySubmitted($event)"
+            >
+            </comment-input>
+        </div>
+    }
+
     @if (comment.replies?.length) {
         <div class="replies">
             @for (reply of comment.replies; track reply.id) {
-                <comment [comment]="reply"></comment>
+                <comment
+                    [comment]="reply"
+                    (replyAdded)="replyAdded.emit($event)"
+                >
+                </comment>
             }
         </div>
     }

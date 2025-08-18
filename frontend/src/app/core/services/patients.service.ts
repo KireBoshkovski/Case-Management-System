@@ -20,7 +20,7 @@ export class PatientsService {
             patientId,
             page = 1,
             size = 20,
-            sort = ['lastName,desc'],
+            sort = ['lastName,asc'],
             query,
         } = options;
 

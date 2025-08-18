@@ -3,10 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DiscussionService } from '../../../core/services/discussion.service';
 import { CommentDto } from '../../../models/discussions/comment-dto';
 import { Comment } from '../comment/comment';
+import { CommentInput } from '../comment-input/comment-input';
 
 @Component({
     selector: 'discussion-comments',
-    imports: [Comment],
+    imports: [Comment, CommentInput],
     templateUrl: './discussion-comments.html',
     styleUrl: './discussion-comments.css',
 })
@@ -16,9 +17,21 @@ export class DiscussionComments implements OnInit {
 
     discussionId!: number;
     comments: CommentDto[] = [];
+    showCommentInput = false;
+
+    data: DiscussionDetails | undefined;
 
     ngOnInit() {
         this.discussionId = +this.route.snapshot.paramMap.get('id')!;
+
+        this.discussionService.getDiscussionById(this.discussionId).subscribe({
+            next: (data) => {
+                console.log(data);
+
+                this.data = data
+            },
+            error: (err) => console.error(err),
+        });
 
         this.discussionService
             .getCommentsByDiscussion(this.discussionId)
@@ -29,5 +42,80 @@ export class DiscussionComments implements OnInit {
                 },
                 error: (err) => console.error(err),
             });
+    }
+
+    onCommentSubmitted(content: string) {
+        const newComment: CommentDto = {
+            content: content,
+            discussionId: this.discussionId,
+        };
+
+        this.discussionService.addComment(newComment).subscribe({
+            next: (createdComment: CommentDto) => {
+                console.log('Reply added successfully:', createdComment);
+
+                this.addReplyToLocalComments(createdComment);
+            },
+            error: (error) => {
+                console.error('Error adding reply:', error);
+            },
+        });
+    }
+
+    handleReplyAdded($event: { parentId: number; content: string }) {
+        console.log($event);
+
+        const newComment: CommentDto = {
+            discussionId: this.discussionId,
+            content: $event.content,
+            parentId: $event.parentId,
+        };
+
+        console.log(newComment);
+
+        this.discussionService.addComment(newComment).subscribe({
+            next: (createdComment: CommentDto) => {
+                console.log('Reply added successfully:', createdComment);
+
+                this.addReplyToLocalComments(createdComment);
+            },
+            error: (error) => {
+                console.error('Error adding reply:', error);
+            },
+        });
+    }
+
+    private addReplyToLocalComments(newReply: CommentDto): void {
+        // Find the parent comment and add the reply locally
+        this.addReplyToComment(this.comments, newReply.parentId!, newReply);
+    }
+
+    private addReplyToComment(
+        comments: CommentDto[],
+        parentId: number,
+        reply: CommentDto,
+    ): boolean {
+        for (const comment of comments) {
+            if (comment.id === parentId) {
+                if (!comment.replies) {
+                    comment.replies = [];
+                }
+                comment.replies.push(reply);
+                return true;
+            }
+
+            // Recursively search in nested replies
+            if (
+                comment.replies &&
+                this.addReplyToComment(comment.replies, parentId, reply)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    toggleCommentInput() {
+        this.showCommentInput = !this.showCommentInput;
     }
 }

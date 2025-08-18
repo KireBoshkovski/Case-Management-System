@@ -49,18 +49,19 @@ export class DiscussionService {
         );
     }
 
+    getDiscussionById(discussionId: number) {
+        return this.http.get<DiscussionDetails>(`${this.apiUrl}/discussions/${discussionId}`);
+    }
+
     getCommentsByDiscussion(discussionId: number): Observable<CommentDto[]> {
         return this.http.get<CommentDto[]>(
             `${this.apiUrl}/discussions/${discussionId}/comments`,
         );
     }
 
-    addComment(
-        discussionId: number,
-        comment: CommentDto,
-    ): Observable<CommentDto> {
+    addComment(comment: CommentDto): Observable<CommentDto> {
         return this.http.post<CommentDto>(
-            `${this.apiUrl}/discussions/${discussionId}/comments`,
+            `${this.apiUrl}/discussions/${comment.discussionId}/comments`,
             comment,
         );
     }
