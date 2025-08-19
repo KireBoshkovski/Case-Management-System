@@ -23,8 +23,6 @@ export class Comment {
     }
 
     onReplySubmitted(replyContent: string) {
-        console.log('Comment component', replyContent);
-
         this.replyAdded.emit({
             parentId: this.comment.id!,
             content: replyContent,

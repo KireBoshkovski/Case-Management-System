@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 abstract class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,8 +50,4 @@ abstract class User(
     @CreationTimestamp
     @Column(name = "created_at", nullable = false)
     open val createdAt: LocalDateTime = LocalDateTime.now(),
-
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    open val updatedAt: LocalDateTime = LocalDateTime.now()
 )

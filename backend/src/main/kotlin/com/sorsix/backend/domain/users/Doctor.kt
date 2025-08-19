@@ -2,13 +2,13 @@ package com.sorsix.backend.domain.users
 
 import com.sorsix.backend.domain.enums.UserRole
 import jakarta.persistence.Column
+import jakarta.persistence.DiscriminatorValue
 import jakarta.persistence.Entity
-import jakarta.persistence.PrimaryKeyJoinColumn
 import jakarta.persistence.Table
 
 @Entity
 @Table(name = "doctors")
-@PrimaryKeyJoinColumn(name = "doctor_id")
+@DiscriminatorValue("DOCTOR")
 class Doctor(
     email: String,
     password: String,
@@ -28,15 +28,4 @@ class Doctor(
     lastName = lastName,
     phoneNumber = phoneNumber,
     role = UserRole.DOCTOR,
-) {
-    constructor() : this(
-        email = "",
-        password = "",
-        firstName = "",
-        lastName = "",
-        phoneNumber = null,
-        specialization = "",
-        department = null,
-    )
-
-}
+)

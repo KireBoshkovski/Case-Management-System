@@ -33,18 +33,18 @@ class PatientService(
     @Transactional
     fun save(patient: Patient) = patientRepository.save(patient)
 
-    @Transactional
-    fun update(id: Long, patientUpdate: Patient): Patient {
-        val existing = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
-        val updated = existing.copy(
-            firstName = patientUpdate.firstName,
-            lastName = patientUpdate.lastName,
-            email = patientUpdate.email,
-            phoneNumber = patientUpdate.phoneNumber,
-            dateOfBirth = patientUpdate.dateOfBirth,
-            gender = patientUpdate.gender,
-            address = patientUpdate.address,
-        )
-        return patientRepository.save(updated)
-    }
+//    @Transactional
+//    fun update(id: Long, patientUpdate: Patient): Patient {
+//        val existing = patientRepository.findByIdOrNull(id) ?: throw PatientNotFoundException(id)
+//        val updated = existing.copy(
+//            firstName = patientUpdate.firstName,
+//            lastName = patientUpdate.lastName,
+//            email = patientUpdate.email,
+//            phoneNumber = patientUpdate.phoneNumber,
+//            dateOfBirth = patientUpdate.dateOfBirth,
+//            gender = patientUpdate.gender,
+//            address = patientUpdate.address,
+//        )
+//        return patientRepository.save(updated)
+//    }
 }
