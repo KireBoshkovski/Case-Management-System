@@ -28,7 +28,7 @@ export class DiscussionComments implements OnInit {
             next: (data) => {
                 console.log(data);
 
-                this.data = data
+                this.data = data;
             },
             error: (err) => console.error(err),
         });
@@ -54,7 +54,8 @@ export class DiscussionComments implements OnInit {
             next: (createdComment: CommentDto) => {
                 console.log('Reply added successfully:', createdComment);
 
-                this.addReplyToLocalComments(createdComment);
+                this.showCommentInput = false;
+                this.comments.unshift(createdComment);
             },
             error: (error) => {
                 console.error('Error adding reply:', error);
@@ -75,6 +76,8 @@ export class DiscussionComments implements OnInit {
 
         this.discussionService.addComment(newComment).subscribe({
             next: (createdComment: CommentDto) => {
+                this.showCommentInput = false;
+
                 console.log('Reply added successfully:', createdComment);
 
                 this.addReplyToLocalComments(createdComment);

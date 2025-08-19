@@ -15,6 +15,11 @@ class JwtAuthenticationFilter(
     private val jwtUtils: JWTUtility,
     private val userDetailsService: UserService
 ) : OncePerRequestFilter() {
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        val path = request.servletPath
+        return path.startsWith("/api/auth/")
+    }
+
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
