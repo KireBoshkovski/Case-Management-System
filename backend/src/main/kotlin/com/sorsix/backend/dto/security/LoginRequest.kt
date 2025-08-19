@@ -10,6 +10,6 @@ data class LoginRequest(
     val email: String,
 
     @field:NotBlank
-    @field:Size(min = 6, max = 40)
+    @field:Size(min = 5, max = 40)
     val password: String
 )

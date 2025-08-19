@@ -1,10 +1,11 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommentDto } from '../../../models/discussions/comment-dto';
 import { CommentInput } from '../comment-input/comment-input';
+import {NgClass} from '@angular/common';
 
 @Component({
     selector: 'comment',
-    imports: [CommentInput],
+    imports: [CommentInput, NgClass],
     templateUrl: './comment.html',
     styleUrl: './comment.css',
 })

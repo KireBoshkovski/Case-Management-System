@@ -4,10 +4,11 @@ import { DiscussionService } from '../../../core/services/discussion.service';
 import { CommentDto } from '../../../models/discussions/comment-dto';
 import { Comment } from '../comment/comment';
 import { CommentInput } from '../comment-input/comment-input';
+import {NgClass} from '@angular/common';
 
 @Component({
     selector: 'discussion-comments',
-    imports: [Comment, CommentInput],
+    imports: [Comment, CommentInput, NgClass],
     templateUrl: './discussion-comments.html',
     styleUrl: './discussion-comments.css',
 })

@@ -1,0 +1,185 @@
+/* Shared styling for consistent design */
+
+/* Custom badge colors */
+.badge-success {
+    background-color: #28a745;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.badge-secondary {
+    background-color: #6c757d;
+}
+
+.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge-primary {
+    background-color: #007bff;
+}
+
+.badge-info {
+    background-color: #17a2b8;
+}
+
+/* Card enhancements */
+.card {
+    border-radius: 8px;
+    transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+}
+
+/* List item styling */
+.list-group-item-action {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+}
+
+.list-group-item-action:hover {
+    background-color: #f8f9fa;
+    border-left-color: #007bff;
+    transform: translateX(2px);
+}
+
+.list-group-item-action:active {
+    background-color: #e9ecef;
+}
+
+/* Navbar enhancements */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.2s ease;
+    border-radius: 4px;
+    margin: 0 2px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    font-weight: 600;
+}
+
+/* Search bar enhancements */
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Button enhancements */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer styling */
+footer {
+    background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+}
+
+footer .text-light {
+    opacity: 0.9;
+}
+
+footer .text-light:hover {
+    opacity: 1;
+    color: #ffffff !important;
+}
+
+/* Loading states */
+.spinner-border {
+    animation-duration: 0.75s;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .list-group-item-action {
+        padding: 1rem;
+    }
+
+    .btn-group-vertical .btn {
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Icon spacing */
+.bi {
+    margin-right: 0.25rem;
+}
+
+/* Text utilities */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Status indicators */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.status-dot.active {
+    background-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.3);
+}
+
+.status-dot.pending {
+    background-color: #ffc107;
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+.status-dot.inactive {
+    background-color: #6c757d;
+    box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.3);
+}

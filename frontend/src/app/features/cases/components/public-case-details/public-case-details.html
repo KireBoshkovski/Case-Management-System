@@ -1,127 +1,238 @@
-<div>
+<div class="container-fluid">
     @if (caseData) {
-        <header>
-            <h1>Public Case #{{ caseData.id }}</h1>
-        </header>
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8 col-md-7">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h1 class="h3 mb-0">Public Case #{{ caseData.id }}</h1>
+                                <span class="badge badge-success">Published</span>
+                            </div>
+                            <small class="text-muted">Published: {{ formatDate(caseData.publishedAt) }}</small>
+                        </div>
+                    </div>
 
-        <section>
-            <h2>Case Information</h2>
-            <div>
-                <div>
-                    <label>Blood Type:</label>
-                    <span>{{ caseData.bloodType || "Not specified" }}</span>
-                </div>
-                <div>
-                    <label>Created:</label>
-                    <span>{{ formatDate(caseData.createdAt) }}</span>
-                </div>
-                <div>
-                    <label>Last Updated:</label>
-                    <span>{{ formatDate(caseData.updatedAt) }}</span>
-                </div>
-                <div>
-                    <label>Published:</label>
-                    <span>{{ formatDate(caseData.publishedAt) }}</span>
+                    <div class="card-body">
+                        <!-- Case Information -->
+                        <section class="mb-4">
+                            <h2 class="h5 mb-3">Case Information</h2>
+                            <div class="row">
+                                <div class="col-md-4 mb-2">
+                                    <strong>Blood Type:</strong>
+                                    <span class="text-muted">{{ caseData.bloodType || "Not specified" }}</span>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <strong>Created:</strong>
+                                    <span class="text-muted">{{ formatDate(caseData.createdAt) }}</span>
+                                </div>
+                                <div class="col-md-4 mb-2">
+                                    <strong>Last Updated:</strong>
+                                    <span class="text-muted">{{ formatDate(caseData.updatedAt) }}</span>
+                                </div>
+                            </div>
+
+                            @if (caseData.description) {
+                                <div class="mt-3">
+                                    <strong>Description:</strong>
+                                    <p class="text-muted mt-1">{{ caseData.description }}</p>
+                                </div>
+                            }
+
+                            @if (caseData.allergies) {
+                                <div class="mt-3">
+                                    <strong>Allergies:</strong>
+                                    <p class="text-muted mt-1">{{ caseData.allergies }}</p>
+                                </div>
+                            }
+
+                            @if (caseData.treatmentPlan) {
+                                <div class="mt-3">
+                                    <strong>Treatment Plan:</strong>
+                                    <p class="text-muted mt-1">{{ caseData.treatmentPlan }}</p>
+                                </div>
+                            }
+                        </section>
+
+                        <!-- Patient Information (Anonymized) -->
+                        <section class="mb-4">
+                            <h2 class="h5 mb-3">Patient Information (Anonymized)</h2>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <strong>Age Range:</strong>
+                                    <span class="text-muted">{{ caseData.patientAgeRange || "Not specified" }}</span>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <strong>Gender:</strong>
+                                    <span class="text-muted">{{ caseData.patientGender || "Not specified" }}</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Examinations -->
+                        @if (caseData.examinations && caseData.examinations.length > 0) {
+                            <section class="mb-4">
+                                <h2 class="h5 mb-3">Examinations ({{ caseData.examinations.length }})</h2>
+                                <div class="row">
+                                    @for (exam of caseData.examinations; track exam.id) {
+                                        <div class="col-12 mb-3">
+                                            <div class="card border-light">
+                                                <div class="card-header bg-light">
+                                                    <h3 class="h6 mb-0">
+                                                        <i class="bi bi-clipboard-data me-2"></i>
+                                                        Examination #{{ exam.id }}
+                                                    </h3>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-4 mb-2">
+                                                            <strong>Type:</strong>
+                                                            <span class="text-muted">{{ exam.examinationType }}</span>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <strong>Date:</strong>
+                                                            <span class="text-muted">{{ formatDate(exam.examinationDate!) || "Not specified" }}</span>
+                                                        </div>
+                                                        <div class="col-md-4 mb-2">
+                                                            <strong>Doctor Specialty:</strong>
+                                                            <span class="text-muted">{{ exam.examiningDoctorSpecialty || "Not specified" }}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    @if (exam.findings) {
+                                                        <div class="mb-3">
+                                                            <strong>Findings:</strong>
+                                                            <p class="text-muted mt-1">{{ exam.findings }}</p>
+                                                        </div>
+                                                    }
+
+                                                    @if (exam.results) {
+                                                        <div class="mb-3">
+                                                            <strong>Results:</strong>
+                                                            <p class="text-muted mt-1">{{ exam.results }}</p>
+                                                        </div>
+                                                    }
+
+                                                    @if (exam.notes) {
+                                                        <div class="mb-3">
+                                                            <strong>Notes:</strong>
+                                                            <p class="text-muted mt-1">{{ exam.notes }}</p>
+                                                        </div>
+                                                    }
+
+                                                    @if (exam.vitalSigns) {
+                                                        <div class="mb-3">
+                                                            <strong>Vital Signs:</strong>
+                                                            <p class="text-muted mt-1">{{ exam.vitalSigns }}</p>
+                                                        </div>
+                                                    }
+
+                                                    <div class="text-end">
+                                                        <small class="text-muted">
+                                                            <i class="bi bi-calendar-event me-1"></i>
+                                                            Published: {{ formatDate(exam.publishedAt) }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </section>
+                        }
+                    </div>
                 </div>
             </div>
 
-            @if (caseData.description) {
-                <div>
-                    <label>Description:</label>
-                    <p>{{ caseData.description }}</p>
-                </div>
-            }
-
-            @if (caseData.allergies) {
-                <div>
-                    <label>Allergies:</label>
-                    <p>{{ caseData.allergies }}</p>
-                </div>
-            }
-
-            @if (caseData.treatmentPlan) {
-                <div>
-                    <label>Treatment Plan:</label>
-                    <p>{{ caseData.treatmentPlan }}</p>
-                </div>
-            }
-        </section>
-
-        <section>
-            <h2>Patient Information (Anonymized)</h2>
-            <div>
-                <div>
-                    <label>Age Range:</label>
-                    <span>{{
-                        caseData.patientAgeRange || "Not specified"
-                    }}</span>
-                </div>
-                <div>
-                    <label>Gender:</label>
-                    <span>{{ caseData.patientGender || "Not specified" }}</span>
-                </div>
-            </div>
-        </section>
-
-        @if (caseData.examinations && caseData.examinations.length > 0) {
-            <section>
-                <h2>Examinations ({{ caseData.examinations.length }})</h2>
-                <div>
-                    @for (exam of caseData.examinations; track exam.id) {
-                        <div class="examination-card">
-                            <h3>Examination #{{ exam.id }}</h3>
-                            <div>
-                                <label>Type:</label>
-                                <span>{{ exam.examinationType }}</span>
+            <!-- Sidebar - Discussion Threads -->
+            <div class="col-lg-4 col-md-5">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="h5 mb-0">Community Discussions</h3>
+                        <button class="btn btn-outline-primary btn-sm" (click)="createNewDiscussion()">
+                            <i class="bi bi-plus"></i> New Discussion
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        @if (discussions$ | async; as discussions) {
+                            @if (discussions.length > 0) {
+                                <div class="list-group list-group-flush">
+                                    @for (discussion of discussions; track discussion.id) {
+                                        <a
+                                            [routerLink]="['/threads', discussion.id]"
+                                            class="list-group-item list-group-item-action px-3 py-2"
+                                        >
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">{{ discussion.title }}</h6>
+                                                <small class="text-muted">{{ formatDiscussionDate(discussion.createdAt) }}</small>
+                                            </div>
+                                            @if (discussion.description) {
+                                                <p class="mb-1 text-muted small">{{ discussion.description | slice:0:100 }}...</p>
+                                            }
+                                        </a>
+                                    }
+                                </div>
+                            } @else {
+                                <div class="text-center py-4 text-muted">
+                                    <i class="bi bi-chat-dots fs-1 d-block mb-2"></i>
+                                    <p class="mb-0">No discussions yet</p>
+                                    <small>Be the first to discuss this case</small>
+                                </div>
+                            }
+                        } @else {
+                            <div class="text-center py-4">
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading discussions...</span>
+                                </div>
                             </div>
-                            <div>
-                                <label>Date:</label>
-                                <span>{{
-                                    formatDate(exam.examinationDate!) ||
-                                        "Not specified"
-                                }}</span>
-                            </div>
-                            <div>
-                                <label>Doctor Specialty:</label>
-                                <span>{{
-                                    exam.examiningDoctorSpecialty ||
-                                        "Not specified"
-                                }}</span>
-                            </div>
+                        }
+                    </div>
 
-                            @if (exam.findings) {
-                                <div>
-                                    <label>Findings:</label>
-                                    <p>{{ exam.findings }}</p>
+                    <!-- Case Statistics Card -->
+                    <div class="card-footer bg-light">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="border-end">
+                                    <div class="fw-bold">{{ (discussions$ | async)?.length || 0 }}</div>
+                                    <small class="text-muted">Discussions</small>
                                 </div>
-                            }
-                            @if (exam.results) {
-                                <div>
-                                    <label>Results:</label>
-                                    <p>{{ exam.results }}</p>
-                                </div>
-                            }
-                            @if (exam.notes) {
-                                <div>
-                                    <label>Notes:</label>
-                                    <p>{{ exam.notes }}</p>
-                                </div>
-                            }
-                            @if (exam.vitalSigns) {
-                                <div>
-                                    <label>Vital Signs:</label>
-                                    <p>{{ exam.vitalSigns }}</p>
-                                </div>
-                            }
-
-                            <div>
-                                <label>Published:</label>
-                                <span>{{ formatDate(exam.publishedAt) }}</span>
+                            </div>
+                            <div class="col-6">
+                                <div class="fw-bold">{{ caseData.examinations?.length || 0 }}</div>
+                                <small class="text-muted">Examinations</small>
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
-            </section>
-        }
+
+                <!-- Additional Info Card -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4 class="h6 mb-0">
+                            <i class="bi bi-info-circle me-2"></i>
+                            About This Case
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="small text-muted mb-2">
+                            This is a published medical case shared for educational and research purposes.
+                            All patient information has been anonymized to protect privacy.
+                        </p>
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span>Case ID:</span>
+                            <span>#{{ caseData.id }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading case details...</span>
+            </div>
+            <p class="text-muted mt-3">Loading public case details...</p>
+        </div>
     }
 </div>

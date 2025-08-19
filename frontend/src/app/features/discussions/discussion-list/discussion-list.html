@@ -1,12 +1,12 @@
 <search-bar (search)="onSearch($event)"></search-bar>
+<list
+    [items]="(discussions$ | async) ?? []"
+    [columns]="discussionColumns"
+    routePrefix="threads"
+></list>
 @if (pageInfo$ | async; as pageInfo) {
     <pagination
         [page]="pageInfo"
         (pageChange)="onPageChange($event)"
     ></pagination>
 }
-<list
-    [items]="(discussions$ | async) ?? []"
-    [columns]="discussionColumns"
-    routePrefix="threads"
-></list>

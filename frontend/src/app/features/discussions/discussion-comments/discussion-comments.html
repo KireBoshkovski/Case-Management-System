@@ -1,36 +1,65 @@
-@if (data) {
-    <div class="discussion-header">
-        <h1>{{ data.title }}</h1>
-        <p class="meta">Posted by {{ data.user }}</p>
-        <div class="description">
-            <p>{{ data.description }}</p>
+<div class="container-fluid">
+    @if (data) {
+        <!-- Discussion Header -->
+        <div class="card mb-4 shadow-sm border-0">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h5 mb-1">{{ data.title }}</h1>
+                    <small class="text-muted">Posted by {{ data.user }}</small>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-0">{{ data.description }}</p>
+            </div>
         </div>
+    } @else {
+        <div class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading discussion...</span>
+            </div>
+            <p class="text-muted mt-3">Loading...</p>
+        </div>
+    }
+
+    <!-- No Comments -->
+    @if (comments.length === 0) {
+        <div class="card border-0 shadow-sm">
+            <div class="card-body text-center py-5 text-muted">
+                <i class="bi bi-chat-dots fs-1 d-block mb-3"></i>
+                <h5 class="mb-0">No comments yet</h5>
+                <small>Be the first to comment</small>
+            </div>
+        </div>
+    }
+
+    <!-- Comment Button -->
+    <div class="mb-3">
+        <button (click)="toggleCommentInput()" class="btn btn-outline-primary">
+            <i class="bi" [ngClass]="showCommentInput ? 'bi-x-circle' : 'bi-chat-left-text'"></i>
+            {{ showCommentInput ? "Cancel" : "Add Comment" }}
+        </button>
     </div>
-} @else {
-    <p>Loading...</p>
-}
 
-@if (comments.length === 0) {
-    <div>No comments yet.</div>
-}
+    <!-- Comment Input -->
+    @if (showCommentInput) {
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <comment-input
+                    [placeholder]="'Write a comment...'"
+                    (commentSubmitted)="onCommentSubmitted($event)"
+                ></comment-input>
+            </div>
+        </div>
+    }
 
-<button (click)="toggleCommentInput()" class="comment-btn">
-    {{ showCommentInput ? "Cancel" : "Comment" }}
-</button>
-
-@if (showCommentInput) {
-    <div class="commetn-input-container">
-        <comment-input
-            [placeholder]="'Write a comment...'"
-            (commentSubmitted)="onCommentSubmitted($event)"
-        >
-        </comment-input>
+    <!-- Comments List -->
+    <div class="list-group">
+        @for (comment of comments; track comment.id) {
+            <comment
+                class="list-group-item list-group-item-action"
+                [comment]="comment"
+                (replyAdded)="handleReplyAdded($event)"
+            ></comment>
+        }
     </div>
-}
-
-@for (comment of comments; track comment.id) {
-    <comment
-        [comment]="comment"
-        (replyAdded)="handleReplyAdded($event)"
-    ></comment>
-}
+</div>

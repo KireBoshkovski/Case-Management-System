@@ -1,8 +1,29 @@
-@for (col of columns; track col.field) {
-    <li class="d-flex" [routerLink]="['/', routePrefix, idField]">
-        <strong class="text-secondary me-2">{{ col.header }}:</strong>
-        <span class="text-dark">{{
-            col.formatter ? col.formatter(item[col.field]) : item[col.field]
-        }}</span>
-    </li>
-}
+<div [routerLink]="['/', routePrefix, idField]" class="d-block text-decoration-none cursor-pointer">
+    <div class="row align-items-center py-3 px-3">
+        <div class="col-md-8">
+            <div class="d-flex flex-column">
+                @for (col of columns; track col.field; let first = $first) {
+                    <div [class]="first ? 'mb-1' : 'mb-0'">
+                        @if (first) {
+                            <h6 class="mb-0 text-dark fw-semibold">
+                                <i class="bi bi-file-medical me-2 text-primary"></i>
+                                {{ col.header }}: {{ col.formatter ? col.formatter(item[col.field]) : item[col.field] }}
+                            </h6>
+                        } @else {
+                            <small class="text-muted">
+                                <strong>{{ col.header }}:</strong>
+                                {{ col.formatter ? col.formatter(item[col.field]) : item[col.field] }}
+                            </small>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            <div class="d-flex align-items-center justify-content-end">
+                <span class="badge badge-success me-2">Published</span>
+                <i class="bi bi-chevron-right text-muted"></i>
+            </div>
+        </div>
+    </div>
+</div>
