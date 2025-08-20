@@ -4,7 +4,7 @@ import { DiscussionService } from '../../../core/services/discussion.service';
 import { CommentDto } from '../../../models/discussions/comment-dto';
 import { Comment } from '../comment/comment';
 import { CommentInput } from '../comment-input/comment-input';
-import {NgClass} from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'discussion-comments',

@@ -32,6 +32,10 @@ export class DiscussionList {
             field: 'createdAt',
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
+        {
+            header: 'Replies',
+            field: 'commentsCount',
+        },
     ];
 
     private page$ = new BehaviorSubject<number>(0);
