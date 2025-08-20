@@ -65,4 +65,11 @@ export class DiscussionService {
             comment,
         );
     }
+
+    addDiscussion(discussion: DiscussionDto): Observable<DiscussionDto> {
+        return this.http.post<DiscussionDto>(
+            `${this.apiUrl}/discussions`,
+            discussion,
+        );
+    }
 }

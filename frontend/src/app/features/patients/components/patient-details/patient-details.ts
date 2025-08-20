@@ -53,5 +53,18 @@ export class PatientDetails implements OnInit {
                 this.loading = false;
             },
         });
+
+        this.caseService.getCases({
+            patientId,
+            page: 0,
+            size: 20,
+            sort: ['createdAt,desc']
+        }).subscribe({
+            next: (res: PageResponse<CaseDto>) => {
+                this.cases = res.content;
+                console.log('Cases:', this.cases);
+            },
+            error: (err) => console.error('Error fetching patient cases:', err),
+        });
     }
 }

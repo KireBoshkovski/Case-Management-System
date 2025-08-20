@@ -30,10 +30,9 @@ export const routes: Routes = [
             { path: 'public/:id', component: PublicCaseDetails },
 
             { path: 'cases', component: CaseSearch },
-            { path: 'cases/:id', component: CaseDetail },
             { path: 'cases/new', component: CreateCase },
+            { path: 'cases/:id', component: CaseDetail },
             { path: 'cases/:id/edit', component: CreateCase },
-
             { path: 'cases/:id/publish', component: PublishCase },
 
             // Patients

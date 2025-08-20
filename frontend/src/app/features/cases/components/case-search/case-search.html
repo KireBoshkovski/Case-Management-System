@@ -1,12 +1,97 @@
-<search-bar (search)="onSearch($event)"></search-bar>
-@if (pageInfo$ | async; as pageInfo) {
-    <pagination
-        [page]="pageInfo"
-        (pageChange)="onPageChange($event)"
-    ></pagination>
-}
-<list
-    [items]="(cases$ | async) ?? []"
-    [columns]="caseColumns"
-    routePrefix="cases"
-></list>
+<div class="container-fluid">
+<!--    TODO ADD BUTTON FOR CASE-->
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1">Public Medical Cases</h1>
+                    <p class="text-muted mb-0">Browse published cases for research and education</p>
+                </div>
+                <div class="badge badge-primary fs-6 px-3 py-2">
+                    <i class="bi bi-globe me-1"></i>
+                    Public Repository
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body py-3">
+                    <search-bar (search)="onSearch($event)" placeholder="Search public cases..."></search-bar>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <label class="form-label mb-0 me-2">Cases per page:</label>
+                        <select class="form-select form-select-sm w-auto" (change)="setPageSize(+$any($event.target).value)">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <!--                            <option value="50">50</option>-->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cases List -->
+    <div class="row">
+        <div class="col-12">
+            @if (cases$ | async; as cases) {
+                @if (cases.length > 0) {
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="h6 mb-0">Available Cases</h4>
+                                <span class="badge badge-secondary">{{ cases.length }} cases</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <list
+                                [items]="cases"
+                                [columns]="caseColumns"
+                                routePrefix="cases"
+                            ></list>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body text-center py-5">
+                            <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+                            <h5 class="text-muted">No cases found</h5>
+                            <p class="text-muted mb-0">Try adjusting your search criteria</p>
+                        </div>
+                    </div>
+                }
+            } @else {
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading cases...</span>
+                        </div>
+                        <p class="text-muted mt-3 mb-0">Loading public cases...</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    @if (pageInfo$ | async; as pageInfo) {
+        <div class="row mt-4">
+            <div class="col-12 d-flex justify-content-center">
+                <pagination
+                    [page]="pageInfo"
+                    (pageChange)="onPageChange($event)"
+                ></pagination>
+            </div>
+        </div>
+    }
+</div>
