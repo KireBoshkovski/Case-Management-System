@@ -60,6 +60,8 @@ export class CaseDetail implements OnInit {
     }
 
     formatDate(dateString: string): string {
+        if (!dateString) return 'Not specified';
+
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
@@ -67,5 +69,35 @@ export class CaseDetail implements OnInit {
             hour: '2-digit',
             minute: '2-digit',
         });
+    }
+
+    calculateAge(dateOfBirth: string): number {
+        const birth = new Date(dateOfBirth);
+        const today = new Date();
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDiff = today.getMonth() - birth.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+            age--;
+        }
+
+        return age;
+    }
+
+    getStatusClass(status: string): string {
+        switch (status?.toLowerCase()) {
+            case 'active':
+                return 'badge-success';
+            case 'pending':
+                return 'badge-warning';
+            case 'closed':
+                return 'badge-secondary';
+            case 'urgent':
+                return 'badge-danger';
+            case 'draft':
+                return 'badge-info';
+            default:
+                return 'badge-primary';
+        }
     }
 }

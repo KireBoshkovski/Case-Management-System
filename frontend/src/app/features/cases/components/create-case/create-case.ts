@@ -1,14 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CaseService } from '../../../../core/services/case.service';
-import { CaseDto } from '../../../../models/cases/case.dto';
-import {
-    ReactiveFormsModule,
-    FormBuilder,
-    FormGroup,
-    Validators,
-} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Case } from '../../../../models/cases/case.model';
+import {Component, inject, OnInit} from '@angular/core';
+import {CaseService} from '../../../../core/services/case.service';
+import {CaseDto} from '../../../../models/cases/case.dto';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Case} from '../../../../models/cases/case.model';
 
 @Component({
     selector: 'create-case',
@@ -65,36 +60,32 @@ export class CreateCase implements OnInit {
             description: caseData.description || '',
             treatmentPlan: caseData.treatmentPlan || '',
             status: caseData.status || 'ACTIVE',
-            patientId: caseData.patient.id || caseData.patient?.id || '',
-            doctorId: caseData.doctor.id || caseData.doctor?.id || '',
-            examinationsIds:
-                caseData.examinations?.map((exam) => exam.id) || [],
+            patientId: caseData.patient?.id ?? '',
+            doctorId: caseData.doctor?.id ?? '',
+            examinationsIds: caseData.examinations?.map(e => e.id) ?? [],
         });
     }
 
     onSubmit() {
         if (this.caseForm.valid) {
-            const formValue = this.caseForm.value;
+            const v = this.caseForm.value;
             const caseData: Partial<CaseDto> = {
-                bloodType: formValue.bloodType || undefined,
-                allergies: formValue.allergies || undefined,
-                description: formValue.description,
-                treatmentPlan: formValue.treatmentPlan || undefined,
-                status: formValue.status,
-                // patientId: Number(formValue.patientId), //TODO
-                doctorId: Number(formValue.doctorId),
-                // examinationsIds: formValue.examinationsIds || [], //TODO
+                bloodType: v.bloodType || undefined,
+                allergies: v.allergies || undefined,
+                description: v.description,
+                treatmentPlan: v.treatmentPlan || undefined,
+                status: v.status,
+                patientId: Number(v.patientId),
+                doctorId: Number(v.doctorId),
+                examinationsIds: (v.examinationsIds as number[]) || [],
             };
 
-            if (this.isEditMode) {
-                this.updateCase(caseData);
-            } else {
-                this.createCase(caseData);
-            }
+            this.isEditMode ? this.updateCase(caseData) : this.createCase(caseData);
         } else {
             this.markFormGroupTouched();
         }
     }
+
 
     private createCase(caseData: Partial<CaseDto>) {
         this.caseService.createCase(caseData).subscribe({

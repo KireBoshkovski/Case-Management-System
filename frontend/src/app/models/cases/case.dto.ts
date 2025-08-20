@@ -13,5 +13,5 @@ export interface CaseDto {
     updatedAt: string; // ISO
     patientId: number;
     doctorId: number;
-    examinationIds: number[];
+    examinationsIds: number[];
 }
