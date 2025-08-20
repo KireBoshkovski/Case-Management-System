@@ -3,10 +3,10 @@
 
     <div class="role-toggle-container">
         <span
-            >Registering as a
+        >Registering as a
             <strong>{{ formControls["role"].value }}</strong></span
         >
-        <button type="button" class="toggle-button" (click)="toggleRole()">
+        <button (click)="toggleRole()" class="toggle-button" type="button">
             Click to switch to
             {{
                 formControls["role"].value === "PATIENT" ? "Doctor" : "Patient"
@@ -14,24 +14,24 @@
         </button>
     </div>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+    <form (ngSubmit)="onSubmit()" [formGroup]="registerForm" novalidate>
         <div class="form-row">
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input id="firstName" type="text" formControlName="firstName" />
+                <input formControlName="firstName" id="firstName" type="text"/>
             </div>
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input id="lastName" type="text" formControlName="lastName" />
+                <input formControlName="lastName" id="lastName" type="text"/>
             </div>
         </div>
         <div class="form-group">
             <label for="email">Email Address</label>
-            <input id="email" type="email" formControlName="email" />
+            <input formControlName="email" id="email" type="email"/>
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input id="password" type="password" formControlName="password" />
+            <input formControlName="password" id="password" type="password"/>
         </div>
 
         @if (formControls['role'].value === 'PATIENT') {
@@ -53,7 +53,7 @@
             </div>
             <div>
                 <label for="address">Address</label>
-                <input id="address" type="text" formControlName="address" />
+                <input id="address" type="text" formControlName="address"/>
             </div>
             <div>
                 <label for="gender">Gender</label>
@@ -85,7 +85,7 @@
             </div>
         }
 
-        <button type="submit" [disabled]="registerForm.invalid">
+        <button [disabled]="registerForm.invalid" type="submit">
             Register
         </button>
         @if (successMessage) {
@@ -98,8 +98,8 @@
                 {{ errorMessage }}
             </div>
         }
-        <a routerLink="/login" class="btn btn-block btn-light btn-transparent"
-            >Already have an account? Login here!</a
+        <a class="btn btn-block btn-light btn-transparent" routerLink="/login"
+        >Already have an account? Login here!</a
         >
     </form>
 </div>

@@ -3,7 +3,7 @@
         <h1>{{ getPageTitle() }}</h1>
     </header>
 
-    <form [formGroup]="caseForm" (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" [formGroup]="caseForm">
         <!-- Required Fields -->
         <section>
             <h2>Basic Information</h2>
@@ -11,8 +11,8 @@
             <div>
                 <label for="description">Description *</label>
                 <textarea
-                    id="description"
                     formControlName="description"
+                    id="description"
                     placeholder="Enter case description"
                     rows="4"
                 >
@@ -24,7 +24,7 @@
 
             <div>
                 <label for="status">Status *</label>
-                <select id="status" formControlName="status">
+                <select formControlName="status" id="status">
                     <option value="ACTIVE">Active</option>
                     <option value="CLOSED">Closed</option>
                 </select>
@@ -36,10 +36,10 @@
             <div>
                 <label for="patientId">Patient ID *</label>
                 <input
-                    type="number"
-                    id="patientId"
                     formControlName="patientId"
+                    id="patientId"
                     placeholder="Enter patient ID"
+                    type="number"
                 />
                 @if (isFieldInvalid("patientId")) {
                     <span>{{ getFieldError("patientId") }}</span>
@@ -49,10 +49,10 @@
             <div>
                 <label for="doctorId">Doctor ID *</label>
                 <input
-                    type="number"
-                    id="doctorId"
                     formControlName="doctorId"
+                    id="doctorId"
                     placeholder="Enter doctor ID"
+                    type="number"
                 />
                 @if (isFieldInvalid("doctorId")) {
                     <span>{{ getFieldError("doctorId") }}</span>
@@ -66,7 +66,7 @@
 
             <div>
                 <label for="bloodType">Blood Type</label>
-                <select id="bloodType" formControlName="bloodType">
+                <select formControlName="bloodType" id="bloodType">
                     <option value="">Select blood type</option>
                     <option value="A+">A+</option>
                     <option value="A-">A-</option>
@@ -82,8 +82,8 @@
             <div>
                 <label for="allergies">Allergies</label>
                 <textarea
-                    id="allergies"
                     formControlName="allergies"
+                    id="allergies"
                     placeholder="Enter known allergies"
                     rows="3"
                 >
@@ -93,8 +93,8 @@
             <div>
                 <label for="treatmentPlan">Treatment Plan</label>
                 <textarea
-                    id="treatmentPlan"
                     formControlName="treatmentPlan"
+                    id="treatmentPlan"
                     placeholder="Enter treatment plan"
                     rows="4"
                 >
@@ -104,11 +104,11 @@
 
         <!-- Submit Actions -->
         <div>
-            <button type="submit" [disabled]="caseForm.invalid">
+            <button [disabled]="caseForm.invalid" type="submit">
                 {{ getSubmitButtonText() }}
             </button>
 
-            <button type="button" (click)="router.navigate(['/cases'])">
+            <button (click)="router.navigate(['/cases'])" type="button">
                 Cancel
             </button>
 

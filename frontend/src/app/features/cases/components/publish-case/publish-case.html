@@ -12,14 +12,14 @@
                 <div>
                     <label>Patient:</label>
                     <span
-                        >{{ originalCase.patient.firstName }}
+                    >{{ originalCase.patient.firstName }}
                         {{ originalCase.patient.lastName }}</span
                     >
                 </div>
                 <div>
                     <label>Doctor:</label>
                     <span
-                        >{{ originalCase.doctor.firstName }}
+                    >{{ originalCase.doctor.firstName }}
                         {{ originalCase.doctor.lastName }}</span
                     >
                 </div>
@@ -124,17 +124,13 @@
                         before publishing.
                     </p>
 
-                    @if (
-                        originalCase.examinations &&
-                        originalCase.examinations.length > 0
-                    ) {
+                    @if (originalCase.examinations &&
+                    originalCase.examinations.length > 0) {
                         <div formArrayName="examinations">
-                            @for (
-                                examination of getExaminationsFormArray()
-                                    .controls;
+                            @for (examination of getExaminationsFormArray()
+                                .controls;
                                 track examination;
-                                let i = $index
-                            ) {
+                                let i = $index) {
                                 <div
                                     [formGroupName]="i"
                                     class="examination-item"
@@ -144,7 +140,7 @@
                                     <div class="examination-fields">
                                         <div>
                                             <label [for]="'exam-type-' + i"
-                                                >Examination Type *</label
+                                            >Examination Type *</label
                                             >
                                             <input
                                                 [id]="'exam-type-' + i"
@@ -152,16 +148,14 @@
                                                 formControlName="examinationType"
                                                 placeholder="e.g., Blood Test, X-Ray, MRI"
                                             />
-                                            @if (
-                                                examination.get(
-                                                    "examinationType"
-                                                )?.invalid &&
-                                                examination.get(
-                                                    "examinationType"
-                                                )?.touched
-                                            ) {
+                                            @if (examination.get(
+                                                "examinationType"
+                                            )?.invalid &&
+                                            examination.get(
+                                                "examinationType"
+                                            )?.touched) {
                                                 <span class="error-message"
-                                                    >Examination type is
+                                                >Examination type is
                                                     required</span
                                                 >
                                             }
@@ -169,23 +163,21 @@
 
                                         <div>
                                             <label [for]="'exam-date-' + i"
-                                                >Examination Date *</label
+                                            >Examination Date *</label
                                             >
                                             <input
                                                 [id]="'exam-date-' + i"
                                                 type="date"
                                                 formControlName="examinationDate"
                                             />
-                                            @if (
-                                                examination.get(
-                                                    "examinationDate"
-                                                )?.invalid &&
-                                                examination.get(
-                                                    "examinationDate"
-                                                )?.touched
-                                            ) {
+                                            @if (examination.get(
+                                                "examinationDate"
+                                            )?.invalid &&
+                                            examination.get(
+                                                "examinationDate"
+                                            )?.touched) {
                                                 <span class="error-message"
-                                                    >Examination date is
+                                                >Examination date is
                                                     required</span
                                                 >
                                             }
@@ -193,7 +185,7 @@
 
                                         <div>
                                             <label [for]="'exam-findings-' + i"
-                                                >Findings</label
+                                            >Findings</label
                                             >
                                             <textarea
                                                 [id]="'exam-findings-' + i"
@@ -206,7 +198,7 @@
 
                                         <div>
                                             <label [for]="'exam-results-' + i"
-                                                >Results</label
+                                            >Results</label
                                             >
                                             <textarea
                                                 [id]="'exam-results-' + i"
@@ -219,7 +211,7 @@
 
                                         <div>
                                             <label [for]="'exam-notes-' + i"
-                                                >Notes</label
+                                            >Notes</label
                                             >
                                             <textarea
                                                 [id]="'exam-notes-' + i"
@@ -233,7 +225,7 @@
                                         <div>
                                             <label
                                                 [for]="'exam-vital-signs-' + i"
-                                                >Vital Signs</label
+                                            >Vital Signs</label
                                             >
                                             <textarea
                                                 [id]="'exam-vital-signs-' + i"

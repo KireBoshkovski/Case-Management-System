@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { DiscussionService } from '../../../core/services/discussion.service';
-import { CommentDto } from '../../../models/discussions/comment-dto';
-import { Comment } from '../comment/comment';
-import { CommentInput } from '../comment-input/comment-input';
+import {Component, inject, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {DiscussionService} from '../../../core/services/discussion.service';
+import {CommentDto} from '../../../models/discussions/comment-dto';
+import {Comment} from '../comment/comment';
+import {CommentInput} from '../comment-input/comment-input';
 import {NgClass} from '@angular/common';
 
 @Component({
@@ -89,6 +89,10 @@ export class DiscussionComments implements OnInit {
         });
     }
 
+    toggleCommentInput() {
+        this.showCommentInput = !this.showCommentInput;
+    }
+
     private addReplyToLocalComments(newReply: CommentDto): void {
         // Find the parent comment and add the reply locally
         this.addReplyToComment(this.comments, newReply.parentId!, newReply);
@@ -117,9 +121,5 @@ export class DiscussionComments implements OnInit {
             }
         }
         return false;
-    }
-
-    toggleCommentInput() {
-        this.showCommentInput = !this.showCommentInput;
     }
 }

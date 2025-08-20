@@ -1,19 +1,18 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environments';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CommentDto } from '../../models/discussions/comment-dto';
-import { DiscussionDto } from '../../models/discussions/discussion-dto';
-import { PageResponse } from '../../models/page-response';
-import { CaseDto } from '../../models/cases/case.dto';
-import { GetCasesOptions } from '../../models/cases-options';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '../../../environments/environments';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {CommentDto} from '../../models/discussions/comment-dto';
+import {DiscussionDto} from '../../models/discussions/discussion-dto';
+import {PageResponse} from '../../models/page-response';
+import {GetCasesOptions} from '../../models/cases-options';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DiscussionService {
-    private apiUrl = environment.apiUrl;
     http = inject(HttpClient);
+    private apiUrl = environment.apiUrl;
 
     getDiscussions(
         options: GetCasesOptions,

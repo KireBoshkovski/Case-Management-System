@@ -8,6 +8,7 @@ import com.sorsix.backend.dto.toCaseDto
 import com.sorsix.backend.security.CustomUserDetails
 import com.sorsix.backend.service.CaseService
 import com.sorsix.backend.service.OpenAIService
+import com.sorsix.backend.service.PublicCaseService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/cases")
 class CaseController(
     val caseService: CaseService,
+    val publicCaseService: PublicCaseService,
     val openAIService: OpenAIService
 ) {
     /**
@@ -64,7 +66,7 @@ class CaseController(
 
     @PostMapping("/publish/{id}")
     fun publishCase(@PathVariable id: Long, @RequestBody case: PublicCase): ResponseEntity<Void> {
-        this.caseService.publishCase(case)
+        this.publicCaseService.publishCase(case)
         return ResponseEntity.ok().build()
     }
 }   

@@ -5,4 +5,5 @@ export interface DiscussionDto {
     createdAt: string;
     userId: number;
     caseId: number;
+    commentsCount: number;
 }

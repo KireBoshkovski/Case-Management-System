@@ -1,16 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CaseService } from '../../../../core/services/case.service';
-import { DiscussionService } from '../../../../core/services/discussion.service';
-import { PublicCase } from '../../../../models/cases/public-case.model';
-import { DiscussionDto } from '../../../../models/discussions/discussion-dto';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { List } from '../../../../shared/components/list/list';
-import { Observable } from 'rxjs';
-import { AsyncPipe, SlicePipe } from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {CaseService} from '../../../../core/services/case.service';
+import {DiscussionService} from '../../../../core/services/discussion.service';
+import {PublicCase} from '../../../../models/cases/public-case.model';
+import {DiscussionDto} from '../../../../models/discussions/discussion-dto';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {Observable} from 'rxjs';
+import {AsyncPipe, SlicePipe} from '@angular/common';
 
 @Component({
     selector: 'public-case-details',
-    imports: [List, RouterLink, AsyncPipe, SlicePipe],
+    imports: [RouterLink, AsyncPipe, SlicePipe],
     templateUrl: './public-case-details.html',
     styleUrl: './public-case-details.css',
 })
@@ -38,7 +37,8 @@ export class PublicCaseDetails implements OnInit {
             });
 
             // Load discussions for this case
-            this.discussions$ = this.discussionService.getDiscussionsByCase(caseId);
+            this.discussions$ =
+                this.discussionService.getDiscussionsByCase(caseId);
         } else {
             console.error('Invalid case ID');
         }
@@ -79,7 +79,10 @@ export class PublicCaseDetails implements OnInit {
     createNewDiscussion(): void {
         // Navigate to create discussion page or open modal
         // You'll need to implement this based on your discussion creation flow
-        console.log('Create new discussion for public case:', this.caseData?.id);
+        console.log(
+            'Create new discussion for public case:',
+            this.caseData?.id,
+        );
         // Example: this.router.navigate(['/threads/new'], { queryParams: { caseId: this.caseData?.id } });
     }
 }

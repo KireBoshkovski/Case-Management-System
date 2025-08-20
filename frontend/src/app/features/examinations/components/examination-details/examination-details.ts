@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { ExaminationService } from '../../../../core/services/examination.service';
-import { ActivatedRoute } from '@angular/router';
-import { Examination } from '../../../../models/examination.model';
+import {Component, inject, OnInit} from '@angular/core';
+import {ExaminationService} from '../../../../core/services/examination.service';
+import {ActivatedRoute} from '@angular/router';
+import {Examination} from '../../../../models/examination.model';
 
 @Component({
     selector: 'examination-details',

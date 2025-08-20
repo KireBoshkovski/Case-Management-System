@@ -1,24 +1,24 @@
 <div class="login-container">
     <h2>Login</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
         <div>
             <label for="email">Email</label>
-            <input id="email" type="email" formControlName="email" />
+            <input formControlName="email" id="email" type="email"/>
         </div>
         <div>
             <label for="password">Password</label>
-            <input id="password" type="password" formControlName="password" />
+            <input formControlName="password" id="password" type="password"/>
         </div>
-        <button type="submit" [disabled]="loginForm.invalid">Log In</button>
+        <button [disabled]="loginForm.invalid" type="submit">Log In</button>
         @if (errorMessage) {
             <div class="error-message">
                 {{ errorMessage }}
             </div>
         }
         <a
-            routerLink="/register"
             class="btn btn-block btn-light btn-transparent"
-            >Don't have an account? Register here!</a
+            routerLink="/register"
+        >Don't have an account? Register here!</a
         >
     </form>
 </div>

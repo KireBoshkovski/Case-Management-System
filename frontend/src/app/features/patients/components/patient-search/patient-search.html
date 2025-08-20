@@ -1,4 +1,7 @@
-<search-bar (search)="onSearch($event)"></search-bar>
+<search-bar
+    (search)="onSearch($event)"
+    [placeholder]="'Search patients...'"
+></search-bar>
 @if (pageInfo$ | async; as pageInfo) {
     <pagination
         [page]="pageInfo"
@@ -6,7 +9,7 @@
     ></pagination>
 }
 <list
-    [items]="(patients$ | async) ?? []"
     [columns]="patientColumns"
+    [items]="(patients$ | async) ?? []"
     routePrefix="patients"
 ></list>

@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { ListItem } from '../list-item/list-item';
-import { ColumnDef } from '../../../models/columnDef';
+import {Component, Input} from '@angular/core';
+import {ListItem} from '../list-item/list-item';
+import {ColumnDef} from '../../../models/columnDef';
 
 @Component({
     selector: 'list',

@@ -1,8 +1,8 @@
-import { CaseStatus } from './case-status.enum';
-import { Doctor } from '../doctor.model';
-import { Examination } from '../examination.model';
-import { Patient } from '../patient.model';
-import { PublicCase } from './public-case.model';
+import {CaseStatus} from './case-status.enum';
+import {Doctor} from '../doctor.model';
+import {Examination} from '../examination.model';
+import {Patient} from '../patient.model';
+import {PublicCase} from './public-case.model';
 
 export interface Case {
     id: number;

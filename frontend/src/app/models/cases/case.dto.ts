@@ -1,5 +1,4 @@
-import { PatientDetailsModel } from '../patient-details.model';
-import { CaseStatus } from './case-status.enum';
+import {CaseStatus} from './case-status.enum';
 
 export interface CaseDto {
     id: number;

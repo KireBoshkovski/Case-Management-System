@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
     selector: 'auth-layout',
@@ -7,4 +7,5 @@ import { RouterOutlet } from '@angular/router';
     templateUrl: './auth-layout.html',
     styleUrl: './auth-layout.css',
 })
-export class AuthLayout {}
+export class AuthLayout {
+}

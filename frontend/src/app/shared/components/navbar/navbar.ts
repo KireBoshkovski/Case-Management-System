@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import {Component} from '@angular/core';
+import {RouterLink} from '@angular/router';
 
 @Component({
     selector: 'navbar',
@@ -7,4 +7,5 @@ import { RouterLink } from '@angular/router';
     templateUrl: './navbar.html',
     styleUrl: './navbar.css',
 })
-export class Navbar {}
+export class Navbar {
+}
