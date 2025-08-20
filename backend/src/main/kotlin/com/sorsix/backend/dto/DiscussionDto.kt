@@ -9,7 +9,7 @@ data class DiscussionDto(
     val description: String,
     val createdAt: Instant,
     val userId: Long,
-    val caseId: Long
+    val caseId: Long,
 )
 
 fun Discussion.toDiscussionDto() = DiscussionDto(

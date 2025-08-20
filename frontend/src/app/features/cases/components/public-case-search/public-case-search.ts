@@ -34,6 +34,10 @@ export class PublicCaseSearch {
             field: 'publishedAt',
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
+        {
+            header: 'Views',
+            field: 'viewsCount'
+        }
     ];
 
     private page$ = new BehaviorSubject<number>(0);

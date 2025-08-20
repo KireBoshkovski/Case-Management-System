@@ -12,4 +12,5 @@ export interface PublicCase {
     updatedAt: string;
     publishedAt: string;
     examinations: PublicExamination[];
+    viewsCount: number;
 }
