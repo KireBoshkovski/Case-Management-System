@@ -10,7 +10,7 @@ import com.sorsix.backend.exceptions.DoctorNotFoundException
 import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
-import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -21,10 +21,11 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 class DiscussionService(
-    private val discussionRepository: DiscussionRepository,
-    private val userRepository: UserRepository,
-    private val publicCaseService: PublicCaseService,
-    private val commentRepository: CommentRepository
+    val discussionRepository: DiscussionRepository,
+    val userRepository: UserRepository,
+    val publicCaseService: PublicCaseService,
+    val commentRepository: CommentRepository,
+    val notificationService: NotificationService
 ) {
     fun listAll(q: String?, pageable: Pageable): Page<DiscussionDto> {
         val specs = listOfNotNull(
@@ -71,7 +72,8 @@ class DiscussionService(
 
         val parent = dto.parentId?.let { commentRepository.findByIdOrNull(it) }
 
-        return commentRepository.save(
+
+        val newComment = commentRepository.save(
             Comment(
                 id = null,
                 content = dto.content,
@@ -80,6 +82,28 @@ class DiscussionService(
                 parent = parent
             )
         )
-    }
 
+        if (newComment.parent != null) { // REPLY to another comment
+            val parentCommentAuthor = newComment.parent!!.user
+            if (parentCommentAuthor.id != user.id) {
+                val notificationPayload = mapOf(
+                    "message" to "${user.email} replied to your comment.",
+                    "discussionId" to discussion.id,
+                    "commentId" to newComment.id
+                )
+                notificationService.sendNotificationToUser(parentCommentAuthor.email, notificationPayload)
+            }
+        } else { // TOP-LEVEL comment on the discussion
+            val discussionAuthor = discussion.user
+            if (discussionAuthor.id != user.id) {
+                val notificationPayload = mapOf(
+                    "message" to "${user.email} commented on your discussion: '${discussion.title}'",
+                    "discussionId" to discussion.id,
+                    "commentId" to newComment.id
+                )
+                notificationService.sendNotificationToUser(discussionAuthor.email, notificationPayload)
+            }
+        }
+        return newComment
+    }
 }

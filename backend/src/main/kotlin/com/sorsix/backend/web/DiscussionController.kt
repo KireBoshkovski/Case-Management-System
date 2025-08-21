@@ -2,7 +2,7 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.domain.discussions.Discussion
 import com.sorsix.backend.dto.*
-import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.service.DiscussionService
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/discussions")
 class DiscussionController(
-    private val discussionService: DiscussionService
+    val discussionService: DiscussionService
 ) {
     @GetMapping
     fun listAll(

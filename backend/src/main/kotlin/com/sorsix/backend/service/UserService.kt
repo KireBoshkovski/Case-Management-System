@@ -1,7 +1,7 @@
 package com.sorsix.backend.service
 
 import com.sorsix.backend.repository.UserRepository
-import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.config.security.CustomUserDetails
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

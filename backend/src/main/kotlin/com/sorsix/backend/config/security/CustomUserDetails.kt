@@ -1,4 +1,4 @@
-package com.sorsix.backend.security
+package com.sorsix.backend.config.security
 
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.domain.users.User
