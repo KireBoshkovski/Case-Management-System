@@ -25,7 +25,6 @@ export class Login {
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(5)]],
     });
-    errorMessage: string | undefined;
 
     onSubmit() {
         if (this.loginForm.valid) {
@@ -39,9 +38,6 @@ export class Login {
                     this.toastService.error(response.error.error);
                 },
             });
-        } else {
-            this.errorMessage = 'Please fill in all required fields correctly.';
-            return;
         }
     }
 }
