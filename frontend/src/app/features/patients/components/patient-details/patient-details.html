@@ -1,60 +1,120 @@
-<div class="patient-details-container">
-    @if (loading) {
-        <div class="loading-message">Loading patient details...</div>
-    }
-
-    @if (!loading && !patient) {
-        <div class="error-message">Failed to load patient details</div>
-    }
-
-    @if (patient) {
-        <div class="patient-info">
-            <div class="header">
-                <h1>{{ patient.firstName }} {{ patient.lastName }}</h1>
-                <div class="patient-id">ID: {{ patient.id }}</div>
-            </div>
-
-            <div class="details-grid">
-                <div class="detail-item">
-                    <span class="detail-label">Date of Birth:</span>
-                    <span class="detail-value">{{
-                        patient.dateOfBirth | date
-                    }}</span>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            @if (loading) {
+                <!-- Loading State -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading patient details...</span>
+                        </div>
+                        <p class="text-muted mb-0">Loading patient details...</p>
+                    </div>
                 </div>
+            }
 
-                <div class="detail-item">
-                    <span class="detail-label">Gender:</span>
-                    <span class="detail-value">{{ patient.gender }}</span>
+            @if (!loading && !patient) {
+                <!-- Error State -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body text-center py-5">
+                        <div class="text-danger mb-3">
+                            <i class="bi bi-exclamation-triangle fs-1"></i>
+                        </div>
+                        <h5 class="text-danger mb-0">Failed to load patient details</h5>
+                        <p class="text-muted mt-2">Please try refreshing the page or contact support if the problem persists.</p>
+                    </div>
                 </div>
+            }
 
-                <div class="detail-item">
-                    <span class="detail-label">Phone:</span>
-                    <span class="detail-value">{{ patient.phoneNumber }}</span>
-                </div>
+            @if (patient) {
+                <!-- Patient Information Card -->
+                <div class="card shadow-sm border-0">
+                    <!-- Header -->
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1 class="h4 mb-1">
+                                <i class="bi bi-person me-2"></i>
+                                {{ patient.firstName }} {{ patient.lastName }}
+                            </h1>
+                            <div class="text-muted">
+                                <small>Patient ID: </small>
+                                <span class="badge bg-light text-dark">{{ patient.id }}</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="detail-item">
-                    <span class="detail-label">Email:</span>
-                    <span class="detail-value">{{ patient.email }}</span>
-                </div>
+                    <!-- Patient Details -->
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-calendar-date text-primary me-2"></i>
+                                        <strong class="text-primary">Date of Birth:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ patient.dateOfBirth | date }}</span>
+                                </div>
+                            </div>
 
-                <div class="detail-item">
-                    <span class="detail-label">Address:</span>
-                    <span class="detail-value">{{ patient.address }}</span>
+                            <div class="col-md-6 mb-4">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-gender-ambiguous text-primary me-2"></i>
+                                        <strong class="text-primary">Gender:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ patient.gender }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-telephone text-primary me-2"></i>
+                                        <strong class="text-primary">Phone:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ patient.phoneNumber }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 mb-4">
+                                <div class="border rounded p-3 h-100">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-envelope text-primary me-2"></i>
+                                        <strong class="text-primary">Email:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ patient.email }}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-4">
+                                <div class="border rounded p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <i class="bi bi-geo-alt text-primary me-2"></i>
+                                        <strong class="text-primary">Address:</strong>
+                                    </div>
+                                    <span class="text-muted">{{ patient.address }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info Footer -->
+
                 </div>
-            </div>
+            }
         </div>
-    }
 
-    <div class="cases-section">
-        <h2>Cases</h2>
-        @if (cases.length > 0) {
-            <list
-                [items]="cases"
-                [columns]="caseColumns"
-                routePrefix="cases"
-            ></list>
-        } @else {
-            <div class="no-cases-message">No cases found for this patient</div>
-        }
+        <div class="cases-section">
+            <h2>Cases</h2>
+            @if (cases.length > 0) {
+                <list
+                    [items]="cases"
+                    [columns]="caseColumns"
+                    routePrefix="cases"
+                ></list>
+            } @else {
+                <div class="no-cases-message">No cases found for this patient</div>
+            }
+        </div>
     </div>
 </div>
