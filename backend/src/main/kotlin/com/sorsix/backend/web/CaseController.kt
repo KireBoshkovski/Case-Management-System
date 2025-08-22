@@ -5,7 +5,7 @@ import com.sorsix.backend.domain.cases.PublicCase
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.dto.toCaseDto
-import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.service.CaseService
 import com.sorsix.backend.service.OpenAIService
 import com.sorsix.backend.service.PublicCaseService

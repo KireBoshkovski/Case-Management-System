@@ -1,7 +1,13 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import {AuthService} from '../../../core/services/auth.service';
+import { Component, inject } from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'login',
@@ -13,6 +19,7 @@ export class Login {
     fb = inject(FormBuilder);
     authService = inject(AuthService);
     router = inject(Router);
+    toastService = inject(ToastrService);
 
     loginForm: FormGroup = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
@@ -29,7 +36,7 @@ export class Login {
                     }, 2000);
                 },
                 error: (response) => {
-                    this.errorMessage = response.error.error;
+                    this.toastService.error(response.error.error);
                 },
             });
         } else {

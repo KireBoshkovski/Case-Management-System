@@ -1,4 +1,4 @@
-package com.sorsix.backend.security
+package com.sorsix.backend.config.security
 
 import com.sorsix.backend.service.UserService
 import org.springframework.context.annotation.Bean
@@ -46,6 +46,7 @@ class SecurityConfig(
         .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
         .authorizeHttpRequests { auth ->
             auth
+                .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .anyRequest().authenticated()
             // TODO: /api/public MAYBE should be public path
@@ -56,7 +57,7 @@ class SecurityConfig(
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOriginPatterns = listOf("*")
+        configuration.allowedOriginPatterns = listOf("http://localhost:4200")
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true

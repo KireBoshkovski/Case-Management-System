@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class OpenAIService(
-    private val chatModel: OpenAiChatModel,
+    val chatModel: OpenAiChatModel,
     val caseService: CaseService
 ) {
     private val objectMapper = jacksonObjectMapper()

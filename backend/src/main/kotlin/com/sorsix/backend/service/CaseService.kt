@@ -5,7 +5,7 @@ import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.dto.CaseDto
 import com.sorsix.backend.exceptions.CaseNotFoundException
 import com.sorsix.backend.repository.CaseRepository
-import com.sorsix.backend.security.CustomUserDetails
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
