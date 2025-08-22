@@ -9,7 +9,7 @@
             <!-- Reply Button -->
             <div class="mt-2">
                 <button (click)="toggleReplyInput()" class="btn btn-sm btn-outline-secondary">
-                    <i class="bi" [ngClass]="showReplyInput ? 'bi-x-circle' : 'bi-reply'"></i>
+                    <i [ngClass]="showReplyInput ? 'bi-x-circle' : 'bi-reply'" class="bi"></i>
                     {{ showReplyInput ? "Cancel" : "Reply" }}
                 </button>
             </div>

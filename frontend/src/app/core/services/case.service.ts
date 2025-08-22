@@ -1,20 +1,19 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environments';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Case } from '../../models/cases/case.model';
-import { PublicCase } from '../../models/cases/public-case.model';
-import { CaseDto } from '../../models/cases/case.dto';
-import { PageResponse } from '../../models/page-response';
-import { GetCasesOptions } from '../../models/cases-options';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '../../../environments/environments';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Case} from '../../models/cases/case.model';
+import {PublicCase} from '../../models/cases/public-case.model';
+import {CaseDto} from '../../models/cases/case.dto';
+import {PageResponse} from '../../models/page-response';
+import {GetCasesOptions} from '../../models/cases-options';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CaseService {
-    private apiUrl = environment.apiUrl;
-
     http = inject(HttpClient);
+    private apiUrl = environment.apiUrl;
 
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {
@@ -63,7 +62,7 @@ export class CaseService {
 
         return this.http.get<PageResponse<PublicCase>>(
             `${this.apiUrl}/public`,
-            { params },
+            {params},
         );
     }
 

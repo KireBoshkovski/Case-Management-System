@@ -1,19 +1,18 @@
-import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environments';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Patient } from '../../models/patient.model';
-import { PatientDetailsModel } from '../../models/patient-details.model';
-import { GetCasesOptions } from '../../models/cases-options';
-import { PageResponse } from '../../models/page-response';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '../../../environments/environments';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {Patient} from '../../models/patient.model';
+import {PatientDetailsModel} from '../../models/patient-details.model';
+import {GetCasesOptions} from '../../models/cases-options';
+import {PageResponse} from '../../models/page-response';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PatientsService {
-    private apiUrl = environment.apiUrl;
-
     http = inject(HttpClient);
+    private apiUrl = environment.apiUrl;
 
     getPatients(options: GetCasesOptions): Observable<PageResponse<Patient>> {
         const {

@@ -34,12 +34,14 @@ export class PublicCaseSearch {
             field: 'publishedAt',
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
+        {
+            header: 'Views',
+            field: 'viewsCount',
+        },
     ];
-
     private page$ = new BehaviorSubject<number>(0);
     private size$ = new BehaviorSubject<number>(10);
     private query$ = new BehaviorSubject<string>('');
-
     readonly pageResponse$ = combineLatest([
         this.page$,
         this.size$,
@@ -57,12 +59,11 @@ export class PublicCaseSearch {
         ),
         shareReplay({ bufferSize: 1, refCount: true }),
     );
-
     readonly cases$ = this.pageResponse$.pipe(map((res) => res.content));
     readonly pageInfo$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(1);
+        this.page$.next(0);
         this.query$.next(q);
     }
 
@@ -72,6 +73,6 @@ export class PublicCaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(1);
+        this.page$.next(0);
     }
 }

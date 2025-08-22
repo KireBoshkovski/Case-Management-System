@@ -41,6 +41,50 @@ export class CreateCase implements OnInit {
         }
     }
 
+    onSubmit() {
+        if (this.caseForm.valid) {
+            const v = this.caseForm.value;
+            const caseData: Partial<CaseDto> = {
+                bloodType: v.bloodType || undefined,
+                allergies: v.allergies || undefined,
+                description: v.description,
+                treatmentPlan: v.treatmentPlan || undefined,
+                status: v.status,
+                patientId: Number(v.patientId),
+                doctorId: Number(v.doctorId),
+                examinationsIds: (v.examinationsIds as number[]) || [],
+            };
+
+            this.isEditMode ? this.updateCase(caseData) : this.createCase(caseData);
+        } else {
+            this.markFormGroupTouched();
+        }
+    }
+
+    getPageTitle(): string {
+        return this.isEditMode ? 'Edit Case' : 'Create New Case';
+    }
+
+    getSubmitButtonText(): string {
+        return this.isEditMode ? 'Update Case' : 'Create Case';
+    }
+
+    isFieldInvalid(fieldName: string): boolean {
+        const field = this.caseForm.get(fieldName);
+        return !!(field?.invalid && field?.touched);
+    }
+
+    getFieldError(fieldName: string): string {
+        const field = this.caseForm.get(fieldName);
+        if (field?.errors?.['required']) {
+            return `${fieldName} is required`;
+        }
+        if (field?.errors?.['min']) {
+            return `${fieldName} must be greater than 0`;
+        }
+        return '';
+    }
+
     private loadCaseForEditing(caseId: number) {
         this.caseService.getCaseById(caseId).subscribe({
             next: (caseData) => {
@@ -65,27 +109,6 @@ export class CreateCase implements OnInit {
             examinationsIds: caseData.examinations?.map(e => e.id) ?? [],
         });
     }
-
-    onSubmit() {
-        if (this.caseForm.valid) {
-            const v = this.caseForm.value;
-            const caseData: Partial<CaseDto> = {
-                bloodType: v.bloodType || undefined,
-                allergies: v.allergies || undefined,
-                description: v.description,
-                treatmentPlan: v.treatmentPlan || undefined,
-                status: v.status,
-                patientId: Number(v.patientId),
-                doctorId: Number(v.doctorId),
-                examinationsIds: (v.examinationsIds as number[]) || [],
-            };
-
-            this.isEditMode ? this.updateCase(caseData) : this.createCase(caseData);
-        } else {
-            this.markFormGroupTouched();
-        }
-    }
-
 
     private createCase(caseData: Partial<CaseDto>) {
         this.caseService.createCase(caseData).subscribe({
@@ -116,29 +139,5 @@ export class CreateCase implements OnInit {
             const control = this.caseForm.get(key);
             control?.markAsTouched();
         });
-    }
-
-    getPageTitle(): string {
-        return this.isEditMode ? 'Edit Case' : 'Create New Case';
-    }
-
-    getSubmitButtonText(): string {
-        return this.isEditMode ? 'Update Case' : 'Create Case';
-    }
-
-    isFieldInvalid(fieldName: string): boolean {
-        const field = this.caseForm.get(fieldName);
-        return !!(field?.invalid && field?.touched);
-    }
-
-    getFieldError(fieldName: string): string {
-        const field = this.caseForm.get(fieldName);
-        if (field?.errors?.['required']) {
-            return `${fieldName} is required`;
-        }
-        if (field?.errors?.['min']) {
-            return `${fieldName} must be greater than 0`;
-        }
-        return '';
     }
 }

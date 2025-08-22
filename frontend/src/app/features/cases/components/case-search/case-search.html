@@ -1,12 +1,14 @@
 <div class="container-fluid">
-<!--    TODO ADD BUTTON FOR CASE-->
+    <!--    TODO ADD BUTTON FOR CASE-->
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="h3 mb-1">Public Medical Cases</h1>
-                    <p class="text-muted mb-0">Browse published cases for research and education</p>
+                    <p class="text-muted mb-0">
+                        Browse published cases for research and education
+                    </p>
                 </div>
                 <div class="badge badge-primary fs-6 px-3 py-2">
                     <i class="bi bi-globe me-1"></i>
@@ -21,16 +23,26 @@
         <div class="col-md-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-body py-3">
-                    <search-bar (search)="onSearch($event)" placeholder="Search public cases..."></search-bar>
+                    <search-bar
+                        (search)="onSearch($event)"
+                        [placeholder]="'Search cases...'"
+                    ></search-bar>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card border-0 shadow-sm">
                 <div class="card-body py-3">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <label class="form-label mb-0 me-2">Cases per page:</label>
-                        <select class="form-select form-select-sm w-auto" (change)="setPageSize(+$any($event.target).value)">
+                    <div
+                        class="d-flex align-items-center justify-content-between"
+                    >
+                        <label class="form-label mb-0 me-2"
+                            >Cases per page:</label
+                        >
+                        <select
+                            (change)="setPageSize(+$any($event.target).value)"
+                            class="form-select form-select-sm w-auto"
+                        >
                             <option value="10">10</option>
                             <option value="20">20</option>
                             <!--                            <option value="50">50</option>-->
@@ -48,9 +60,13 @@
                 @if (cases.length > 0) {
                     <div class="card border-0 shadow-sm">
                         <div class="card-header bg-white border-bottom">
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div
+                                class="d-flex justify-content-between align-items-center"
+                            >
                                 <h4 class="h6 mb-0">Available Cases</h4>
-                                <span class="badge badge-secondary">{{ cases.length }} cases</span>
+                                <span class="badge badge-secondary"
+                                    >{{ cases.length }} cases</span
+                                >
                             </div>
                         </div>
                         <div class="card-body p-0">
@@ -64,9 +80,13 @@
                 } @else {
                     <div class="card border-0 shadow-sm">
                         <div class="card-body text-center py-5">
-                            <i class="bi bi-search fs-1 text-muted d-block mb-3"></i>
+                            <i
+                                class="bi bi-search fs-1 text-muted d-block mb-3"
+                            ></i>
                             <h5 class="text-muted">No cases found</h5>
-                            <p class="text-muted mb-0">Try adjusting your search criteria</p>
+                            <p class="text-muted mb-0">
+                                Try adjusting your search criteria
+                            </p>
                         </div>
                     </div>
                 }
@@ -74,9 +94,13 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body text-center py-5">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading cases...</span>
+                            <span class="visually-hidden"
+                                >Loading cases...</span
+                            >
                         </div>
-                        <p class="text-muted mt-3 mb-0">Loading public cases...</p>
+                        <p class="text-muted mt-3 mb-0">
+                            Loading public cases...
+                        </p>
                     </div>
                 </div>
             }

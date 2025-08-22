@@ -1,6 +1,6 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Navbar } from '../../shared/components/navbar/navbar';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import {Component} from '@angular/core';
+import {Navbar} from '../../shared/components/navbar/navbar';
+import {RouterOutlet} from '@angular/router';
 
 @Component({
     selector: 'main-layout',
@@ -8,4 +8,5 @@ import { ActivatedRoute, RouterOutlet } from '@angular/router';
     templateUrl: './main-layout.html',
     styleUrl: './main-layout.css',
 })
-export class MainLayout {}
+export class MainLayout {
+}

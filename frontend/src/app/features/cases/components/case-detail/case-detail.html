@@ -5,20 +5,34 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div
+                            class="d-flex justify-content-between align-items-center"
+                        >
                             <div>
                                 <h1 class="h3 mb-0">Case #{{ caseData.id }}</h1>
-                                <span class="badge" [class]="getStatusClass(caseData.status)">{{ caseData.status }}</span>
+                                <span
+                                    class="badge"
+                                    [class]="getStatusClass(caseData.status)"
+                                >{{ caseData.status }}</span
+                                >
                             </div>
                             <div class="btn-group" role="group">
                                 <button
-                                    [routerLink]="['/cases', caseData.id, 'edit']"
+                                    [routerLink]="[
+                                        '/cases',
+                                        caseData.id,
+                                        'edit',
+                                    ]"
                                     class="btn btn-primary btn-sm"
                                 >
                                     <i class="bi bi-pencil"></i> Edit Case
                                 </button>
                                 <button
-                                    [routerLink]="['/cases', caseData.id, 'publish']"
+                                    [routerLink]="[
+                                        '/cases',
+                                        caseData.id,
+                                        'publish',
+                                    ]"
                                     class="btn btn-success btn-sm"
                                 >
                                     <i class="bi bi-share"></i> Publish Case
@@ -37,49 +51,73 @@
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
                                             <strong>Blood Type:</strong>
-                                            <span class="text-muted">{{ caseData.bloodType || "Not specified" }}</span>
+                                            <span class="text-muted">{{
+                                                    caseData.bloodType ||
+                                                    "Not specified"
+                                                }}</span>
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <strong>Created:</strong>
-                                            <span class="text-muted">{{ formatDate(caseData.createdAt) }}</span>
+                                            <span class="text-muted">{{
+                                                    formatDate(caseData.createdAt)
+                                                }}</span>
                                         </div>
                                         <div class="col-md-4 mb-2">
                                             <strong>Last Updated:</strong>
-                                            <span class="text-muted">{{ formatDate(caseData.updatedAt) }}</span>
+                                            <span class="text-muted">{{
+                                                    formatDate(caseData.updatedAt)
+                                                }}</span>
                                         </div>
                                     </div>
 
                                     @if (caseData.description) {
                                         <div class="mt-3">
                                             <strong>Description:</strong>
-                                            <p class="text-muted mt-1">{{ caseData.description }}</p>
+                                            <p class="text-muted mt-1">
+                                                {{ caseData.description }}
+                                            </p>
                                         </div>
                                     }
 
                                     @if (caseData.allergies) {
                                         <div class="mt-3">
                                             <strong>Allergies:</strong>
-                                            <p class="text-muted mt-1 text-danger fw-semibold">{{ caseData.allergies }}</p>
+                                            <p
+                                                class="text-muted mt-1 text-danger fw-semibold"
+                                            >
+                                                {{ caseData.allergies }}
+                                            </p>
                                         </div>
                                     }
 
                                     @if (caseData.treatmentPlan) {
                                         <div class="mt-3">
                                             <strong>Treatment Plan:</strong>
-                                            <p class="text-muted mt-1">{{ caseData.treatmentPlan }}</p>
+                                            <p class="text-muted mt-1">
+                                                {{ caseData.treatmentPlan }}
+                                            </p>
                                         </div>
                                     }
                                 </section>
 
                                 <!-- Examinations -->
-                                @if (caseData.examinations && caseData.examinations.length > 0) {
+                                @if (caseData.examinations &&
+                                caseData.examinations.length > 0) {
                                     <section class="mb-4">
-                                        <h2 class="h5 mb-3">Examinations ({{ caseData.examinations.length }})</h2>
+                                        <h2 class="h5 mb-3">
+                                            Examinations ({{
+                                                caseData.examinations.length
+                                            }})
+                                        </h2>
                                         <div class="card border-light">
                                             <div class="card-body p-0">
                                                 <list
-                                                    [items]="caseData.examinations"
-                                                    [columns]="examinationColumns"
+                                                    [items]="
+                                                        caseData.examinations
+                                                    "
+                                                    [columns]="
+                                                        examinationColumns
+                                                    "
                                                     routePrefix="examinations"
                                                 ></list>
                                             </div>
@@ -90,14 +128,40 @@
                                 <!-- Published Case Info -->
                                 @if (caseData.publishedCase) {
                                     <section class="mb-4">
-                                        <div class="alert alert-success d-flex align-items-center" role="alert">
-                                            <i class="bi bi-check-circle-fill me-3 fs-5"></i>
+                                        <div
+                                            class="alert alert-success d-flex align-items-center"
+                                            role="alert"
+                                        >
+                                            <i
+                                                class="bi bi-check-circle-fill me-3 fs-5"
+                                            ></i>
                                             <div>
-                                                <h6 class="alert-heading mb-1">Case Published</h6>
+                                                <h6 class="alert-heading mb-1">
+                                                    Case Published
+                                                </h6>
                                                 <p class="mb-0 small">
-                                                    This case has been published with ID: <strong>#{{ caseData.publishedCase.id }}</strong>
-                                                    <a [routerLink]="['/public', caseData.publishedCase.id]" class="alert-link ms-2">
-                                                        View Public Case <i class="bi bi-arrow-right"></i>
+                                                    This case has been published
+                                                    with ID:
+                                                    <strong
+                                                    >#{{
+                                                            caseData
+                                                                .publishedCase
+                                                                .id
+                                                        }}</strong
+                                                    >
+                                                    <a
+                                                        [routerLink]="[
+                                                            '/public',
+                                                            caseData
+                                                                .publishedCase
+                                                                .id,
+                                                        ]"
+                                                        class="alert-link ms-2"
+                                                    >
+                                                        View Public Case
+                                                        <i
+                                                            class="bi bi-arrow-right"
+                                                        ></i>
                                                     </a>
                                                 </p>
                                             </div>
@@ -113,40 +177,95 @@
                                     <div class="card mb-3">
                                         <div class="card-header">
                                             <h3 class="h6 mb-0">
-                                                <i class="bi bi-person-fill me-2 text-primary"></i>
+                                                <i
+                                                    class="bi bi-person-fill me-2 text-primary"
+                                                ></i>
                                                 Patient Information
                                             </h3>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-2">
                                                 <strong>Patient ID:</strong>
-                                                <span class="text-muted d-block">#{{ caseData.patient.id }}</span>
+                                                <span class="text-muted d-block"
+                                                >#{{
+                                                        caseData.patient.id
+                                                    }}</span
+                                                >
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Name:</strong>
-                                                <span class="text-muted d-block">{{ caseData.patient.firstName }} {{ caseData.patient.lastName }}</span>
+                                                <span class="text-muted d-block"
+                                                >{{
+                                                        caseData.patient
+                                                            .firstName
+                                                    }}
+                                                    {{
+                                                        caseData.patient
+                                                            .lastName
+                                                    }}</span
+                                                >
                                             </div>
                                             @if (caseData.patient.email) {
                                                 <div class="mb-2">
                                                     <strong>Email:</strong>
-                                                    <a href="mailto:{{ caseData.patient.email }}" class="text-muted d-block small">
-                                                        {{ caseData.patient.email }}
+                                                    <a
+                                                        href="mailto:{{
+                                                            caseData.patient
+                                                                .email
+                                                        }}"
+                                                        class="text-muted d-block small"
+                                                    >
+                                                        {{
+                                                            caseData.patient
+                                                                .email
+                                                        }}
                                                     </a>
                                                 </div>
                                             }
                                             <div class="mb-2">
                                                 <strong>Gender:</strong>
-                                                <span class="text-muted d-block">{{ caseData.patient.gender }}</span>
+                                                <span
+                                                    class="text-muted d-block"
+                                                >{{
+                                                        caseData.patient.gender
+                                                    }}</span
+                                                >
                                             </div>
                                             <div class="mb-0">
                                                 <strong>Date of Birth:</strong>
-                                                <span class="text-muted d-block">{{ formatDate(caseData.patient.dateOfBirth) }}</span>
-                                                <small class="text-muted">Age: {{ calculateAge(caseData.patient.dateOfBirth) }} years</small>
+                                                <span
+                                                    class="text-muted d-block"
+                                                >{{
+                                                        formatDate(
+                                                            caseData.patient
+                                                                .dateOfBirth
+                                                        )
+                                                    }}</span
+                                                >
+                                                <small class="text-muted"
+                                                >Age:
+                                                    {{
+                                                        calculateAge(
+                                                            caseData.patient
+                                                                .dateOfBirth
+                                                        )
+                                                    }}
+                                                    years</small
+                                                >
                                             </div>
                                         </div>
-                                        <div class="card-footer bg-light text-center">
-                                            <a [routerLink]="['/patients', caseData.patient.id]" class="btn btn-outline-primary btn-sm">
-                                                <i class="bi bi-eye"></i> View Patient Details
+                                        <div
+                                            class="card-footer bg-light text-center"
+                                        >
+                                            <a
+                                                [routerLink]="[
+                                                    '/patients',
+                                                    caseData.patient.id,
+                                                ]"
+                                                class="btn btn-outline-primary btn-sm"
+                                            >
+                                                <i class="bi bi-eye"></i> View
+                                                Patient Details
                                             </a>
                                         </div>
                                     </div>
@@ -157,38 +276,79 @@
                                     <div class="card mb-3">
                                         <div class="card-header">
                                             <h3 class="h6 mb-0">
-                                                <i class="bi bi-person-badge-fill me-2 text-success"></i>
+                                                <i
+                                                    class="bi bi-person-badge-fill me-2 text-success"
+                                                ></i>
                                                 Attending Physician
                                             </h3>
                                         </div>
                                         <div class="card-body">
                                             <div class="mb-2">
                                                 <strong>Doctor ID:</strong>
-                                                <span class="text-muted d-block">#{{ caseData.doctor.id }}</span>
+                                                <span class="text-muted d-block"
+                                                >#{{
+                                                        caseData.doctor.id
+                                                    }}</span
+                                                >
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Name:</strong>
-                                                <span class="text-muted d-block">Dr. {{ caseData.doctor.firstName }} {{ caseData.doctor.lastName }}</span>
+                                                <span class="text-muted d-block"
+                                                >Dr.
+                                                    {{
+                                                        caseData.doctor
+                                                            .firstName
+                                                    }}
+                                                    {{
+                                                        caseData.doctor.lastName
+                                                    }}</span
+                                                >
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Email:</strong>
-                                                <a href="mailto:{{ caseData.doctor.email }}" class="text-muted d-block small">
+                                                <a
+                                                    href="mailto:{{
+                                                        caseData.doctor.email
+                                                    }}"
+                                                    class="text-muted d-block small"
+                                                >
                                                     {{ caseData.doctor.email }}
                                                 </a>
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Phone:</strong>
-                                                <a href="tel:{{ caseData.doctor.phoneNumber }}" class="text-muted d-block">
-                                                    {{ caseData.doctor.phoneNumber }}
+                                                <a
+                                                    href="tel:{{
+                                                        caseData.doctor
+                                                            .phoneNumber
+                                                    }}"
+                                                    class="text-muted d-block"
+                                                >
+                                                    {{
+                                                        caseData.doctor
+                                                            .phoneNumber
+                                                    }}
                                                 </a>
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Department:</strong>
-                                                <span class="text-muted d-block">{{ caseData.doctor.department }}</span>
+                                                <span
+                                                    class="text-muted d-block"
+                                                >{{
+                                                        caseData.doctor
+                                                            .department
+                                                    }}</span
+                                                >
                                             </div>
                                             <div class="mb-0">
                                                 <strong>Specialization:</strong>
-                                                <span class="badge badge-info">{{ caseData.doctor.specialization }}</span>
+                                                <span
+                                                    class="badge badge-info"
+                                                >{{
+                                                        caseData.doctor
+                                                            .specialization
+                                                    }}</span
+                                                >
                                             </div>
                                         </div>
                                     </div>
@@ -206,15 +366,33 @@
                                         <div class="row text-center">
                                             <div class="col-6">
                                                 <div class="border-end">
-                                                    <div class="fw-bold fs-4 text-primary">{{ caseData.examinations?.length || 0 }}</div>
-                                                    <small class="text-muted">Examinations</small>
+                                                    <div
+                                                        class="fw-bold fs-4 text-primary"
+                                                    >
+                                                        {{
+                                                            caseData
+                                                                .examinations
+                                                                .length || 0
+                                                        }}
+                                                    </div>
+                                                    <small class="text-muted"
+                                                    >Examinations</small
+                                                    >
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="fw-bold fs-4 text-success">
-                                                    {{ caseData.publishedCase ? 1 : 0 }}
+                                                <div
+                                                    class="fw-bold fs-4 text-success"
+                                                >
+                                                    {{
+                                                        caseData.publishedCase
+                                                            ? 1
+                                                            : 0
+                                                    }}
                                                 </div>
-                                                <small class="text-muted">Published</small>
+                                                <small class="text-muted"
+                                                >Published</small
+                                                >
                                             </div>
                                         </div>
                                     </div>

@@ -1,4 +1,4 @@
-import { Doctor } from './doctor.model';
+import {Doctor} from './doctor.model';
 
 export interface Examination {
     id: number;

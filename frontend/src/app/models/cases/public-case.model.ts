@@ -1,4 +1,4 @@
-import { PublicExamination } from '../public-examination';
+import {PublicExamination} from '../public-examination';
 
 export interface PublicCase {
     id: number;
@@ -12,4 +12,5 @@ export interface PublicCase {
     updatedAt: string;
     publishedAt: string;
     examinations: PublicExamination[];
+    viewsCount: number;
 }

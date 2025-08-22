@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional
 class DiscussionService(
     private val discussionRepository: DiscussionRepository,
     private val userRepository: UserRepository,
-    private val caseService: CaseService,
+    private val publicCaseService: PublicCaseService,
     private val commentRepository: CommentRepository
 ) {
     fun listAll(q: String?, pageable: Pageable): Page<DiscussionDto> {
@@ -46,7 +46,7 @@ class DiscussionService(
         val user = userRepository.findByIdOrNull(dto.userId)
             ?: throw DoctorNotFoundException(dto.userId)
 
-        val case = caseService.findPublicById(dto.caseId)
+        val case = publicCaseService.findById(dto.caseId)
 
         return discussionRepository.save(
             Discussion(

@@ -1,7 +1,7 @@
-<search-bar (search)="onSearch($event)"></search-bar>
+<search-bar (search)="onSearch($event)" [placeholder]="'Search discussions...'"></search-bar>
 <list
-    [items]="(discussions$ | async) ?? []"
     [columns]="discussionColumns"
+    [items]="(discussions$ | async) ?? []"
     routePrefix="threads"
 ></list>
 @if (pageInfo$ | async; as pageInfo) {

@@ -1,16 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
-import {
-    FormArray,
-    FormBuilder,
-    FormGroup,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
-import { CaseService } from '../../../../core/services/case.service';
-import { Case } from '../../../../models/cases/case.model';
-import { PublicCase } from '../../../../models/cases/public-case.model';
-import { Examination } from '../../../../models/examination.model';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {CaseService} from '../../../../core/services/case.service';
+import {Case} from '../../../../models/cases/case.model';
+import {PublicCase} from '../../../../models/cases/public-case.model';
+import {Examination} from '../../../../models/examination.model';
 
 @Component({
     selector: 'publish-case',
@@ -69,25 +63,6 @@ export class PublishCase implements OnInit {
         });
     }
 
-    private populateForm(caseData: Case) {
-        this.publishForm.patchValue({
-            bloodType: caseData.bloodType || '',
-            allergies: caseData.allergies || '',
-            description: caseData.description || '',
-            treatmentPlan: caseData.treatmentPlan || '',
-            createdAt: caseData.createdAt,
-            updatedAt: caseData.updatedAt,
-        });
-
-        const ageRange = this.deriveAgeRange(caseData.patient);
-        this.publishForm.patchValue({
-            patientAgeRange: ageRange,
-            patientGender: caseData.patient.gender || '',
-        });
-
-        this.populateExaminations(caseData.examinations || []);
-    }
-
     populateExaminations(examinations: Examination[]) {
         const examinationsArray = this.getExaminationsFormArray();
 
@@ -97,25 +72,6 @@ export class PublishCase implements OnInit {
         // Add examination form groups
         examinations.forEach((exam) => {
             examinationsArray.push(this.createExaminationFormGroup(exam));
-        });
-    }
-
-    private createExaminationFormGroup(examination?: Examination): FormGroup {
-        return this.formBuilder.group({
-            id: [examination?.id || null],
-            caseId: [examination?.caseId || null],
-            examinationType: [
-                examination?.examinationType || '',
-                Validators.required,
-            ],
-            examinationDate: [
-                examination?.examinationDate || '',
-                Validators.required,
-            ],
-            findings: [examination?.findings || ''],
-            results: [examination?.results || ''],
-            notes: [examination?.notes || ''],
-            vitalSigns: [examination?.vitalSigns || ''],
         });
     }
 
@@ -153,41 +109,6 @@ export class PublishCase implements OnInit {
                 this.censoring = false;
             },
         });
-    }
-
-    private populateFormWithCensoredData(censoredCase: Case) {
-        this.publishForm.patchValue({
-            bloodType: censoredCase.bloodType || '',
-            allergies: censoredCase.allergies || '',
-            description: censoredCase.description || '',
-            treatmentPlan: censoredCase.treatmentPlan || '',
-        });
-
-        if (censoredCase.patient) {
-            const ageRange = this.deriveAgeRange(censoredCase.patient);
-            this.publishForm.patchValue({
-                patientAgeRange: ageRange,
-                patientGender: censoredCase.patient.gender || '',
-            });
-        }
-
-        this.populateExaminations(censoredCase.examinations || []);
-    }
-
-    private deriveAgeRange(patient: any): string {
-        if (!patient.dateOfBirth) return '';
-
-        const birthDate = new Date(patient.dateOfBirth);
-        const age = Math.floor(
-            (Date.now() - birthDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000),
-        );
-
-        if (age < 18) return 'Under 18';
-        if (age < 30) return '18-29';
-        if (age < 45) return '30-44';
-        if (age < 60) return '45-59';
-        if (age < 75) return '60-74';
-        return '75+';
     }
 
     publishCase() {
@@ -239,13 +160,6 @@ export class PublishCase implements OnInit {
         }
     }
 
-    private markFormGroupTouched() {
-        Object.keys(this.publishForm.controls).forEach((key) => {
-            const control = this.publishForm.get(key);
-            control?.markAsTouched();
-        });
-    }
-
     isFieldInvalid(fieldName: string): boolean {
         const field = this.publishForm.get(fieldName);
         return !!(field?.invalid && field?.touched);
@@ -261,5 +175,85 @@ export class PublishCase implements OnInit {
 
     hasCensoredData(): boolean {
         return this.censoredCase !== null;
+    }
+
+    private populateForm(caseData: Case) {
+        this.publishForm.patchValue({
+            bloodType: caseData.bloodType || '',
+            allergies: caseData.allergies || '',
+            description: caseData.description || '',
+            treatmentPlan: caseData.treatmentPlan || '',
+            createdAt: caseData.createdAt,
+            updatedAt: caseData.updatedAt,
+        });
+
+        const ageRange = this.deriveAgeRange(caseData.patient);
+        this.publishForm.patchValue({
+            patientAgeRange: ageRange,
+            patientGender: caseData.patient.gender || '',
+        });
+
+        this.populateExaminations(caseData.examinations || []);
+    }
+
+    private createExaminationFormGroup(examination?: Examination): FormGroup {
+        return this.formBuilder.group({
+            id: [examination?.id || null],
+            caseId: [examination?.caseId || null],
+            examinationType: [
+                examination?.examinationType || '',
+                Validators.required,
+            ],
+            examinationDate: [
+                examination?.examinationDate || '',
+                Validators.required,
+            ],
+            findings: [examination?.findings || ''],
+            results: [examination?.results || ''],
+            notes: [examination?.notes || ''],
+            vitalSigns: [examination?.vitalSigns || ''],
+        });
+    }
+
+    private populateFormWithCensoredData(censoredCase: Case) {
+        this.publishForm.patchValue({
+            bloodType: censoredCase.bloodType || '',
+            allergies: censoredCase.allergies || '',
+            description: censoredCase.description || '',
+            treatmentPlan: censoredCase.treatmentPlan || '',
+        });
+
+        if (censoredCase.patient) {
+            const ageRange = this.deriveAgeRange(censoredCase.patient);
+            this.publishForm.patchValue({
+                patientAgeRange: ageRange,
+                patientGender: censoredCase.patient.gender || '',
+            });
+        }
+
+        this.populateExaminations(censoredCase.examinations || []);
+    }
+
+    private deriveAgeRange(patient: any): string {
+        if (!patient.dateOfBirth) return '';
+
+        const birthDate = new Date(patient.dateOfBirth);
+        const age = Math.floor(
+            (Date.now() - birthDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000),
+        );
+
+        if (age < 18) return 'Under 18';
+        if (age < 30) return '18-29';
+        if (age < 45) return '30-44';
+        if (age < 60) return '45-59';
+        if (age < 75) return '60-74';
+        return '75+';
+    }
+
+    private markFormGroupTouched() {
+        Object.keys(this.publishForm.controls).forEach((key) => {
+            const control = this.publishForm.get(key);
+            control?.markAsTouched();
+        });
     }
 }

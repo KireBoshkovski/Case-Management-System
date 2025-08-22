@@ -1,12 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { CaseService } from '../../../../core/services/case.service';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Case } from '../../../../models/cases/case.model';
-import { Doctor } from '../../../../models/doctor.model';
-import { Patient } from '../../../../models/patient.model';
-import { List } from '../../../../shared/components/list/list';
-import { ColumnDef } from '../../../../models/columnDef';
-import { Examination } from '../../../../models/examination.model';
+import {Component, inject, OnInit} from '@angular/core';
+import {CaseService} from '../../../../core/services/case.service';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {Case} from '../../../../models/cases/case.model';
+import {Doctor} from '../../../../models/doctor.model';
+import {Patient} from '../../../../models/patient.model';
+import {List} from '../../../../shared/components/list/list';
+import {ColumnDef} from '../../../../models/columnDef';
+import {Examination} from '../../../../models/examination.model';
 
 @Component({
     selector: 'case-detail',
@@ -27,7 +27,7 @@ export class CaseDetail implements OnInit {
             header: 'Examination ID',
             field: 'id',
         },
-        { header: 'Examination Type', field: 'examinationType' },
+        {header: 'Examination Type', field: 'examinationType'},
         {
             header: 'Examination Date',
             field: 'examinationDate',

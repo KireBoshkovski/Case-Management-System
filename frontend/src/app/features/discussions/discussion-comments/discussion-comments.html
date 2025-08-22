@@ -35,7 +35,7 @@
     <!-- Comment Button -->
     <div class="mb-3">
         <button (click)="toggleCommentInput()" class="btn btn-outline-primary">
-            <i class="bi" [ngClass]="showCommentInput ? 'bi-x-circle' : 'bi-chat-left-text'"></i>
+            <i [ngClass]="showCommentInput ? 'bi-x-circle' : 'bi-chat-left-text'" class="bi"></i>
             {{ showCommentInput ? "Cancel" : "Add Comment" }}
         </button>
     </div>

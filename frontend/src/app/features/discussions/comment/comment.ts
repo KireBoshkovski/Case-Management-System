@@ -1,6 +1,6 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { CommentDto } from '../../../models/discussions/comment-dto';
-import { CommentInput } from '../comment-input/comment-input';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommentDto} from '../../../models/discussions/comment-dto';
+import {CommentInput} from '../comment-input/comment-input';
 import {NgClass} from '@angular/common';
 
 @Component({

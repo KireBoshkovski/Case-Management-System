@@ -29,7 +29,7 @@ data class Discussion(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "case_id", nullable = false)
     val publicCase: PublicCase,
-    
+
     @OneToMany(
         mappedBy = "discussion",
         cascade = [CascadeType.ALL],

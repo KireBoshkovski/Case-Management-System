@@ -41,4 +41,7 @@ class PublicCase(
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     @JoinColumn(name = "public_case_id")
     val examinations: MutableList<PublicExamination> = mutableListOf(),
+
+    @Column(name = "views_count", nullable = false)
+    var viewsCount: Long = 0,
 )

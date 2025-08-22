@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
     selector: 'examination-search',
@@ -6,4 +6,5 @@ import { Component } from '@angular/core';
     templateUrl: './examination-search.html',
     styleUrl: './examination-search.css',
 })
-export class ExaminationSearch {}
+export class ExaminationSearch {
+}

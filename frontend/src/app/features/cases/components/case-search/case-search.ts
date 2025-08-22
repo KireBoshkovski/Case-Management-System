@@ -45,11 +45,9 @@ export class CaseSearch {
             formatter: (date: string) => new Date(date).toLocaleDateString(),
         },
     ];
-
-    private page$ = new BehaviorSubject<number>(1);
+    private page$ = new BehaviorSubject<number>(0);
     private size$ = new BehaviorSubject<number>(10);
     private query$ = new BehaviorSubject<string>('');
-
     readonly pageResponse$ = combineLatest([
         this.page$,
         this.size$,
@@ -67,12 +65,11 @@ export class CaseSearch {
         ),
         shareReplay({ bufferSize: 1, refCount: true }),
     );
-
     readonly cases$ = this.pageResponse$.pipe(map((res) => res.content));
     readonly pageInfo$ = this.pageResponse$.pipe(map((res) => res.page));
 
     onSearch(q: string) {
-        this.page$.next(1);
+        this.page$.next(0);
         this.query$.next(q);
     }
 
@@ -82,6 +79,6 @@ export class CaseSearch {
 
     setPageSize(size: number) {
         this.size$.next(size);
-        this.page$.next(1);
+        this.page$.next(0);
     }
 }

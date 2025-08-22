@@ -1,4 +1,4 @@
-import { PublicCase } from './public-case.model';
+import {PublicCase} from './public-case.model';
 
 export interface PublishCaseRequest {
     publicCase: PublicCase;

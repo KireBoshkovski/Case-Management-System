@@ -14,5 +14,6 @@ class ExaminationService(
     fun findAll(): List<Examination> =
         examinationRepository.findAll()
 
-    fun findById(id: Long): Examination = examinationRepository.findByIdOrNull(id) ?: throw ExaminationNotFoundException(id)
+    fun findById(id: Long): Examination =
+        examinationRepository.findByIdOrNull(id) ?: throw ExaminationNotFoundException(id)
 }

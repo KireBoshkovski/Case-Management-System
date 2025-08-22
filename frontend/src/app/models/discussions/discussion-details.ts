@@ -1,5 +1,5 @@
 interface DiscussionDetails {
-  title: string;
-  description: string;
-  user: string;
+    title: string;
+    description: string;
+    user: string;
 }
