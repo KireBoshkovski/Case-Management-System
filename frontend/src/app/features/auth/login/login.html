@@ -1,24 +1,58 @@
-<div class="login-container">
-    <h2>Login</h2>
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div>
-            <label for="email">Email</label>
-            <input id="email" type="email" formControlName="email" />
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input id="password" type="password" formControlName="password" />
-        </div>
-        <button type="submit" [disabled]="loginForm.invalid">Log In</button>
-        @if (errorMessage) {
-            <div class="error-message">
-                {{ errorMessage }}
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-lg-4 col-md-6 col-sm-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h2 class="h4 mb-2">Welcome Back</h2>
+                        <p class="text-muted">Sign in to your account</p>
+                    </div>
+
+                    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                                id="email"
+                                type="email"
+                                class="form-control"
+                                formControlName="email"
+                                placeholder="Enter your email"
+                            />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                class="form-control"
+                                formControlName="password"
+                                placeholder="Enter your password"
+                            />
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary w-100 mb-3"
+                            [disabled]="loginForm.invalid"
+                        >
+                            Log In
+                        </button>
+
+                        @if (errorMessage) {
+                            <div class="alert alert-danger">
+                                {{ errorMessage }}
+                            </div>
+                        }
+
+                        <div class="text-center">
+                            <a routerLink="/register" class="btn btn-outline-primary w-100">
+                                Don't have an account? Register here
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        }
-        <a
-            routerLink="/register"
-            class="btn btn-block btn-light btn-transparent"
-            >Don't have an account? Register here!</a
-        >
-    </form>
+        </div>
+    </div>
 </div>
