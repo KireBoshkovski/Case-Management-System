@@ -1,8 +1,8 @@
 package com.sorsix.backend.web
 
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.domain.notifications.Notification
 import com.sorsix.backend.repository.NotificationRepository
-import com.sorsix.backend.config.security.CustomUserDetails
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,7 +22,4 @@ class NotificationController(
     fun getUnreadNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> {
         return notificationService.findByUserIdAndReadFalse(userDetails.getId())
     }
-
-    //
-    @GetMapping("/")
 }

@@ -10,6 +10,8 @@ import { RxStomp } from '@stomp/rx-stomp';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
 
+import { provideToastr } from 'ngx-toastr';
+
 export function rxStompFactory() {
     return new RxStomp();
 }
@@ -21,5 +23,12 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideHttpClient(withInterceptors([authInterceptor])),
         { provide: RxStomp, useFactory: rxStompFactory },
+        provideToastr({
+            timeOut: 5000,
+            positionClass: 'toast-bottom-right',
+            preventDuplicates: true,
+            progressBar: true,
+            closeButton: true,
+        }),
     ],
 };

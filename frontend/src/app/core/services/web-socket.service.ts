@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { RxStomp, RxStompConfig } from '@stomp/rx-stomp';
+import { RxStomp } from '@stomp/rx-stomp';
 import { Message } from '@stomp/stompjs';
 import { Observable } from 'rxjs';
 
