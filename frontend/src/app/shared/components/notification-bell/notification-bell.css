@@ -1,0 +1,400 @@
+body {
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #2c3e50;
+    min-height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding-top: 100px;
+}
+
+.bell {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    color: #495057;
+    padding: 10px;
+    border-radius: 12px;
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    z-index: 1000000;
+}
+
+.bell:hover {
+    color: #007bff;
+    background: #f8f9ff;
+    border-color: #b3d9ff;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    transform: translateY(-1px);
+}
+
+.bell:hover .dropdown {
+    display: block;
+    animation: fadeInDown 0.2s ease-out;
+}
+
+.bell i {
+    font-size: 1.3rem;
+}
+
+.badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    color: #fff;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    min-width: 18px;
+    height: 18px;
+    text-align: center;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 16px;
+    min-width: 320px;
+    max-height: 450px;
+    overflow: hidden;
+    z-index: 999999;
+    display: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(8px);
+}
+
+.dropdown::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    transform: rotate(45deg);
+    border-left: 1px solid #e1e5e9;
+    border-top: 1px solid #e1e5e9;
+    z-index: 999999;
+}
+
+.dropdown-header {
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    color: #343a40;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 1rem;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* Button styles */
+.icon-btn,
+.mark-all-btn,
+.mark-read-btn,
+.remove-btn,
+.remove-all-btn {
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    padding: 6px 10px;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn {
+    background: #e9ecef;
+    color: #6c757d;
+    padding: 8px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+}
+
+.icon-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: scale(1.05);
+}
+
+.mark-all-btn {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    font-size: 0.75rem;
+    padding: 8px 12px;
+    border-radius: 20px;
+}
+
+.mark-all-btn:disabled {
+    background: #6c757d;
+    cursor: default; /* Changed from not-allowed to default */
+    opacity: 0.6;
+}
+
+.mark-all-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #218838, #1abc9c);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.remove-all-btn {
+    background: #f8d7da;
+    color: #721c24;
+    font-size: 0.7rem;
+    padding: 8px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #f1aeb5;
+}
+
+.remove-all-btn:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.remove-all-btn:not(:disabled):hover {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    transform: scale(1.05);
+}
+
+.mark-read-btn {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    min-width: 28px;
+    height: 24px;
+}
+
+.mark-read-btn:hover {
+    background: linear-gradient(135deg, #0056b3, #004085);
+    transform: scale(1.05);
+}
+
+.remove-btn {
+    background: #f8f9fa;
+    color: #dc3545;
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    min-width: 28px;
+    height: 24px;
+    border: 1px solid #dee2e6;
+}
+
+.remove-btn:hover {
+    background: #dc3545;
+    color: white;
+    border-color: #dc3545;
+    transform: scale(1.05);
+}
+
+.notification-list {
+    max-height: 300px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #dee2e6 transparent;
+}
+
+.notification-list::-webkit-scrollbar {
+    width: 4px;
+}
+
+.notification-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notification-list::-webkit-scrollbar-thumb {
+    background: #dee2e6;
+    border-radius: 2px;
+}
+
+.notification-list::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+}
+
+.notification-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 12px;
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification-item::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: transparent;
+    transition: all 0.2s ease;
+}
+
+.notification-item.unread::before {
+    background: linear-gradient(to bottom, #007bff, #0056b3);
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: linear-gradient(135deg, #f8f9ff, #f0f8ff);
+    transform: translateX(2px);
+}
+
+.notification-item:active {
+    transform: translateX(1px);
+    background: linear-gradient(135deg, #e7f3ff, #cce7ff);
+}
+
+.notification-content {
+    flex: 1;
+    line-height: 1.4;
+    padding-right: 8px;
+}
+
+.notification-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.notification-item:hover .notification-actions {
+    opacity: 1;
+}
+
+.unread {
+    font-weight: 600;
+    color: #212529;
+}
+
+.read {
+    color: #6c757d;
+    font-weight: normal;
+}
+
+.no-notifications,
+.loading {
+    padding: 40px 20px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.no-notifications i,
+.loading i {
+    font-size: 2.5rem;
+    color: #adb5bd;
+    margin-bottom: 12px;
+    display: block;
+    opacity: 0.7;
+}
+
+.no-notifications p,
+.loading p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #868e96;
+    font-weight: 500;
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Focus and accessibility improvements */
+.bell:focus-visible,
+.icon-btn:focus-visible,
+.mark-all-btn:focus-visible,
+.mark-read-btn:focus-visible,
+.remove-btn:focus-visible,
+.remove-all-btn:focus-visible,
+.notification-item:focus-visible {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+    z-index: 1;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

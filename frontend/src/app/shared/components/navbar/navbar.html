@@ -18,9 +18,7 @@
                 <a [routerLink]="['/cases']" class="nav-link">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a [routerLink]="['/public']" class="nav-link"
-                >Public Cases</a
-                >
+                <a [routerLink]="['/public']" class="nav-link">Public Cases</a>
             </li>
 
             <!-- Patients -->
@@ -29,9 +27,11 @@
             </li>
 
             <li class="nav-item">
-                <a [routerLink]="['/threads']" class="nav-link">Threads</a>
+                <a [routerLink]="['/discussions']" class="nav-link">Discussions</a>
             </li>
         </ul>
+
+        <notification-bell></notification-bell>
 
         <ul class="navbar-nav">
             <!-- Auth -->
@@ -39,9 +39,7 @@
                 <a [routerLink]="['/login']" class="nav-link">Login</a>
             </li>
             <li class="nav-item">
-                <a [routerLink]="['/register']" class="nav-link"
-                >Register</a
-                >
+                <a [routerLink]="['/register']" class="nav-link">Register</a>
             </li>
             <!--            <li class="nav-item">-->
             <!--                <a class="nav-link" [routerLink]="['/auth/forgot-password']">Forgot Password</a>-->

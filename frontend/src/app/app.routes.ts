@@ -50,7 +50,7 @@ export const routes: Routes = [
                 ],
             },
             {
-                path: 'threads',
+                path: 'discussions',
                 children: [
                     { path: '', component: DiscussionList },
                     { path: ':id', component: DiscussionComments },

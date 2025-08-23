@@ -5,6 +5,7 @@ import { WebSocketService } from '../../core/services/web-socket.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
     selector: 'main-layout',
@@ -16,6 +17,7 @@ export class MainLayout implements OnInit {
     webSocketService = inject(WebSocketService);
     authService = inject(AuthService);
     toastr = inject(ToastrService);
+    notificationService = inject(NotificationService);
 
     private notificationSub: Subscription | undefined;
 
@@ -31,8 +33,10 @@ export class MainLayout implements OnInit {
                 .subscribe((message) => {
                     const notification = JSON.parse(message.body);
 
-                    // TODO: update a notification bell
                     this.toastr.info(notification.message, 'New Notification');
+
+                    // reload notification bell
+                    this.notificationService.getNotificationsFromApi();
                 });
         }
     }

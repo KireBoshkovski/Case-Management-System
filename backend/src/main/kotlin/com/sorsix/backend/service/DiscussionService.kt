@@ -1,7 +1,10 @@
 package com.sorsix.backend.service
 
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.domain.discussions.Comment
 import com.sorsix.backend.domain.discussions.Discussion
+import com.sorsix.backend.domain.notifications.Notification
+import com.sorsix.backend.domain.notifications.NotificationType
 import com.sorsix.backend.dto.CommentDto
 import com.sorsix.backend.dto.DiscussionDto
 import com.sorsix.backend.dto.toDiscussionDto
@@ -10,7 +13,6 @@ import com.sorsix.backend.exceptions.DoctorNotFoundException
 import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
-import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 class DiscussionService(
@@ -91,6 +94,19 @@ class DiscussionService(
                     "discussionId" to discussion.id,
                     "commentId" to newComment.id
                 )
+                notificationService.save(
+                    Notification(
+                        null,
+                        parentCommentAuthor.id,
+                        NotificationType.COMMENT_REPLY,
+                        notificationPayload["message"].toString(),
+                        discussion.id!!,
+                        parent!!.id,
+                        user.id,
+                        LocalDateTime.now(),
+                        false
+                    )
+                )
                 notificationService.sendNotificationToUser(parentCommentAuthor.email, notificationPayload)
             }
         } else { // TOP-LEVEL comment on the discussion
@@ -100,6 +116,19 @@ class DiscussionService(
                     "message" to "${user.email} commented on your discussion: '${discussion.title}'",
                     "discussionId" to discussion.id,
                     "commentId" to newComment.id
+                )
+                notificationService.save(
+                    Notification(
+                        null,
+                        discussionAuthor.id,
+                        NotificationType.DISCUSSION_COMMENT,
+                        notificationPayload["message"].toString(),
+                        discussion.id!!,
+                        null,
+                        user.id,
+                        LocalDateTime.now(),
+                        false
+                    )
                 )
                 notificationService.sendNotificationToUser(discussionAuthor.email, notificationPayload)
             }

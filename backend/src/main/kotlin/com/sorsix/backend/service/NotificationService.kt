@@ -1,11 +1,16 @@
 package com.sorsix.backend.service
 
+import com.sorsix.backend.config.security.CustomUserDetails
+import com.sorsix.backend.domain.notifications.Notification
+import com.sorsix.backend.repository.NotificationRepository
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class NotificationService(
-    val messagingTemplate: SimpMessagingTemplate
+    val messagingTemplate: SimpMessagingTemplate,
+    val notificationRepository: NotificationRepository
 ) {
     /**
      * Sends a notification to a specific user.
@@ -13,7 +18,6 @@ class NotificationService(
      * @param notificationPayload The content of the notification.
      */
     fun sendNotificationToUser(userId: String, notificationPayload: Any) {
-        // TODO SHOULD AND CAN userId be changed to long and use user_id instead of user email??????
         // The destination is /user/{userId}/queue/notifications
         // Spring automatically maps this to the correct user session.
         messagingTemplate.convertAndSendToUser(
@@ -21,5 +25,41 @@ class NotificationService(
             "/queue/notifications",
             notificationPayload
         )
+    }
+
+    fun findByUser(id: Long): List<Notification> {
+        return notificationRepository.findByUserIdOrderByTimestampDesc(id)
+    }
+
+    fun markAsRead(id: Long, userDetails: CustomUserDetails) {
+        val notification = notificationRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("Notification not found") }
+
+        // Only allow marking notifications of the current user
+        if (notification.userId != userDetails.getId()) {
+            throw IllegalAccessException("Cannot mark another user's notification as read")
+        }
+
+        notification.read = true
+        notificationRepository.save(notification)
+    }
+
+    fun save(notification: Notification) {
+        notificationRepository.save(notification)
+    }
+
+    @Transactional
+    fun markAllAsRead(id: Long) {
+        notificationRepository.markAllAsRead(id);
+    }
+
+    @Transactional
+    fun removeNotification(notificationId: Long, userId: Long) {
+        notificationRepository.deleteNotificationByIdAndUserId(notificationId, userId);
+    }
+
+    @Transactional
+    fun removeNotifications(id: Long) {
+        notificationRepository.deleteNotificationsByReadTrueAndUserId(id)
     }
 }

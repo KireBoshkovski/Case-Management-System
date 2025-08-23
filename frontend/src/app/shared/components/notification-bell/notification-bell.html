@@ -1,0 +1,94 @@
+<div class="bell">
+    <i class="bi bi-bell"></i>
+
+    @if (unreadCount$ | async; as count) {
+        @if (count > 0) {
+            <span class="badge">
+                {{ count }}
+            </span>
+        }
+    }
+
+    <div class="dropdown">
+        <div class="dropdown-header">
+            <strong>Notifications</strong>
+            <div class="actions">
+                <button
+                    (click)="refreshNotifications()"
+                    class="icon-btn"
+                    title="Refresh notifications"
+                    aria-label="Refresh notifications"
+                >
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <button
+                    (click)="markAllAsRead()"
+                    class="mark-all-btn"
+                    [disabled]="(unreadCount$ | async) === 0"
+                    aria-label="Mark all notifications as read"
+                >
+                    Mark all read
+                </button>
+                <button
+                    (click)="removeAllReadNotifications()"
+                    class="remove-all-btn"
+                    [disabled]="(openedMessages() | async) === 0"
+                    title="Remove all read notifications"
+                    aria-label="Remove all read notifications"
+                >
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+
+        @if (notifications$ | async; as notifications) {
+            @if (notifications.length > 0) {
+                <div class="notification-list">
+                    @for (
+                        notification of notifications;
+                        track notification.id
+                    ) {
+                        <div
+                            class="notification-item"
+                            (click)="onNotificationClick(notification)"
+                            tabindex="0"
+                            role="button"
+                        >
+                            <div class="notification-content">
+                                <span [class]="notification.read ? 'read' : 'unread'">
+                                    {{ notification.message }}
+                                </span>
+                            </div>
+                            @if (!notification.read) {
+                                <button
+                                    (click)="markRead(notification.id); $event.stopPropagation()"
+                                    class="mark-read-btn"
+                                    aria-label="Mark as read"
+                                >
+                                    <i class="bi bi-check"></i>
+                                </button>
+                            }
+                            <button
+                                (click)="removeNotification(notification.id); $event.stopPropagation()"
+                                class="remove-btn"
+                                aria-label="Remove notification"
+                            >
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            } @else {
+                <div class="no-notifications">
+                    <i class="bi bi-bell-slash"></i>
+                    <p>No notifications yet</p>
+                </div>
+            }
+        } @else {
+            <div class="loading">
+                <i class="bi bi-arrow-clockwise spin"></i>
+                <p>Loading...</p>
+            </div>
+        }
+    </div>
+</div>
