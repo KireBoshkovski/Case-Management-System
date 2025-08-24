@@ -13,7 +13,7 @@ import { GetCasesOptions } from '../../models/cases-options';
 })
 export class CaseService {
     http = inject(HttpClient);
-    private apiUrl = environment.apiUrl;
+    apiUrl = environment.apiUrl;
 
     getCases(options: GetCasesOptions = {}): Observable<PageResponse<CaseDto>> {
         const {

@@ -27,7 +27,9 @@
             </li>
 
             <li class="nav-item">
-                <a [routerLink]="['/discussions']" class="nav-link">Discussions</a>
+                <a [routerLink]="['/discussions']" class="nav-link"
+                    >Discussions</a
+                >
             </li>
         </ul>
 
@@ -36,17 +38,8 @@
         <ul class="navbar-nav">
             <!-- Auth -->
             <li class="nav-item">
-                <a [routerLink]="['/login']" class="nav-link">Login</a>
+                <a [routerLink]="['/logout']" class="nav-link">Logout</a>
             </li>
-            <li class="nav-item">
-                <a [routerLink]="['/register']" class="nav-link">Register</a>
-            </li>
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link" [routerLink]="['/auth/forgot-password']">Forgot Password</a>-->
-            <!--            </li>-->
-            <!--            <li class="nav-item">-->
-            <!--                <a class="nav-link" [routerLink]="['/auth/reset-password']">Reset Password</a>-->
-            <!--            </li>-->
         </ul>
     </div>
 </nav>

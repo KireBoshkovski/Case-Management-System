@@ -183,6 +183,7 @@ export class PublishCase implements OnInit {
             allergies: caseData.allergies || '',
             description: caseData.description || '',
             treatmentPlan: caseData.treatmentPlan || '',
+            patientGender: caseData.patient.gender || 'Select a gender',
             createdAt: caseData.createdAt,
             updatedAt: caseData.updatedAt,
         });

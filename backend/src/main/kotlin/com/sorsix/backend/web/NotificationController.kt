@@ -13,30 +13,24 @@ class NotificationController(
 ) {
     // Fetch all notifications for the logged-in user
     @GetMapping
-    fun getNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> {
-        return notificationService.findByUser(userDetails.getId())
-    }
+    fun getNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> =
+        notificationService.findByUser(userDetails.getId())
 
     @PutMapping("/{id}/read")
     fun readNotification(
         @PathVariable id: Long,
         @AuthenticationPrincipal userDetails: CustomUserDetails
-    ) {
-        notificationService.markAsRead(id, userDetails)
-    }
+    ) = notificationService.markAsRead(id, userDetails)
 
     @PutMapping
-    fun markAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) {
+    fun markAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) =
         notificationService.markAllAsRead(userDetails.getId())
-    }
 
     @DeleteMapping("/{id}")
-    fun removeNotification(@PathVariable id: Long, @AuthenticationPrincipal userDetails: CustomUserDetails) {
+    fun removeNotification(@PathVariable id: Long, @AuthenticationPrincipal userDetails: CustomUserDetails) =
         notificationService.removeNotification(id, userDetails.getId())
-    }
 
     @DeleteMapping("/read")
-    fun removeAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) {
+    fun removeAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) =
         notificationService.removeNotifications(userDetails.getId())
-    }
 }

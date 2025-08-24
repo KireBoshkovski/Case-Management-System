@@ -95,4 +95,12 @@ export class NotificationService {
                 this.updateState(updated);
             });
     }
+
+    addNotification(newNotification: Notification) {
+        const currentNotifications = this.notificationsSubject.value;
+        const updatedNotifications = [newNotification, ...currentNotifications];
+        this.notificationsSubject.next(updatedNotifications);
+        const unread = updatedNotifications.filter((n) => !n.read).length;
+        this.unreadCountSubject.next(unread);
+    }
 }

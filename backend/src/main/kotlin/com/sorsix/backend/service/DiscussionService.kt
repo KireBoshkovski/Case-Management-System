@@ -5,6 +5,7 @@ import com.sorsix.backend.domain.discussions.Comment
 import com.sorsix.backend.domain.discussions.Discussion
 import com.sorsix.backend.domain.notifications.Notification
 import com.sorsix.backend.domain.notifications.NotificationType
+import com.sorsix.backend.domain.users.User
 import com.sorsix.backend.dto.CommentDto
 import com.sorsix.backend.dto.DiscussionDto
 import com.sorsix.backend.dto.toDiscussionDto
@@ -75,7 +76,6 @@ class DiscussionService(
 
         val parent = dto.parentId?.let { commentRepository.findByIdOrNull(it) }
 
-
         val newComment = commentRepository.save(
             Comment(
                 id = null,
@@ -86,53 +86,42 @@ class DiscussionService(
             )
         )
 
+        val recipient: User
+        val notificationType: NotificationType
+        val message: String
+
         if (newComment.parent != null) { // REPLY to another comment
             val parentCommentAuthor = newComment.parent!!.user
-            if (parentCommentAuthor.id != user.id) {
-                val notificationPayload = mapOf(
-                    "message" to "${user.email} replied to your comment.",
-                    "discussionId" to discussion.id,
-                    "commentId" to newComment.id
-                )
-                notificationService.save(
-                    Notification(
-                        null,
-                        parentCommentAuthor.id,
-                        NotificationType.COMMENT_REPLY,
-                        notificationPayload["message"].toString(),
-                        discussion.id!!,
-                        parent!!.id,
-                        user.id,
-                        LocalDateTime.now(),
-                        false
-                    )
-                )
-                notificationService.sendNotificationToUser(parentCommentAuthor.email, notificationPayload)
+            if (parentCommentAuthor.id == user.id) {
+                return newComment
             }
-        } else { // TOP-LEVEL comment on the discussion
+            recipient = parentCommentAuthor
+            notificationType = NotificationType.COMMENT_REPLY
+            message = "${user.email} replied to your comment."
+        } else {
             val discussionAuthor = discussion.user
-            if (discussionAuthor.id != user.id) {
-                val notificationPayload = mapOf(
-                    "message" to "${user.email} commented on your discussion: '${discussion.title}'",
-                    "discussionId" to discussion.id,
-                    "commentId" to newComment.id
-                )
-                notificationService.save(
-                    Notification(
-                        null,
-                        discussionAuthor.id,
-                        NotificationType.DISCUSSION_COMMENT,
-                        notificationPayload["message"].toString(),
-                        discussion.id!!,
-                        null,
-                        user.id,
-                        LocalDateTime.now(),
-                        false
-                    )
-                )
-                notificationService.sendNotificationToUser(discussionAuthor.email, notificationPayload)
+            if (discussionAuthor.id == user.id) {
+                return newComment
             }
+            recipient = discussionAuthor
+            notificationType = NotificationType.DISCUSSION_COMMENT
+            message = "${user.email} commented on your discussion ${discussion.title}."
         }
+
+        val notification = notificationService.save(
+            Notification(
+                null,
+                recipient.id,
+                notificationType,
+                message,
+                discussion.id!!,
+                newComment.id,
+                user.id,
+                LocalDateTime.now(),
+                false
+            )
+        )
+        notificationService.sendNotificationToUser(recipient.email, notification)
         return newComment
     }
 }

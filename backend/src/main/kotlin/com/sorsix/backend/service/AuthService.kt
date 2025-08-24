@@ -1,5 +1,7 @@
 package com.sorsix.backend.service
 
+import com.sorsix.backend.config.security.CustomUserDetails
+import com.sorsix.backend.config.security.JWTUtility
 import com.sorsix.backend.domain.enums.UserRole
 import com.sorsix.backend.domain.users.Doctor
 import com.sorsix.backend.domain.users.Patient
@@ -7,8 +9,6 @@ import com.sorsix.backend.dto.security.JwtResponse
 import com.sorsix.backend.dto.security.LoginRequest
 import com.sorsix.backend.dto.security.SignUpRequest
 import com.sorsix.backend.repository.UserRepository
-import com.sorsix.backend.config.security.CustomUserDetails
-import com.sorsix.backend.config.security.JWTUtility
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder

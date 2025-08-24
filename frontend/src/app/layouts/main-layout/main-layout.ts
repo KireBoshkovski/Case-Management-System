@@ -27,7 +27,6 @@ export class MainLayout implements OnInit {
         if (token) {
             this.webSocketService.connect(token);
 
-            // Subscribe to the notification channel
             this.notificationSub = this.webSocketService
                 .watchNotifications()
                 .subscribe((message) => {
@@ -35,8 +34,7 @@ export class MainLayout implements OnInit {
 
                     this.toastr.info(notification.message, 'New Notification');
 
-                    // reload notification bell
-                    this.notificationService.getNotificationsFromApi();
+                    this.notificationService.addNotification(notification);
                 });
         }
     }
