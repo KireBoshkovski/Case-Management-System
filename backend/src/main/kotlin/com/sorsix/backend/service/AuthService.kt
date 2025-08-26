@@ -9,6 +9,7 @@ import com.sorsix.backend.dto.security.JwtResponse
 import com.sorsix.backend.dto.security.LoginRequest
 import com.sorsix.backend.dto.security.SignUpRequest
 import com.sorsix.backend.repository.UserRepository
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -21,13 +22,19 @@ class AuthService(
     val userRepository: UserRepository,
     val passwordEncoder: PasswordEncoder
 ) {
+    private val logger = LoggerFactory.getLogger(AuthService::class.java)
+
     fun signIn(loginRequest: LoginRequest): JwtResponse? {
+        logger.info("Attempting sign in for email: [{}]", loginRequest.email)
+
         val authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password)
         )
 
         val userDetails = authentication.principal as CustomUserDetails
         val jwt = jwtUtility.generateJwtToken(userDetails)
+
+        logger.info("Successful sign in for user ID: [{}], role: [{}]", userDetails.getId(), userDetails.getRole())
 
         return JwtResponse(
             accessToken = jwt,
@@ -37,8 +44,10 @@ class AuthService(
     }
 
     fun signUp(signUpRequest: SignUpRequest) {
+        logger.info("Attempting signup for email: [{}], role: [{}]", signUpRequest.email, signUpRequest.role)
 
         if (userRepository.existsByEmail(signUpRequest.email)) {
+            logger.warn("Sign up failed - email already in use: [{}]", signUpRequest.email)
             throw IllegalArgumentException("Email is already in use!")
         }
 
@@ -64,9 +73,13 @@ class AuthService(
                 department = signUpRequest.department!!
             )
 
-            else -> throw IllegalArgumentException("Invalid role for registration")
+            else -> {
+                logger.error("Invalid role for registration: [{}]", signUpRequest.role)
+                throw IllegalArgumentException("Invalid role for registration")
+            }
         }
 
         userRepository.save(user)
+        logger.info("Successfully registered user: [{}], role: [{}]", user.email, user.role)
     }
 }

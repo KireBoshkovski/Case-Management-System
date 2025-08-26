@@ -1,9 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {CaseService} from '../../../../core/services/case.service';
-import {CaseDto} from '../../../../models/cases/case.dto';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Case} from '../../../../models/cases/case.model';
+import { Component, inject, OnInit } from '@angular/core';
+import { CaseService } from '../../../../core/services/case.service';
+import { CaseDto } from '../../../../models/cases/case.dto';
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Case } from '../../../../models/cases/case.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'create-case',
@@ -16,6 +22,7 @@ export class CreateCase implements OnInit {
     formBuilder = inject(FormBuilder);
     router = inject(Router);
     route = inject(ActivatedRoute);
+    toastService = inject(ToastrService);
 
     caseForm: FormGroup = this.formBuilder.group({
         bloodType: [''],
@@ -55,7 +62,9 @@ export class CreateCase implements OnInit {
                 examinationsIds: (v.examinationsIds as number[]) || [],
             };
 
-            this.isEditMode ? this.updateCase(caseData) : this.createCase(caseData);
+            this.isEditMode
+                ? this.updateCase(caseData)
+                : this.createCase(caseData);
         } else {
             this.markFormGroupTouched();
         }
@@ -106,14 +115,14 @@ export class CreateCase implements OnInit {
             status: caseData.status || 'ACTIVE',
             patientId: caseData.patient?.id ?? '',
             doctorId: caseData.doctor?.id ?? '',
-            examinationsIds: caseData.examinations?.map(e => e.id) ?? [],
+            examinationsIds: caseData.examinations?.map((e) => e.id) ?? [],
         });
     }
 
     private createCase(caseData: Partial<CaseDto>) {
         this.caseService.createCase(caseData).subscribe({
             next: (createdCase) => {
-                console.log('Case created successfully:', createdCase);
+                this.toastService.success('Case created successfully!');
                 this.router.navigate(['/cases', createdCase.id]);
             },
             error: (err) => {
