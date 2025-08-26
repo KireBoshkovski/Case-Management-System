@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CaseService } from '../../../../core/services/case.service';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import { SearchBar } from '../../../../shared/components/search-bar/search-bar';
 import { List } from '../../../../shared/components/list/list';
 import { ColumnDef } from '../../../../models/columnDef';
@@ -19,7 +19,7 @@ import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'case-search',
-    imports: [SearchBar, List, Pagination, AsyncPipe],
+    imports: [SearchBar, List, Pagination, AsyncPipe, RouterLink],
     templateUrl: './case-search.html',
     styleUrl: './case-search.css',
 })

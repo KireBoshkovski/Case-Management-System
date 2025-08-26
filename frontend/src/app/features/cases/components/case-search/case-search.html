@@ -1,5 +1,4 @@
 <div class="container-fluid">
-    <!--    TODO ADD BUTTON FOR CASE-->
     <!-- Header Section -->
     <div class="row mb-4">
         <div class="col-12">
@@ -10,9 +9,20 @@
                         Browse published cases for research and education
                     </p>
                 </div>
-                <div class="badge badge-primary fs-6 px-3 py-2">
-                    <i class="bi bi-globe me-1"></i>
-                    Public Repository
+                <div class="d-flex align-items-center gap-3">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        [routerLink]="['/cases/new']"
+                    >
+                        <i class="bi bi-plus-circle me-2"></i>
+                        Create New Case
+                    </button>
+
+                    <div class="badge badge-primary fs-6 px-3 py-2">
+                        <i class="bi bi-globe me-1"></i>
+                        Public Repository
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,7 +47,7 @@
                         class="d-flex align-items-center justify-content-between"
                     >
                         <label class="form-label mb-0 me-2"
-                            >Cases per page:</label
+                        >Cases per page:</label
                         >
                         <select
                             (change)="setPageSize(+$any($event.target).value)"
@@ -65,7 +75,7 @@
                             >
                                 <h4 class="h6 mb-0">Available Cases</h4>
                                 <span class="badge badge-secondary"
-                                    >{{ cases.length }} cases</span
+                                >{{ cases.length }} cases</span
                                 >
                             </div>
                         </div>
@@ -84,9 +94,17 @@
                                 class="bi bi-search fs-1 text-muted d-block mb-3"
                             ></i>
                             <h5 class="text-muted">No cases found</h5>
-                            <p class="text-muted mb-0">
-                                Try adjusting your search criteria
+                            <p class="text-muted mb-4">
+                                Try adjusting your search criteria or create a new case
                             </p>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                routerLink="/cases/new"
+                            >
+                                <i class="bi bi-plus-circle me-2"></i>
+                                Create Your First Case
+                            </button>
                         </div>
                     </div>
                 }
@@ -95,7 +113,7 @@
                     <div class="card-body text-center py-5">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden"
-                                >Loading cases...</span
+                            >Loading cases...</span
                             >
                         </div>
                         <p class="text-muted mt-3 mb-0">

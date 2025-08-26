@@ -3,7 +3,7 @@ import {CaseService} from '../../../../core/services/case.service';
 import {DiscussionService} from '../../../../core/services/discussion.service';
 import {PublicCase} from '../../../../models/cases/public-case.model';
 import {DiscussionDto} from '../../../../models/discussions/discussion-dto';
-import {ActivatedRoute, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AsyncPipe, SlicePipe} from '@angular/common';
 
@@ -17,6 +17,7 @@ export class PublicCaseDetails implements OnInit {
     caseService = inject(CaseService);
     discussionService = inject(DiscussionService);
     route = inject(ActivatedRoute);
+    router = inject(Router);
 
     caseData: PublicCase | undefined;
     discussions$: Observable<DiscussionDto[]> | undefined;
@@ -74,15 +75,5 @@ export class PublicCaseDetails implements OnInit {
                 day: 'numeric',
             });
         }
-    }
-
-    createNewDiscussion(): void {
-        // Navigate to create discussion page or open modal
-        // You'll need to implement this based on your discussion creation flow
-        console.log(
-            'Create new discussion for public case:',
-            this.caseData?.id,
-        );
-        // Example: this.router.navigate(['/threads/new'], { queryParams: { caseId: this.caseData?.id } });
     }
 }

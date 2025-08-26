@@ -11,6 +11,7 @@ import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
 import com.sorsix.backend.config.security.CustomUserDetails
+import com.sorsix.backend.dto.DiscussionCreateRequest
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,11 +19,14 @@ import org.springframework.data.jpa.domain.Specification
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.Instant
+import java.time.LocalDateTime
 
 @Service
 class DiscussionService(
     val discussionRepository: DiscussionRepository,
     val userRepository: UserRepository,
+    val userService: UserService,
     val publicCaseService: PublicCaseService,
     val commentRepository: CommentRepository,
     val notificationService: NotificationService
@@ -43,22 +47,33 @@ class DiscussionService(
         return discussionRepository.findAllByPublicCaseId(caseId)
     }
 
-    fun createDiscussion(dto: DiscussionDto): Discussion {
-        val user = userRepository.findByIdOrNull(dto.userId)
-            ?: throw DoctorNotFoundException(dto.userId)
+    @Transactional
+    fun createDiscussion(request: DiscussionCreateRequest, userId: Long): DiscussionDto {
+        val user = userRepository.findByIdOrNull(userId) ?: throw DoctorNotFoundException(userId)
 
-        val case = publicCaseService.findById(dto.caseId)
+        val publicCase = publicCaseService.findById(request.caseId)
 
-        return discussionRepository.save(
-            Discussion(
-                id = null,
-                title = dto.title,
-                description = dto.description,
-                user = user,
-                publicCase = case
-            )
+        val entity = Discussion(
+            id = null,
+            title = request.title,
+            description = request.description,
+            user = user,
+            publicCase = publicCase
+        )
+
+        val saved = discussionRepository.save(entity)
+
+        return DiscussionDto(
+            id = saved.id!!,
+            title = saved.title,
+            description = saved.description,
+            createdAt = Instant.now(),
+            userId = saved.user.id,
+            caseId = saved.publicCase.id!!,
+            commentsCount = saved.comments.size
         )
     }
+
 
     fun getCommentsByDiscussion(discussionId: Long) =
         commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)

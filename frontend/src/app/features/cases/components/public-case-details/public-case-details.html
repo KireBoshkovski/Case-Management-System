@@ -268,10 +268,12 @@
                         <h3 class="h5 mb-0">Community Discussions</h3>
                         <button
                             class="btn btn-outline-primary btn-sm"
-                            (click)="createNewDiscussion()"
+                            [routerLink]="['/threads/create']"
+                            [queryParams]="{ caseId: caseData.id }"
                         >
                             <i class="bi bi-plus"></i> New Discussion
                         </button>
+
                     </div>
                     <div class="card-body p-0">
                         @if (discussions$ | async; as discussions) {
