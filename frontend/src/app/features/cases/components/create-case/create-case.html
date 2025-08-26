@@ -4,14 +4,22 @@
             <!-- Header -->
             <div class="card mb-4">
                 <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
+                    <div
+                        class="d-flex justify-content-between align-items-center"
+                    >
                         <div>
                             <h1 class="h3 mb-0">{{ getPageTitle() }}</h1>
-                            <p class="text-muted mb-0 mt-1">{{ isEditMode ? 'Update case information' : 'Create a new medical case record' }}</p>
+                            <p class="text-muted mb-0 mt-1">
+                                {{
+                                    isEditMode
+                                        ? "Update case information"
+                                        : "Create a new medical case record"
+                                }}
+                            </p>
                         </div>
                         <div class="badge badge-primary fs-6 px-3 py-2">
                             <i class="bi bi-file-medical me-1"></i>
-                            {{ isEditMode ? 'Edit Mode' : 'New Case' }}
+                            {{ isEditMode ? "Edit Mode" : "New Case" }}
                         </div>
                     </div>
                 </div>
@@ -25,21 +33,33 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h2 class="h5 mb-0">
-                                    <i class="bi bi-asterisk text-danger me-2" style="font-size: 0.7rem;"></i>
+                                    <i
+                                        class="bi bi-asterisk text-danger me-2"
+                                        style="font-size: 0.7rem"
+                                    ></i>
                                     Basic Information
                                 </h2>
-                                <small class="text-muted">All fields marked with * are required</small>
+                                <small class="text-muted"
+                                    >All fields marked with * are
+                                    required</small
+                                >
                             </div>
                             <div class="card-body">
                                 <!-- Description -->
                                 <div class="mb-3">
-                                    <label for="description" class="form-label fw-semibold">
-                                        Description <span class="text-danger">*</span>
+                                    <label
+                                        for="description"
+                                        class="form-label fw-semibold"
+                                    >
+                                        Description
+                                        <span class="text-danger">*</span>
                                     </label>
                                     <textarea
                                         id="description"
                                         class="form-control"
-                                        [class.is-invalid]="isFieldInvalid('description')"
+                                        [class.is-invalid]="
+                                            isFieldInvalid('description')
+                                        "
                                         formControlName="description"
                                         placeholder="Provide a detailed description of the case..."
                                         rows="4"
@@ -53,16 +73,24 @@
 
                                 <!-- Status -->
                                 <div class="mb-3">
-                                    <label for="status" class="form-label fw-semibold">
-                                        Status <span class="text-danger">*</span>
+                                    <label
+                                        for="status"
+                                        class="form-label fw-semibold"
+                                    >
+                                        Status
+                                        <span class="text-danger">*</span>
                                     </label>
                                     <select
                                         id="status"
                                         class="form-select"
-                                        [class.is-invalid]="isFieldInvalid('status')"
+                                        [class.is-invalid]="
+                                            isFieldInvalid('status')
+                                        "
                                         formControlName="status"
                                     >
-                                        <option value="">Select case status</option>
+                                        <option value="">
+                                            Select case status
+                                        </option>
                                         <option value="ACTIVE">Active</option>
                                         <option value="CLOSED">Closed</option>
                                         <option value="PENDING">Pending</option>
@@ -78,8 +106,12 @@
                                 <div class="row">
                                     <!-- Patient ID -->
                                     <div class="col-md-6 mb-3">
-                                        <label for="patientId" class="form-label fw-semibold">
-                                            Patient ID <span class="text-danger">*</span>
+                                        <label
+                                            for="patientId"
+                                            class="form-label fw-semibold"
+                                        >
+                                            Patient ID
+                                            <span class="text-danger">*</span>
                                         </label>
                                         <div class="input-group">
                                             <span class="input-group-text">
@@ -89,38 +121,19 @@
                                                 type="number"
                                                 id="patientId"
                                                 class="form-control"
-                                                [class.is-invalid]="isFieldInvalid('patientId')"
+                                                [class.is-invalid]="
+                                                    isFieldInvalid('patientId')
+                                                "
                                                 formControlName="patientId"
                                                 placeholder="Enter patient ID"
                                             />
                                             @if (isFieldInvalid("patientId")) {
                                                 <div class="invalid-feedback">
-                                                    {{ getFieldError("patientId") }}
-                                                </div>
-                                            }
-                                        </div>
-                                    </div>
-
-                                    <!-- Doctor ID -->
-                                    <div class="col-md-6 mb-3">
-                                        <label for="doctorId" class="form-label fw-semibold">
-                                            Doctor ID <span class="text-danger">*</span>
-                                        </label>
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <i class="bi bi-person-badge"></i>
-                                            </span>
-                                            <input
-                                                type="number"
-                                                id="doctorId"
-                                                class="form-control"
-                                                [class.is-invalid]="isFieldInvalid('doctorId')"
-                                                formControlName="doctorId"
-                                                placeholder="Enter doctor ID"
-                                            />
-                                            @if (isFieldInvalid("doctorId")) {
-                                                <div class="invalid-feedback">
-                                                    {{ getFieldError("doctorId") }}
+                                                    {{
+                                                        getFieldError(
+                                                            "patientId"
+                                                        )
+                                                    }}
                                                 </div>
                                             }
                                         </div>
@@ -138,14 +151,26 @@
                                     <i class="bi bi-info-circle me-2"></i>
                                     Additional Information
                                 </h2>
-                                <small class="text-muted">Optional details</small>
+                                <small class="text-muted"
+                                    >Optional details</small
+                                >
                             </div>
                             <div class="card-body">
                                 <!-- Blood Type -->
                                 <div class="mb-3">
-                                    <label for="bloodType" class="form-label fw-semibold">Blood Type</label>
-                                    <select id="bloodType" class="form-select" formControlName="bloodType">
-                                        <option value="">Select blood type</option>
+                                    <label
+                                        for="bloodType"
+                                        class="form-label fw-semibold"
+                                        >Blood Type</label
+                                    >
+                                    <select
+                                        id="bloodType"
+                                        class="form-select"
+                                        formControlName="bloodType"
+                                    >
+                                        <option value="">
+                                            Select blood type
+                                        </option>
                                         <option value="A+">A+</option>
                                         <option value="A-">A-</option>
                                         <option value="B+">B+</option>
@@ -159,8 +184,13 @@
 
                                 <!-- Allergies -->
                                 <div class="mb-3">
-                                    <label for="allergies" class="form-label fw-semibold text-danger">
-                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                    <label
+                                        for="allergies"
+                                        class="form-label fw-semibold text-danger"
+                                    >
+                                        <i
+                                            class="bi bi-exclamation-triangle me-1"
+                                        ></i>
                                         Allergies
                                     </label>
                                     <textarea
@@ -171,13 +201,20 @@
                                         rows="3"
                                     ></textarea>
                                     <div class="form-text text-danger">
-                                        <small>Important: List all known allergies for patient safety</small>
+                                        <small
+                                            >Important: List all known allergies
+                                            for patient safety</small
+                                        >
                                     </div>
                                 </div>
 
                                 <!-- Treatment Plan -->
                                 <div class="mb-3">
-                                    <label for="treatmentPlan" class="form-label fw-semibold">Treatment Plan</label>
+                                    <label
+                                        for="treatmentPlan"
+                                        class="form-label fw-semibold"
+                                        >Treatment Plan</label
+                                    >
                                     <textarea
                                         id="treatmentPlan"
                                         class="form-control"
@@ -196,21 +233,27 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
+                                <div
+                                    class="d-flex justify-content-between align-items-center"
+                                >
                                     <div class="btn-group" role="group">
                                         <button
                                             type="submit"
                                             class="btn btn-primary"
                                             [disabled]="caseForm.invalid"
                                         >
-                                            <i class="bi bi-check-circle me-2"></i>
+                                            <i
+                                                class="bi bi-check-circle me-2"
+                                            ></i>
                                             {{ getSubmitButtonText() }}
                                         </button>
 
                                         <button
                                             type="button"
                                             class="btn btn-outline-secondary"
-                                            (click)="router.navigate(['/cases'])"
+                                            (click)="
+                                                router.navigate(['/cases'])
+                                            "
                                         >
                                             <i class="bi bi-x-circle me-2"></i>
                                             Cancel
@@ -221,7 +264,12 @@
                                         <button
                                             type="button"
                                             class="btn btn-outline-primary"
-                                            (click)="router.navigate(['/cases', caseId])"
+                                            (click)="
+                                                router.navigate([
+                                                    '/cases',
+                                                    caseId,
+                                                ])
+                                            "
                                         >
                                             <i class="bi bi-eye me-2"></i>
                                             View Case
@@ -232,10 +280,20 @@
                                 <!-- Form Status -->
                                 <div class="mt-3">
                                     @if (caseForm.invalid && caseForm.touched) {
-                                        <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                            <i class="bi bi-exclamation-triangle me-2"></i>
+                                        <div
+                                            class="alert alert-warning d-flex align-items-center"
+                                            role="alert"
+                                        >
+                                            <i
+                                                class="bi bi-exclamation-triangle me-2"
+                                            ></i>
                                             <div>
-                                                <strong>Please complete all required fields</strong> marked with a red asterisk (*) before submitting.
+                                                <strong
+                                                    >Please complete all
+                                                    required fields</strong
+                                                >
+                                                marked with a red asterisk (*)
+                                                before submitting.
                                             </div>
                                         </div>
                                     }

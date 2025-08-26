@@ -31,7 +31,6 @@ export class CreateCase implements OnInit {
         treatmentPlan: [''],
         status: ['ACTIVE', Validators.required],
         patientId: ['', [Validators.required, Validators.min(1)]],
-        doctorId: ['', [Validators.required, Validators.min(1)]],
         examinationsIds: [[]], // Start with empty array
     });
 
@@ -58,7 +57,6 @@ export class CreateCase implements OnInit {
                 treatmentPlan: v.treatmentPlan || undefined,
                 status: v.status,
                 patientId: Number(v.patientId),
-                doctorId: Number(v.doctorId),
                 examinationsIds: (v.examinationsIds as number[]) || [],
             };
 
@@ -100,8 +98,8 @@ export class CreateCase implements OnInit {
                 console.log('Loaded case for edit:', caseData);
                 this.populateForm(caseData);
             },
-            error: (err) => {
-                console.error('Error loading case:', err);
+            error: () => {
+                this.toastService.error('Error loading case for editing.');
             },
         });
     }
@@ -114,7 +112,6 @@ export class CreateCase implements OnInit {
             treatmentPlan: caseData.treatmentPlan || '',
             status: caseData.status || 'ACTIVE',
             patientId: caseData.patient?.id ?? '',
-            doctorId: caseData.doctor?.id ?? '',
             examinationsIds: caseData.examinations?.map((e) => e.id) ?? [],
         });
     }
@@ -126,7 +123,10 @@ export class CreateCase implements OnInit {
                 this.router.navigate(['/cases', createdCase.id]);
             },
             error: (err) => {
-                console.error('Error creating case:', err);
+                this.toastService.error(
+                    err.error.error,
+                    'Error creating case.',
+                );
             },
         });
     }
@@ -134,11 +134,14 @@ export class CreateCase implements OnInit {
     private updateCase(caseData: Partial<CaseDto>) {
         this.caseService.updateCase(this.caseId!, caseData).subscribe({
             next: (updatedCase) => {
-                console.log('Case updated successfully:', updatedCase);
+                this.toastService.success('Case updated successfully!');
                 this.router.navigate(['/cases', updatedCase.id]);
             },
             error: (err) => {
-                console.error('Error updating case:', err);
+                this.toastService.error(
+                    err.error.error,
+                    'Error updating case.',
+                );
             },
         });
     }

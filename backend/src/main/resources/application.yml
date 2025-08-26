@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/case-management
-    username: postgres
-    password: postgres
+    username: sorsix
+    password: sorsix
 
   jpa:
     hibernate:

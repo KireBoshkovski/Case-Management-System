@@ -54,8 +54,8 @@ class CaseController(
     ): ResponseEntity<Case> = ResponseEntity.ok(caseService.findByIdSecured(id, userDetails))
 
     @PostMapping
-    fun createCase(@RequestBody case: CaseDto): ResponseEntity<CaseDto> =
-        ResponseEntity.ok(caseService.save(case).toCaseDto())
+    fun createCase(@RequestBody case: CaseDto, @AuthenticationPrincipal userDetails: CustomUserDetails): ResponseEntity<CaseDto> =
+        ResponseEntity.ok(caseService.save(case, userDetails.getId()).toCaseDto())
 
     @PutMapping("/{id}")
     fun updateCase(@PathVariable id: Long, @RequestBody case: CaseDto): ResponseEntity<CaseDto> =

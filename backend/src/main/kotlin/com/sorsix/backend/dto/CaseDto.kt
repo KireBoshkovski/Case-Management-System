@@ -14,7 +14,7 @@ data class CaseDto(
     val createdAt: LocalDateTime?,
     val updatedAt: LocalDateTime?,
     val patientId: Long,
-    val doctorId: Long,
+    val doctorId: Long?,
     val examinationsIds: List<Long?>
 )
 

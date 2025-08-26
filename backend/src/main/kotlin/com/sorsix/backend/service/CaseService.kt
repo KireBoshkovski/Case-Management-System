@@ -71,22 +71,22 @@ class CaseService(
     }
 
     @Transactional
-    fun save(case: CaseDto): Case {
+    fun save(case: CaseDto, doctorId: Long): Case {
         logger.info(
             "Saving new case for patient with ID: [{}] from doctor with ID: [{}]",
             case.patientId,
-            case.doctorId
+            doctorId
         )
         val saved = caseRepository.save(
             Case(
-                id = 0,
+                id = null,
                 bloodType = case.bloodType,
                 allergies = case.allergies,
                 description = case.description,
                 treatmentPlan = case.treatmentPlan,
                 status = case.status,
                 patient = patientService.findById(case.patientId),
-                doctor = doctorService.findById(case.doctorId),
+                doctor = doctorService.findById(doctorId),
             )
         )
         logger.debug("Saved case with ID: [{}]", saved.id)
