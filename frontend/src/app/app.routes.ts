@@ -5,6 +5,7 @@ import {CaseDetail} from './features/cases/components/case-detail/case-detail';
 import {MainLayout} from './layouts/main-layout/main-layout';
 import {AuthLayout} from './layouts/auth-layout/auth-layout';
 
+import {CreateDiscussionComponent} from './features/discussions/discussion-create/discussion-create';
 import {Login} from './features/auth/login/login';
 import {Register} from './features/auth/register/register';
 import {PatientSearch} from './features/patients/components/patient-search/patient-search';
@@ -18,7 +19,6 @@ import {PublishCase} from './features/cases/components/publish-case/publish-case
 import {ExaminationDetails} from './features/examinations/components/examination-details/examination-details';
 import {DiscussionComments} from './features/discussions/discussion-comments/discussion-comments';
 import {DiscussionList} from './features/discussions/discussion-list/discussion-list';
-import {CreateDiscussionComponent} from './features/discussions/discussion-create/discussion-create';
 
 export const routes: Routes = [
     {
@@ -47,6 +47,41 @@ export const routes: Routes = [
 
             // Examinations
             {path: 'examinations/:id', component: ExaminationDetails},
+            {
+                path: 'public',
+                children: [
+                    {path: '', component: PublicCaseSearch},
+                    {path: ':id', component: PublicCaseDetails},
+                ],
+            },
+            {
+                path: 'cases',
+                children: [
+                    {path: '', component: CaseSearch},
+                    {path: 'new', component: CreateCase},
+                    {path: ':id', component: CaseDetail},
+                    {path: ':id/edit', component: CreateCase},
+                    {path: ':id/publish', component: PublishCase},
+                ],
+            },
+            {
+                path: 'patients',
+                children: [
+                    {path: '', component: PatientSearch},
+                    {path: ':id', component: PatientDetails},
+                ],
+            },
+            {
+                path: 'discussions',
+                children: [
+                    {path: '', component: DiscussionList},
+                    {path: ':id', component: DiscussionComments},
+                ],
+            },
+            {
+                path: 'examinations',
+                children: [{path: ':id', component: ExaminationDetails}],
+            },
         ],
     },
     {

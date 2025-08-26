@@ -29,7 +29,6 @@ export class PublicCaseDetails implements OnInit {
             // Load public case data
             this.caseService.getPublicCaseById(caseId).subscribe({
                 next: (caseData) => {
-                    console.log('Public Case Data:', caseData);
                     this.caseData = caseData;
                 },
                 error: (err) => {

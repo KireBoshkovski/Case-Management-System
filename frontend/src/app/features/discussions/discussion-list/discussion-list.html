@@ -2,7 +2,7 @@
 <list
     [columns]="discussionColumns"
     [items]="(discussions$ | async) ?? []"
-    routePrefix="threads"
+    routePrefix="discussions"
 ></list>
 @if (pageInfo$ | async; as pageInfo) {
     <pagination

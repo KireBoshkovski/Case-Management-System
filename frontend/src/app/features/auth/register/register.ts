@@ -1,8 +1,14 @@
-import {CommonModule} from '@angular/common';
-import {Component, inject} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators,} from '@angular/forms';
-import {Router, RouterLink} from '@angular/router';
-import {AuthService} from '../../../core/services/auth.service';
+import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import {
+    FormBuilder,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
     selector: 'register',
@@ -14,10 +20,9 @@ export class Register {
     fb = inject(FormBuilder);
     authService = inject(AuthService);
     router = inject(Router);
+    toastService = inject(ToastrService);
 
     selectedRole: 'PATIENT' | 'DOCTOR' = 'PATIENT';
-    errorMessage: string | null = null;
-    successMessage: string | null = null;
 
     registerForm: FormGroup = this.fb.group({
         email: [
@@ -87,22 +92,22 @@ export class Register {
 
     onSubmit() {
         if (this.registerForm.invalid) {
-            this.errorMessage = 'Please fill in all required fields correctly.';
+            this.toastService.error(
+                " 'Please fill in all required fields correctly.",
+            );
             this.registerForm.markAllAsTouched();
             return;
         }
 
-        this.errorMessage = null;
-        this.successMessage = null;
-
         this.authService.signUp(this.registerForm.value).subscribe({
             next: () => {
                 setTimeout(() => {
+                    this.toastService.success('User succesfully registered');
                     this.router.navigate(['/login']);
                 }, 3000);
             },
             error: (response) => {
-                this.errorMessage = response.error.error;
+                this.toastService.error(response.error.error);
             },
         });
     }

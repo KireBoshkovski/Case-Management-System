@@ -56,13 +56,13 @@ data class PublicCaseService(
         if (case.examinations.isNotEmpty()) {
             val publicExaminations = case.examinations.map { exam ->
                 PublicExamination(
-                    id = 0,
+                    id = null,
                     originalExaminationId = exam.originalExaminationId,
                     examinationType = exam.examinationType,
                     findings = exam.findings,
                     results = exam.results,
                     notes = exam.notes,
-                    vitalSigns = exam.vitalSigns,
+                    vitalSigns = if (exam.vitalSigns.isNullOrBlank()) "{}" else exam.vitalSigns,
                     examinationDate = exam.examinationDate,
                     examiningDoctorSpecialty = exam.examiningDoctorSpecialty,
                     publishedAt = LocalDateTime.now()

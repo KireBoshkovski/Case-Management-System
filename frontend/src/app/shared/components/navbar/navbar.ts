@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NotificationBell } from '../notification-bell/notification-bell';
 
 @Component({
     selector: 'navbar',
-    imports: [RouterLink],
+    imports: [RouterLink, NotificationBell],
     templateUrl: './navbar.html',
     styleUrl: './navbar.css',
 })
-export class Navbar {
-}
+export class Navbar {}

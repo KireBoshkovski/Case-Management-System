@@ -1,8 +1,13 @@
 package com.sorsix.backend.service
 
+import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.domain.discussions.Comment
 import com.sorsix.backend.domain.discussions.Discussion
+import com.sorsix.backend.domain.notifications.Notification
+import com.sorsix.backend.domain.notifications.NotificationType
+import com.sorsix.backend.domain.users.User
 import com.sorsix.backend.dto.CommentDto
+import com.sorsix.backend.dto.DiscussionCreateRequest
 import com.sorsix.backend.dto.DiscussionDto
 import com.sorsix.backend.dto.toDiscussionDto
 import com.sorsix.backend.exceptions.DiscussionNotFoundException
@@ -10,8 +15,6 @@ import com.sorsix.backend.exceptions.DoctorNotFoundException
 import com.sorsix.backend.repository.CommentRepository
 import com.sorsix.backend.repository.DiscussionRepository
 import com.sorsix.backend.repository.UserRepository
-import com.sorsix.backend.config.security.CustomUserDetails
-import com.sorsix.backend.dto.DiscussionCreateRequest
 import com.sorsix.backend.service.specification.FieldFilterSpecification
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -26,7 +29,6 @@ import java.time.LocalDateTime
 class DiscussionService(
     val discussionRepository: DiscussionRepository,
     val userRepository: UserRepository,
-    val userService: UserService,
     val publicCaseService: PublicCaseService,
     val commentRepository: CommentRepository,
     val notificationService: NotificationService
@@ -74,7 +76,6 @@ class DiscussionService(
         )
     }
 
-
     fun getCommentsByDiscussion(discussionId: Long) =
         commentRepository.findAllByDiscussionIdAndParentIsNull(discussionId)
 
@@ -98,27 +99,42 @@ class DiscussionService(
             )
         )
 
+        val recipient: User
+        val notificationType: NotificationType
+        val message: String
+
         if (newComment.parent != null) { // REPLY to another comment
             val parentCommentAuthor = newComment.parent!!.user
-            if (parentCommentAuthor.id != user.id) {
-                val notificationPayload = mapOf(
-                    "message" to "${user.email} replied to your comment.",
-                    "discussionId" to discussion.id,
-                    "commentId" to newComment.id
-                )
-                notificationService.sendNotificationToUser(parentCommentAuthor.email, notificationPayload)
+            if (parentCommentAuthor.id == user.id) {
+                return newComment
             }
-        } else { // TOP-LEVEL comment on the discussion
+            recipient = parentCommentAuthor
+            notificationType = NotificationType.COMMENT_REPLY
+            message = "${user.email} replied to your comment."
+        } else {
             val discussionAuthor = discussion.user
-            if (discussionAuthor.id != user.id) {
-                val notificationPayload = mapOf(
-                    "message" to "${user.email} commented on your discussion: '${discussion.title}'",
-                    "discussionId" to discussion.id,
-                    "commentId" to newComment.id
-                )
-                notificationService.sendNotificationToUser(discussionAuthor.email, notificationPayload)
+            if (discussionAuthor.id == user.id) {
+                return newComment
             }
+            recipient = discussionAuthor
+            notificationType = NotificationType.DISCUSSION_COMMENT
+            message = "${user.email} commented on your discussion ${discussion.title}."
         }
+
+        val notification = notificationService.save(
+            Notification(
+                null,
+                recipient.id,
+                notificationType,
+                message,
+                discussion.id!!,
+                newComment.id,
+                user.id,
+                LocalDateTime.now(),
+                false
+            )
+        )
+        notificationService.sendNotificationToUser(recipient.email, notification)
         return newComment
     }
 }

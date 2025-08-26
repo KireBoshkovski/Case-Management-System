@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { RxStomp } from '@stomp/rx-stomp';
 
 import { routes } from './app.routes';
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideHttpClient(withInterceptors([authInterceptor])),
         { provide: RxStomp, useFactory: rxStompFactory },
+        provideAnimationsAsync(),
         provideToastr({
             timeOut: 5000,
             positionClass: 'toast-bottom-right',

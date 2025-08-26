@@ -2,24 +2,35 @@ package com.sorsix.backend.web
 
 import com.sorsix.backend.config.security.CustomUserDetails
 import com.sorsix.backend.domain.notifications.Notification
-import com.sorsix.backend.repository.NotificationRepository
+import com.sorsix.backend.service.NotificationService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/api/notifications")
 class NotificationController(
-    val notificationService: NotificationRepository,
+    val notificationService: NotificationService
 ) {
     // Fetch all notifications for the logged-in user
-    @GetMapping("/notifications")
-    fun getNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> {
-        return notificationService.findByUserIdOrderByTimestampDesc(userDetails.getId())
-    }
+    @GetMapping
+    fun getNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> =
+        notificationService.findByUser(userDetails.getId())
 
-    // Fetch only unread notifications
-    @GetMapping("/notifications/unread")
-    fun getUnreadNotifications(@AuthenticationPrincipal userDetails: CustomUserDetails): List<Notification> {
-        return notificationService.findByUserIdAndReadFalse(userDetails.getId())
-    }
+    @PutMapping("/{id}/read")
+    fun readNotification(
+        @PathVariable id: Long,
+        @AuthenticationPrincipal userDetails: CustomUserDetails
+    ) = notificationService.markAsRead(id, userDetails)
+
+    @PutMapping
+    fun markAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) =
+        notificationService.markAllAsRead(userDetails.getId())
+
+    @DeleteMapping("/{id}")
+    fun removeNotification(@PathVariable id: Long, @AuthenticationPrincipal userDetails: CustomUserDetails) =
+        notificationService.removeNotification(id, userDetails.getId())
+
+    @DeleteMapping("/read")
+    fun removeAllRead(@AuthenticationPrincipal userDetails: CustomUserDetails) =
+        notificationService.removeNotifications(userDetails.getId())
 }
