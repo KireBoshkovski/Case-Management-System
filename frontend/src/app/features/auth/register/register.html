@@ -1,18 +1,19 @@
-<div class="container-fluid">
+<div class="container-fluid bg-light">
     <div class="row justify-content-center align-items-center min-vh-100 py-4">
         <div class="col-lg-5 col-md-7 col-sm-9">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow rounded-3 border-0">
                 <div class="card-body p-4">
                     <div class="text-center mb-4">
                         <h2 class="h4 mb-2">Create Your Account</h2>
-                        <p class="text-muted">Join our medical platform</p>
+                        <p class="text-secondary">Join our medical platform</p>
                     </div>
 
-                    <!-- Role Toggle -->
                     <div class="text-center mb-4">
-                        <p class="mb-2">
+                        <p class="mb-2 text-muted">
                             Registering as:
-                            <strong>{{ formControls["role"].value }}</strong>
+                            <span class="text-primary">{{
+                                formControls["role"].value
+                            }}</span>
                         </p>
                         <button
                             type="button"
@@ -33,7 +34,6 @@
                         (ngSubmit)="onSubmit()"
                         novalidate
                     >
-                        <!-- Basic Info -->
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="firstName" class="form-label"
@@ -44,6 +44,7 @@
                                     type="text"
                                     class="form-control"
                                     formControlName="firstName"
+                                    placeholder="Enter your first name"
                                 />
                             </div>
                             <div class="col-md-6">
@@ -55,6 +56,7 @@
                                     type="text"
                                     class="form-control"
                                     formControlName="lastName"
+                                    placeholder="Enter your last name"
                                 />
                             </div>
                         </div>
@@ -68,6 +70,7 @@
                                 type="email"
                                 class="form-control"
                                 formControlName="email"
+                                placeholder="Enter your email address"
                             />
                         </div>
 
@@ -80,10 +83,10 @@
                                 type="password"
                                 class="form-control"
                                 formControlName="password"
+                                placeholder="Create a password"
                             />
                         </div>
 
-                        <!-- Patient Fields -->
                         @if (formControls["role"].value === "PATIENT") {
                             <div class="mb-3">
                                 <label for="dateOfBirth" class="form-label"
@@ -105,6 +108,7 @@
                                     type="tel"
                                     class="form-control"
                                     formControlName="phoneNumber"
+                                    placeholder="e.g., +1 (555) 123-4567"
                                 />
                             </div>
                             <div class="mb-3">
@@ -116,6 +120,7 @@
                                     type="text"
                                     class="form-control"
                                     formControlName="address"
+                                    placeholder="Enter your full address"
                                 />
                             </div>
                             <div class="mb-3">
@@ -135,7 +140,6 @@
                             </div>
                         }
 
-                        <!-- Doctor Fields -->
                         @if (formControls["role"].value === "DOCTOR") {
                             <div class="mb-3">
                                 <label for="specialization" class="form-label"
@@ -146,6 +150,7 @@
                                     type="text"
                                     class="form-control"
                                     formControlName="specialization"
+                                    placeholder="e.g., Cardiology, Pediatrics"
                                 />
                             </div>
                             <div class="mb-3">
@@ -157,6 +162,7 @@
                                     type="text"
                                     class="form-control"
                                     formControlName="department"
+                                    placeholder="e.g., Emergency, Surgery"
                                 />
                             </div>
                         }

@@ -8,10 +8,12 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
     selector: 'login',
-    imports: [ReactiveFormsModule, RouterLink],
+    imports: [ReactiveFormsModule, FontAwesomeModule, RouterLink],
     templateUrl: './login.html',
     styleUrl: './login.css',
 })
@@ -20,6 +22,10 @@ export class Login {
     authService = inject(AuthService);
     router = inject(Router);
     toastService = inject(ToastrService);
+
+    showPassword = false;
+    faEye = faEye;
+    faEyeSlash = faEyeSlash;
 
     loginForm: FormGroup = this.fb.group({
         email: ['', [Validators.required, Validators.email]],
@@ -39,5 +45,9 @@ export class Login {
                 },
             });
         }
+    }
+
+    togglePasswordVisibility() {
+        this.showPassword = !this.showPassword;
     }
 }
