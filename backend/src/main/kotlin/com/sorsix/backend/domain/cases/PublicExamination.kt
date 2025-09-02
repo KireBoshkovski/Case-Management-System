@@ -29,7 +29,7 @@ data class PublicExamination(
     @Column(name = "notes", columnDefinition = "TEXT")
     val notes: String? = null,
 
-    @Column(name = "vital_signs", columnDefinition = "JSON")
+    @Column(name = "vital_signs", columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     val vitalSigns: String? = null,
 

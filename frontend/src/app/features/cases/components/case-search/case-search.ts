@@ -59,7 +59,7 @@ export class CaseSearch {
             this.service.getCases({
                 page,
                 size,
-                sort: ['createdAt,desc'],
+                sort: ['updatedAt,desc'],
                 query: query?.trim() || undefined,
             }),
         ),

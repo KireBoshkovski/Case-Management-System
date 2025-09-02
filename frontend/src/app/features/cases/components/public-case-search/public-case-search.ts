@@ -53,7 +53,7 @@ export class PublicCaseSearch {
             this.service.getPublicCases({
                 page,
                 size,
-                sort: ['publishedAt,desc'],
+                sort: ['viewsCount,desc'],
                 query: query?.trim() || undefined,
             }),
         ),

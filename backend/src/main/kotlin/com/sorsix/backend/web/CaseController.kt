@@ -65,8 +65,7 @@ class CaseController(
     fun censor(@PathVariable id: Long): ResponseEntity<Case> = ResponseEntity.ok(openAIService.censor(id))
 
     @PostMapping("/publish/{id}")
-    fun publishCase(@PathVariable id: Long, @RequestBody case: PublicCase): ResponseEntity<Void> {
-        this.publicCaseService.publishCase(case)
-        return ResponseEntity.ok().build()
+    fun publishCase(@PathVariable id: Long, @RequestBody case: PublicCase): ResponseEntity<PublicCase> {
+        return ResponseEntity.ok(publicCaseService.publishCase(case))
     }
 }   

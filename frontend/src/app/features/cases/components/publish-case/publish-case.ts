@@ -142,11 +142,11 @@ export class PublishCase implements OnInit {
             this.caseService
                 .publishCase(this.caseId, publicCase as PublicCase)
                 .subscribe({
-                    next: () => {
+                    next: (data) => {
                         console.log('Case published successfully');
                         this.publishing = false;
                         // Navigate to public cases or back to case detail
-                        this.router.navigate(['/public', this.caseId]);
+                        this.router.navigate(['/public', data.id]);
                     },
                     error: (err) => {
                         console.error('Error publishing case:', err);

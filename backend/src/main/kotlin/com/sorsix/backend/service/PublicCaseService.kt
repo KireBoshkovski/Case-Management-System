@@ -50,7 +50,7 @@ data class PublicCaseService(
     * The way it's persisting
     * */
     @Transactional
-    fun publishCase(case: PublicCase) {
+    fun publishCase(case: PublicCase): PublicCase {
         val savedCase = publicCaseRepository.save(case)
 
         if (case.examinations.isNotEmpty()) {
@@ -71,7 +71,7 @@ data class PublicCaseService(
             publicExaminationRepository.saveAll(publicExaminations)
 
             savedCase.examinations.addAll(publicExaminations.toMutableList())
-            publicCaseRepository.save(savedCase)
         }
+        return publicCaseRepository.save(savedCase)
     }
 }

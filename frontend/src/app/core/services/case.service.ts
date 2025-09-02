@@ -46,7 +46,7 @@ export class CaseService {
         const {
             page = 1,
             size = 20,
-            sort = ['createdAt,desc'],
+            sort = ['viewsCount,desc'],
             query,
         } = options;
 
@@ -71,7 +71,7 @@ export class CaseService {
     }
 
     publishCase(id: number, publicCase: PublicCase) {
-        return this.http.post<void>(
+        return this.http.post<PublicCase>(
             `${this.apiUrl}/cases/publish/${id}`,
             publicCase,
         );

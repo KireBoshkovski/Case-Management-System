@@ -22,7 +22,7 @@ class PublicController(
     @GetMapping
     fun getAllPublicCases(
         @RequestParam(required = false) q: String?,
-        @PageableDefault(size = 20, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable,
+        @PageableDefault(size = 20, sort = ["viewsCount"], direction = Sort.Direction.DESC) pageable: Pageable,
     ): Page<PublicCase> = publicCaseService.findAll(q, pageable)
 
     @GetMapping("/popular")
